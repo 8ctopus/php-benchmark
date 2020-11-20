@@ -221,3 +221,48 @@ function test_hashes($iterations = 100000)
 
     return microtime(true) - $time_start;
 }
+
+
+/**
+ * Test file operations
+ * @param  int $iterations
+ * @return int
+ */
+function test_files($iterations = 1000)
+{
+    $time_start = microtime(true);
+
+    $rand_max = 1 * 1024 * 1024;
+
+    $tmp_dir = sys_get_temp_dir() . DIRECTORY_SEPARATOR;
+
+    for ($i = 0; $i < $iterations; $i++) {
+        $tmp_filename = tempnam($tmp_dir, '');
+
+        if ($tmp_filename) {
+            $handle = fopen($tmp_filename, 'r+');
+
+            if ($handle) {
+                $random = rand(1, $rand_max);
+
+                // false
+                $result = fwrite($handle, random_bytes($random));
+
+                // -1
+                $result = fseek($handle, rand(1, $random));
+
+                $position = ftell($handle);
+
+                // string
+                $result = fread($handle, rand(1, $random));
+
+                // bool
+                fclose($handle);
+
+                unlink($tmp_filename);
+            }
+        }
+    }
+
+    return microtime(true) - $time_start;
+}
