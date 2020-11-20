@@ -34,9 +34,16 @@ $functions = get_defined_functions();
 
 // run tests
 foreach ($functions['user'] as $user) {
-    if (preg_match('/^test_/', $user)) {
-        $total += $result = $user();
-        echo(str_pad($user, $pad1) .' : '. format_time($result, $pad3));
+    if (preg_match('/^test/', $user)) {
+        $result = $user();
+
+        if ($result != -1) {
+            $total += $result;
+            echo(str_pad($user, $pad1) .' : '. format_time($result, $pad3));
+        }
+        else {
+            echo(str_pad($user, $pad1) .' : '. str_pad('FAILED', $pad3, ' ', STR_PAD_LEFT) ."\n");
+        }
     }
 }
 
@@ -311,4 +318,135 @@ function test_files($iterations = 500)
 
     //echo('total bytes : '. format_bytes($total_bytes) ."\n");
     return microtime(true) - $time_start;
+}
+
+
+/**
+ * Test mysql operations
+ * @param  int    $iterations
+ * @return int elapsed time or -1 on error
+ */
+function test_mysql($iterations = 700)
+{
+    $time_start = microtime(true);
+
+    $host       = 'localhost';
+    $user       = 'root';
+    $pass       = '123';
+    $db         = 'benchmark-test';
+    $mysqli     = null;
+    $db_created = false;
+    $exception  = false;
+
+    try {
+        // connect to database
+        $mysqli = mysqli_connect($host, $user, $pass);
+
+        if (!$mysqli)
+            throw new Exception('Connect to database - FAILED');
+
+        // check if database already exists
+        $query = <<<TAG
+            SELECT
+                SCHEMA_NAME
+            FROM
+                INFORMATION_SCHEMA.SCHEMATA
+            WHERE
+                SCHEMA_NAME = '{$db}'
+        TAG;
+
+        $result = mysqli_query($mysqli, $query);
+
+        if (!$result)
+            throw new Exception('Check if database exists - FAILED');
+
+        $array = mysqli_fetch_array($result);
+
+        if (isset($array))
+            throw new Exception('Database already exists');
+
+        // create database
+        $query = <<<TAG
+            CREATE DATABASE `{$db}`;
+        TAG;
+
+        if (!mysqli_query($mysqli, $query))
+            throw new Exception('Create database - FAILED');
+
+        $db_created = true;
+
+        // select database
+        if (!mysqli_select_db($mysqli, $db))
+            throw new Exception('Select database - FAILED');
+
+        // create table
+        $table = 'test';
+        $query = <<<TAG
+            CREATE TABLE `{$table}` (
+                `date` timestamp NOT NULL,
+                `string` varchar(512) NOT NULL
+            );
+        TAG;
+
+        if (!mysqli_query($mysqli, $query))
+            throw new Exception('Create table - FAILED');
+
+        for ($i = 0; $i < $iterations; $i++) {
+            // insert into table
+            $str = bin2hex(random_bytes(rand(1, 256)));
+
+            $query = <<<TAG
+                INSERT INTO
+                    `{$table}` (`date`, `string`)
+                VALUES
+                    (CURRENT_TIMESTAMP, '{$str}');
+            TAG;
+
+            if (!mysqli_query($mysqli, $query))
+                throw new Exception('Insert into table - FAILED');
+
+            // select from table
+            $query = <<<TAG
+                SELECT
+                    *
+                FROM
+                    `{$table}`
+                WHERE
+                    1;
+            TAG;
+
+            $result = mysqli_query($mysqli, $query);
+
+            if (!$result)
+                throw new Exception('Select from table - FAILED');
+
+            $array = mysqli_fetch_array($result);
+
+            if (!$array)
+                throw new Exception('Select from table - FAILED');
+        }
+    }
+    catch (Exception $e) {
+        $exception = true;
+        //echo($e->getMessage() ."\n");
+    }
+    finally {
+        // check for connection failure
+        if (!$mysqli)
+            return -1;
+
+        if ($db_created) {
+            // drop database
+            $query = <<<TAG
+                DROP DATABASE `{$db}`;
+            TAG;
+
+            mysqli_query($mysqli, $query);
+        }
+
+        // disconnect from database
+        mysqli_close($mysqli);
+    }
+
+    return $exception ? -1 : microtime(true) - $time_start;
 }
