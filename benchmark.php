@@ -17,13 +17,15 @@ if (php_sapi_name() != 'cli')
 
 // paddings
 $pad1 = 15;
-$pad2 = 25;
+$pad2 = 27;
+$pad3 = 9;
 
 $line = str_pad('', $pad2, '-');
 
 echo('PHP benchmark' ."\n\n".
-	str_pad('php version', $pad1) .' :   '. PHP_VERSION ."\n".
-    str_pad('platform', $pad1) .' :   '. PHP_OS ."\n".
+    str_pad('php version', $pad1) .' : '. str_pad(PHP_VERSION, $pad3, ' ', STR_PAD_LEFT) ."\n".
+    str_pad('platform', $pad1) .' : '. str_pad(PHP_OS .' '. ((PHP_INT_SIZE == 8) ? 'x64' : 'x32'), $pad3, ' ', STR_PAD_LEFT) ."\n".
+    str_pad('memory limit', $pad1) .' : '. str_pad(ini_get('memory_limit'), $pad3, ' ', STR_PAD_LEFT) ."\n".
     "$line\n"
 );
 
@@ -53,7 +55,23 @@ exit();
  */
 function format_time($time)
 {
-	return str_pad(number_format($time, 1), 5, ' ', STR_PAD_LEFT) ." s\n";
+	return str_pad(number_format($time, 1) .' s', $pad3, ' ', STR_PAD_LEFT) ."\n";
+}
+
+
+/**
+ * Format bytes
+ * @param  int $size
+ * @param  int $precision
+ * @return string
+ * @note https://stackoverflow.com/a/2510540/10126479
+ */
+function format_bytes($size, $precision = 2)
+{
+    $base = log($size, 1024);
+    $suffixes = ['', 'K', 'M', 'G', 'T'];
+
+    return round(pow(1024, $base - floor($base)), $precision) .' '. $suffixes[floor($base)];
 }
 
 
@@ -62,7 +80,7 @@ function format_time($time)
  * @param  int $iterations
  * @return int
  */
-function test_math($iterations = 140000)
+function test_math($iterations = 220000)
 {
     $time_start  = microtime(true);
     $functions   = ['abs', 'acos', 'asin', 'atan', 'decbin', 'exp', 'floor', 'exp', 'log10', 'log1p', 'sin', 'tan', 'pi', 'is_finite', 'is_nan', 'sqrt'];
@@ -127,7 +145,7 @@ function test_strings($iterations = 130000)
  * @param  int $iterations
  * @return int
  */
-function test_loops($iterations = 19000000)
+function test_loops($iterations = 16500000)
 {
     $time_start = microtime(true);
 
@@ -151,7 +169,7 @@ function test_loops($iterations = 19000000)
  * @param  int $iterations
  * @return int
  */
-function test_if_else($iterations = 9000000)
+function test_if_else($iterations = 11500000)
 {
     $time_start = microtime(true);
 
@@ -181,7 +199,7 @@ function test_if_else($iterations = 9000000)
  * @param  int $iterations
  * @return int
  */
-function test_arrays($iterations = 50000)
+function test_arrays($iterations = 48000)
 {
     $time_start = microtime(true);
 
@@ -206,7 +224,7 @@ function test_arrays($iterations = 50000)
  * @param  int $iterations
  * @return int
  */
-function test_hashes($iterations = 100000)
+function test_hashes($iterations = 105000)
 {
     $time_start = microtime(true);
 
@@ -228,41 +246,63 @@ function test_hashes($iterations = 100000)
  * @param  int $iterations
  * @return int
  */
-function test_files($iterations = 1000)
+function test_files($iterations = 500)
 {
     $time_start = microtime(true);
 
-    $rand_max = 1 * 1024 * 1024;
+    // max number of bytes to write
+    $bytes_to_write_max = 0.5 * 1024 * 1024;
+    $total_bytes        = 0;
 
+    // get temporary directory
     $tmp_dir = sys_get_temp_dir() . DIRECTORY_SEPARATOR;
 
     for ($i = 0; $i < $iterations; $i++) {
+        // scan temp dir
+        $list = scandir($tmp_dir);
+
+        // get temporary file name in temporary dir
         $tmp_filename = tempnam($tmp_dir, '');
 
         if ($tmp_filename) {
+            // open temp file
             $handle = fopen($tmp_filename, 'r+');
 
             if ($handle) {
-                $random = rand(1, $rand_max);
+                // get bytes count to write to file
+                $bytes_to_write = rand(1, $bytes_to_write_max);
 
-                // false
-                $result = fwrite($handle, random_bytes($random));
+                $total_bytes += $bytes_to_write;
 
-                // -1
-                $result = fseek($handle, rand(1, $random));
+                // write bytes_to_write bytes to file
+                $result = fwrite($handle, random_bytes($bytes_to_write));
 
+                // seek to random position
+                $result = fseek($handle, rand(1, $bytes_to_write));
+
+                // get current position
                 $position = ftell($handle);
 
-                // string
-                $result = fread($handle, rand(1, $random));
+                // get file size
+                $file_size = filesize($tmp_filename);
 
-                // bool
+                // calculate bytes to read
+                $bytes_to_read = rand(1, $file_size - $position);
+
+                $total_bytes += $bytes_to_read;
+
+                // read from file
+                $result = fread($handle, $bytes_to_read);
+
+                // close file
                 fclose($handle);
 
+                // delete file
                 unlink($tmp_filename);
             }
         }
     }
 
+    //echo('total bytes : '. format_bytes($total_bytes) ."\n");
     return microtime(true) - $time_start;
 }
