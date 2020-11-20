@@ -11,16 +11,16 @@
  * @author 8ctopus <hello@octopuslabs.io>
  */
 
-// check if running from cli
-if (php_sapi_name() != 'cli')
-    echo('<pre>');
-
 // paddings
 $pad1 = 15;
 $pad2 = 27;
 $pad3 = 9;
 
 $line = str_pad('', $pad2, '-');
+
+// check if running from cli
+if (php_sapi_name() != 'cli')
+    echo('<pre>');
 
 echo('PHP benchmark' ."\n\n".
     str_pad('php version', $pad1) .' : '. str_pad(PHP_VERSION, $pad3, ' ', STR_PAD_LEFT) ."\n".
@@ -36,13 +36,13 @@ $functions = get_defined_functions();
 foreach ($functions['user'] as $user) {
     if (preg_match('/^test_/', $user)) {
         $total += $result = $user();
-        echo(str_pad($user, $pad1) .' : '. format_time($result));
+        echo(str_pad($user, $pad1) .' : '. format_time($result, $pad3));
     }
 }
 
 echo(str_pad('-', $pad2, '-') ."\n".
     str_pad('Total time ', $pad1) .' : '.
-    format_time($total)
+    format_time($total, $pad3)
 );
 
 exit();
@@ -51,11 +51,12 @@ exit();
 /**
  * Format time
  * @param  int $time
+ * @param  int $padding
  * @return string
  */
-function format_time($time)
+function format_time($time, $padding)
 {
-    return str_pad(number_format($time, 1) .' s', $pad3, ' ', STR_PAD_LEFT) ."\n";
+    return str_pad(number_format($time, 1) .' s', $padding, ' ', STR_PAD_LEFT) ."\n";
 }
 
 
@@ -78,7 +79,7 @@ function format_bytes($size, $precision = 2)
 /**
  * Test math functions
  * @param  int $iterations
- * @return int
+ * @return int elapsed time
  */
 function test_math($iterations = 220000)
 {
@@ -115,7 +116,7 @@ function test_math($iterations = 220000)
 /**
  * Test string functions
  * @param  int $iterations
- * @return int
+ * @return int elapsed time
  */
 function test_strings($iterations = 130000)
 {
@@ -143,7 +144,7 @@ function test_strings($iterations = 130000)
 /**
  * Test loops
  * @param  int $iterations
- * @return int
+ * @return int elapsed time
  */
 function test_loops($iterations = 16500000)
 {
@@ -167,7 +168,7 @@ function test_loops($iterations = 16500000)
 /**
  * Test if else
  * @param  int $iterations
- * @return int
+ * @return int elapsed time
  */
 function test_if_else($iterations = 11500000)
 {
@@ -197,7 +198,7 @@ function test_if_else($iterations = 11500000)
 /**
  * Test arrays
  * @param  int $iterations
- * @return int
+ * @return int elapsed time
  */
 function test_arrays($iterations = 48000)
 {
@@ -222,7 +223,7 @@ function test_arrays($iterations = 48000)
 /**
  * Test cryptographic hashes
  * @param  int $iterations
- * @return int
+ * @return int elapsed time
  */
 function test_hashes($iterations = 105000)
 {
@@ -244,7 +245,7 @@ function test_hashes($iterations = 105000)
 /**
  * Test file operations
  * @param  int $iterations
- * @return int
+ * @return int elapsed time or -1 on failure
  */
 function test_files($iterations = 500)
 {
@@ -261,46 +262,51 @@ function test_files($iterations = 500)
         // scan temp dir
         $list = scandir($tmp_dir);
 
+        if (!$list)
+            return -1;
+
         // get temporary file name in temporary dir
         $tmp_filename = tempnam($tmp_dir, '');
 
-        if ($tmp_filename) {
-            // open temp file
-            $handle = fopen($tmp_filename, 'r+');
+        if (!$tmp_filename)
+            return -1;
 
-            if ($handle) {
-                // get bytes count to write to file
-                $bytes_to_write = rand(1, $bytes_to_write_max);
+        // open temp file
+        $handle = fopen($tmp_filename, 'r+');
 
-                $total_bytes += $bytes_to_write;
+        if (!$handle)
+            return -1;
 
-                // write bytes_to_write bytes to file
-                $result = fwrite($handle, random_bytes($bytes_to_write));
+        // get bytes count to write to file
+        $bytes_to_write = rand(1, $bytes_to_write_max);
 
-                // seek to random position
-                $result = fseek($handle, rand(1, $bytes_to_write));
+        $total_bytes += $bytes_to_write;
 
-                // get current position
-                $position = ftell($handle);
+        // write bytes_to_write bytes to file
+        $result = fwrite($handle, random_bytes($bytes_to_write));
 
-                // get file size
-                $file_size = filesize($tmp_filename);
+        // seek to random position
+        $result = fseek($handle, rand(1, $bytes_to_write));
 
-                // calculate bytes to read
-                $bytes_to_read = rand(1, $file_size - $position);
+        // get current position
+        $position = ftell($handle);
 
-                $total_bytes += $bytes_to_read;
+        // get file size
+        $file_size = filesize($tmp_filename);
 
-                // read from file
-                $result = fread($handle, $bytes_to_read);
+        // calculate bytes to read
+        $bytes_to_read = rand(1, $file_size - $position);
 
-                // close file
-                fclose($handle);
+        $total_bytes += $bytes_to_read;
 
-                // delete file
-                unlink($tmp_filename);
-            }
-        }
+        // read from file
+        $result = fread($handle, $bytes_to_read);
+
+        // close file
+        fclose($handle);
+
+        // delete file
+        unlink($tmp_filename);
     }
 
     //echo('total bytes : '. format_bytes($total_bytes) ."\n");
