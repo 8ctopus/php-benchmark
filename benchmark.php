@@ -41,8 +41,8 @@ foreach ($functions['user'] as $user) {
 }
 
 echo(str_pad('-', $pad2, '-') ."\n".
-	str_pad('Total time ', $pad1) .' : '.
-	format_time($total)
+    str_pad('Total time ', $pad1) .' : '.
+    format_time($total)
 );
 
 exit();
@@ -55,7 +55,7 @@ exit();
  */
 function format_time($time)
 {
-	return str_pad(number_format($time, 1) .' s', $pad3, ' ', STR_PAD_LEFT) ."\n";
+    return str_pad(number_format($time, 1) .' s', $pad3, ' ', STR_PAD_LEFT) ."\n";
 }
 
 
