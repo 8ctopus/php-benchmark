@@ -34,7 +34,7 @@ $functions = get_defined_functions();
 foreach ($functions['user'] as $user) {
     if (preg_match('/^test_/', $user)) {
         $total += $result = $user();
-        echo(str_pad($user, $pad1) . ' : ' . format_time($result));
+        echo(str_pad($user, $pad1) .' : '. format_time($result));
     }
 }
 
@@ -102,7 +102,8 @@ function test_math($iterations = 140000)
 function test_strings($iterations = 130000)
 {
     $time_start = microtime(true);
-    $functions  = ['addslashes', 'chunk_split', 'metaphone', 'strip_tags', 'md5', 'sha1', 'strtoupper', 'strtolower', 'strrev', 'strlen', 'soundex', 'ord'];
+    $functions  = ['addslashes', 'chunk_split', 'ltrim', 'metaphone', 'ord', 'str_shuffle',
+        'strip_tags', 'strlen', 'strtoupper', 'strtolower', 'strrev', 'soundex', 'trim'];
 
     foreach ($functions as $key => $function) {
         if (!function_exists($function))
@@ -194,6 +195,28 @@ function test_arrays($iterations = 50000)
 
     for ($i = 0; $i < $iterations; $i++) {
         array_search(random_bytes(10), $a, true);
+    }
+
+    return microtime(true) - $time_start;
+}
+
+
+/**
+ * Test cryptographic hashes
+ * @param  int $iterations
+ * @return int
+ */
+function test_hashes($iterations = 100000)
+{
+    $time_start = microtime(true);
+
+    $hashes = ['adler32', 'crc32', 'crc32b', 'md5', 'sha1', 'sha256', 'sha384', 'sha512'];
+    $string = random_bytes(1024);
+
+    for ($i = 0; $i < $iterations; $i++) {
+        foreach ($hashes as $hash) {
+            hash($hash, $string, false);
+        }
     }
 
     return microtime(true) - $time_start;
