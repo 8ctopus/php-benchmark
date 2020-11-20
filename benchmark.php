@@ -26,6 +26,7 @@ echo('PHP benchmark' ."\n\n".
     str_pad('php version', $pad1) .' : '. str_pad(PHP_VERSION, $pad3, ' ', STR_PAD_LEFT) ."\n".
     str_pad('platform', $pad1) .' : '. str_pad(PHP_OS .' '. ((PHP_INT_SIZE == 8) ? 'x64' : 'x32'), $pad3, ' ', STR_PAD_LEFT) ."\n".
     str_pad('memory limit', $pad1) .' : '. str_pad(ini_get('memory_limit'), $pad3, ' ', STR_PAD_LEFT) ."\n".
+    str_pad('max execution', $pad1) .' : '. str_pad(ini_get('max_execution_time'), $pad3, ' ', STR_PAD_LEFT) ."\n".
     "$line\n"
 );
 
@@ -35,15 +36,20 @@ $functions = get_defined_functions();
 // run tests
 foreach ($functions['user'] as $user) {
     if (preg_match('/^test/', $user)) {
-        $result = $user();
+        $timings = [];
 
-        if ($result != -1) {
-            $total += $result;
-            echo(str_pad($user, $pad1) .' : '. format_time($result, $pad3));
+        // run each test x times
+        for ($i = 0; $i < 25; $i++) {
+            $timings[$i] = $user();
         }
-        else {
+
+        if ($timings[0] == -1) {
             echo(str_pad($user, $pad1) .' : '. str_pad('FAILED', $pad3, ' ', STR_PAD_LEFT) ."\n");
+            continue;
         }
+
+        $total += median($timings);
+        echo(str_pad($user, $pad1) .' : '. format_time(median($timings), $pad3, true) .' '. variability($timings) .' '. interval($timings) .' - '. show_all($timings) ."\n");
     }
 }
 
@@ -59,11 +65,14 @@ exit();
  * Format time
  * @param  int $time
  * @param  int $padding
+ * @param  bool $add_unit
  * @return string
  */
-function format_time($time, $padding)
+function format_time($time, $padding, $add_unit = false)
 {
-    return str_pad(number_format($time, 1) .' s', $padding, ' ', STR_PAD_LEFT) ."\n";
+    $str = number_format($time, 1) . ($add_unit ? ' s' : '');
+
+    return str_pad($str, $padding, ' ', STR_PAD_LEFT);
 }
 
 
@@ -449,4 +458,98 @@ function test_mysql($iterations = 700)
     }
 
     return $exception ? -1 : microtime(true) - $time_start;
+}
+
+
+/**
+ * Calculate array total
+ * @param  array $cells
+ * @return float
+ */
+function total(array $cells)
+{
+    $total = 0;
+
+    foreach ($cells as $cell) {
+        $total += $cell;
+    }
+
+    return $total;
+}
+
+
+/**
+ * Calculate array average
+ * @param  array $cells
+ * @return float
+ */
+function average(array $cells)
+{
+    return $total($cells) / sizeof($cells);
+}
+
+
+/**
+ * Calculate array median
+ * @param  array $cells
+ * @return float
+ */
+function median(array $cells)
+{
+    // sort array values ascending
+    sort($cells, SORT_NUMERIC);
+
+    $count = sizeof($cells);
+
+    $index = floor($count / 2);
+
+    if ($count % 2)
+        return $cells[$index];
+    else
+        return ($cells[$index -1] + $cells[$index]) / 2;
+}
+
+
+/**
+ * Get array min - max interval
+ * @param  array $cells
+ * @return string
+ */
+function interval($cells)
+{
+    // interval
+    return '['. format_time(min($cells), 0) .' - '. format_time(max($cells), 0) .']';
+}
+
+
+/**
+ * Get array fluctuation from mediam
+ * @param  array $cells
+ * @return string
+ */
+function variability($cells)
+{
+    $variability = (max($cells) - min($cells)) / median($cells) * 100 / 2;
+
+    return '±'. number_format($variability, 1) .'%';
+}
+
+
+/**
+ * Get all array values /* sorted from min to max* /
+ * @param  array $cells
+ * @return string
+ */
+function show_all($cells)
+{
+    // sort array values ascending
+    //sort($cells, SORT_NUMERIC);
+
+    $str = '';
+
+    foreach ($cells as $cell) {
+        $str .= format_time($cell, 0) .' ';
+    }
+
+    return $str;
 }
