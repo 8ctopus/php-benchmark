@@ -107,8 +107,8 @@ function format_bytes($size, $precision = 2)
 function test_math($iterations = 220000)
 {
     $time_start  = microtime(true);
-    $functions   = ['abs', 'acos', 'asin', 'atan', 'decbin', 'exp', 'floor', 'exp', 'log10', 'log1p', 'sin', 'tan', 'pi', 'is_finite', 'is_nan', 'sqrt'];
-    $functions_2 = ['log', 'pow'];
+    $functions   = ['abs', 'acos', 'asin', 'atan', 'decbin', 'exp', 'floor', 'exp', 'is_finite',
+        'is_nan', 'log', 'log10', 'log1p', 'sin', 'tan', 'pi', 'pow', 'sqrt'];
 
     // remove functions that don't exist
     foreach ($functions as $key => $function) {
@@ -117,22 +117,13 @@ function test_math($iterations = 220000)
     }
 
     // run tests
-    for ($i = 0; $i < $iterations; $i++) {
-        foreach ($functions as $function) {
-            call_user_func_array($function, [$i]);
-        }
-    }
+    foreach ($functions as $function) {
+        // get function arguments count
+        $reflection = new ReflectionFunction($function);
+        $arguments  = $reflection->getNumberOfParameters();
 
-    // remove functions that don't exist
-    foreach ($functions_2 as $key => $function) {
-        if (!function_exists($function))
-            unset($functions_2[$key]);
-    }
-
-    // run tests
-    for ($i = 0; $i < $iterations; $i++) {
-        foreach ($functions_2 as $function) {
-            call_user_func_array($function, [$i + 1, $i + 1]);
+        for ($i = 0; $i < $iterations; $i++) {
+            call_user_func_array($function, $arguments == 1 ? [$i + 1] : [$i + 1, $i + 1]);
         }
     }
 
@@ -151,6 +142,7 @@ function test_strings($iterations = 130000)
     $functions  = ['addslashes', 'chunk_split', 'ltrim', 'metaphone', 'ord', 'str_shuffle',
         'strip_tags', 'strlen', 'strtoupper', 'strtolower', 'strrev', 'soundex', 'trim'];
 
+    // remove functions that don't exist
     foreach ($functions as $key => $function) {
         if (!function_exists($function))
             unset($unctions[$key]);
@@ -158,8 +150,9 @@ function test_strings($iterations = 130000)
 
     $string = 'the quick brown fox jumps over the lazy dog';
 
-    for ($i = 0; $i < $iterations; $i++) {
-        foreach ($functions as $function) {
+    // run tests
+    foreach ($functions as $function) {
+        for ($i = 0; $i < $iterations; $i++) {
             call_user_func_array($function, [$string]);
         }
     }
@@ -259,8 +252,8 @@ function test_hashes($iterations = 105000)
     $hashes = ['adler32', 'crc32', 'crc32b', 'md5', 'sha1', 'sha256', 'sha384', 'sha512'];
     $string = random_bytes(1024);
 
-    for ($i = 0; $i < $iterations; $i++) {
-        foreach ($hashes as $hash) {
+    foreach ($hashes as $hash) {
+        for ($i = 0; $i < $iterations; $i++) {
             hash($hash, $string, false);
         }
     }
