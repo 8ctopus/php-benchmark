@@ -69,37 +69,6 @@ exit();
 
 
 /**
- * Format time
- * @param  int $time
- * @param  int $padding
- * @param  bool $add_unit
- * @return string
- */
-function format_time($time, $padding, $add_unit = false)
-{
-    $str = number_format($time, 1) . ($add_unit ? ' s' : '');
-
-    return str_pad($str, $padding, ' ', STR_PAD_LEFT);
-}
-
-
-/**
- * Format bytes
- * @param  int $size
- * @param  int $precision
- * @return string
- * @note https://stackoverflow.com/a/2510540/10126479
- */
-function format_bytes($size, $precision = 2)
-{
-    $base = log($size, 1024);
-    $suffixes = ['', 'K', 'M', 'G', 'T'];
-
-    return round(pow(1024, $base - floor($base)), $precision) .' '. $suffixes[floor($base)];
-}
-
-
-/**
  * Test math functions
  * @param  int $iterations
  * @return int elapsed time
@@ -456,6 +425,37 @@ function test_mysql($iterations = 700)
     }
 
     return $exception ? -1 : microtime(true) - $time_start;
+}
+
+
+/**
+ * Format time
+ * @param  int $time
+ * @param  int $padding
+ * @param  bool $add_unit
+ * @return string
+ */
+function format_time($time, $padding, $add_unit = false)
+{
+    $str = number_format($time, 1) . ($add_unit ? ' s' : '');
+
+    return str_pad($str, $padding, ' ', STR_PAD_LEFT);
+}
+
+
+/**
+ * Format bytes
+ * @param  int $size
+ * @param  int $precision
+ * @return string
+ * @note https://stackoverflow.com/a/2510540/10126479
+ */
+function format_bytes($size, $precision = 2)
+{
+    $base = log($size, 1024);
+    $suffixes = ['', 'K', 'M', 'G', 'T'];
+
+    return round(pow(1024, $base - floor($base)), $precision) .' '. $suffixes[floor($base)];
 }
 
 
