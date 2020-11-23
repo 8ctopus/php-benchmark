@@ -11,6 +11,9 @@
  * @author 8ctopus <hello@octopuslabs.io>
  */
 
+// iterations
+$iterations = 25;
+
 // paddings
 $pad1 = 15;
 $pad2 = 27;
@@ -27,19 +30,23 @@ echo('PHP benchmark' ."\n\n".
     str_pad('platform', $pad1) .' : '. str_pad(PHP_OS .' '. ((PHP_INT_SIZE == 8) ? 'x64' : 'x32'), $pad3, ' ', STR_PAD_LEFT) ."\n".
     str_pad('memory limit', $pad1) .' : '. str_pad(ini_get('memory_limit'), $pad3, ' ', STR_PAD_LEFT) ."\n".
     str_pad('max execution', $pad1) .' : '. str_pad(ini_get('max_execution_time'), $pad3, ' ', STR_PAD_LEFT) ."\n".
+    str_pad('iterations', $pad1) .' : '. str_pad($iterations, $pad3, ' ', STR_PAD_LEFT) ."\n".
     "$line\n"
 );
 
 $total     = 0;
+
+// list functions
 $functions = get_defined_functions();
 
 // run tests
 foreach ($functions['user'] as $user) {
-    if (preg_match('/^test/', $user)) {
+    // check if function starts with test
+    if (preg_match('/^test_/', $user)) {
         $timings = [];
 
         // run each test x times
-        for ($i = 0; $i < 25; $i++) {
+        for ($i = 0; $i < $iterations; $i++) {
             $timings[$i] = $user();
         }
 
@@ -103,25 +110,29 @@ function test_math($iterations = 220000)
     $functions   = ['abs', 'acos', 'asin', 'atan', 'decbin', 'exp', 'floor', 'exp', 'log10', 'log1p', 'sin', 'tan', 'pi', 'is_finite', 'is_nan', 'sqrt'];
     $functions_2 = ['log', 'pow'];
 
+    // remove functions that don't exist
     foreach ($functions as $key => $function) {
         if (!function_exists($function))
             unset($functions[$key]);
     }
 
+    // run tests
     for ($i = 0; $i < $iterations; $i++) {
         foreach ($functions as $function) {
             call_user_func_array($function, [$i]);
         }
     }
 
+    // remove functions that don't exist
     foreach ($functions_2 as $key => $function) {
         if (!function_exists($function))
             unset($functions_2[$key]);
     }
 
-    for ($i = 1; $i < $iterations; $i++) {
+    // run tests
+    for ($i = 0; $i < $iterations; $i++) {
         foreach ($functions_2 as $function) {
-            call_user_func_array($function, [$i, $i]);
+            call_user_func_array($function, [$i + 1, $i + 1]);
         }
     }
 
