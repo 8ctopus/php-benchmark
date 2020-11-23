@@ -111,10 +111,7 @@ function test_math($iterations = 220000)
         'is_nan', 'log', 'log10', 'log1p', 'sin', 'tan', 'pi', 'pow', 'sqrt'];
 
     // remove functions that don't exist
-    foreach ($functions as $key => $function) {
-        if (!function_exists($function))
-            unset($functions[$key]);
-    }
+    $functions = check_functions_exist($functions);
 
     // run tests
     foreach ($functions as $function) {
@@ -143,10 +140,7 @@ function test_strings($iterations = 130000)
         'strip_tags', 'strlen', 'strtoupper', 'strtolower', 'strrev', 'soundex', 'trim'];
 
     // remove functions that don't exist
-    foreach ($functions as $key => $function) {
-        if (!function_exists($function))
-            unset($unctions[$key]);
-    }
+    $functions = check_functions_exist($functions);
 
     $string = 'the quick brown fox jumps over the lazy dog';
 
@@ -556,4 +550,23 @@ function show_all($cells)
     }
 
     return $str;
+}
+
+
+/**
+ * Check functions exist
+ * @param  array  $functions
+ * @return array  only existing functions are returned
+ */
+function check_functions_exist(array $functions)
+{
+    // remove functions that don't exist
+    foreach ($functions as $key => $function) {
+        if (!function_exists($function)) {
+            echo("Removed $function as it does not exist");
+            unset($functions[$key]);
+        }
+    }
+
+    return $functions;
 }
