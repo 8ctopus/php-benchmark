@@ -29,7 +29,7 @@ $line = str_pad('', $pad_line, '-');
 
 // iterations
 $iterations         = 250;
-$time_per_iteration = 0.500;
+$time_per_iteration = 0.050;
 
 echo('PHP benchmark' ."\n\n".
     "$line\n".
@@ -78,7 +78,7 @@ foreach ($functions['user'] as $user) {
             echo(str_pad($key, $pad1) .' : '. format_number($value, $pad2) ."\n");
         }
 
-        //echo(str_pad('values', $pad1) .' : '. all_values($timings) ."\n");
+        echo(str_pad('values', $pad1) .' : '. all_values($timings) ."\n");
 
         echo("\n");
 
@@ -612,10 +612,13 @@ function standard_deviation(array $cells)
  */
 function all_values(array $cells)
 {
-    $str = '';
+    $str = "\n";
 
-    foreach ($cells as $cell) {
-        $str .= format_number($cell, 0) .' ';
+    foreach ($cells as $key => $value) {
+        $str .= format_number($value, 0) .' ';
+
+        if ($key && !($key % 30))
+            $str .= "\n";
     }
 
     return $str;
