@@ -1,6 +1,6 @@
 # PHP benchmark
 
-PHP benchmark script iterations based on the original work from Alessandro Torrisi[www.php-benchmark-script.com](http://www.php-benchmark-script.com)
+PHP benchmark script iterations based on the original work from Alessandro Torrisi [www.php-benchmark-script.com](http://www.php-benchmark-script.com)
 
 # how to use
 
