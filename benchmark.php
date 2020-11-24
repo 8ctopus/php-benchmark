@@ -60,14 +60,23 @@ foreach ($functions['user'] as $user) {
             }
         }
 
+        $result = analyze_test($timings);
+
         // check for error
-        if (isset($error)) {
+        if ($result === false) {
             echo(str_pad($user, $pad1) .' : '. str_pad('FAILED', $pad2, ' ', STR_PAD_LEFT) ."\n");
+            echo($line ."\n");
             continue;
         }
 
-//        $total += median($timings);
-        echo(str_pad($user, $pad1) .' : '. format_number(median($timings), $pad2, true) .' '. variability($timings) .' '. interval($timings) .' - '. show_all($timings) ."\n");
+        echo($user ."\n");
+
+        foreach ($result as $key => $value) {
+            echo(str_pad($key, $pad1) .' : '. format_number($value, $pad2) ."\n");
+        }
+
+        echo($line ."\n");
+//        variability($timings) .' '. interval($timings) .' - '. show_all($timings) ."\n");
     }
 }
 
@@ -484,6 +493,26 @@ function test_mysql($limit)
 
 
 /**
+ * Analyze test results
+ * @param  array $timings
+ * @return array of strings or false if any of the test iterations failed
+ */
+function analyze_test($timings)
+{
+    // check if the test failed at least once
+    if (in_array(false, $timings))
+        return false;
+
+    return [
+        'average' => average($timings),
+        'median'  => median($timings),
+        'minmum'  => min($timings),
+        'maximum' => max($timings),
+    ];
+}
+
+
+/**
  * Format number
  * @param  int $number
  * @param  int $padding
@@ -535,7 +564,7 @@ function total(array $cells)
  */
 function average(array $cells)
 {
-    return $total($cells) / sizeof($cells);
+    return array_sum($cells) / count($cells);
 }
 
 
@@ -549,7 +578,7 @@ function median(array $cells)
     // sort array values ascending
     sort($cells, SORT_NUMERIC);
 
-    $count = sizeof($cells);
+    $count = count($cells);
 
     $index = floor($count / 2);
 
@@ -573,7 +602,7 @@ function interval($cells)
 
 
 /**
- * Get array fluctuation from mediam
+ * Get array fluctuation from median
  * @param  array $cells
  * @return string
  */
