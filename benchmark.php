@@ -11,6 +11,8 @@
  * @author 8ctopus <hello@octopuslabs.io>
  */
 
+require_once('histogram.php');
+
 // set error reporting
 error_reporting(E_ERROR /*| E_WARNING | E_PARSE*/);
 
@@ -26,7 +28,7 @@ $pad_line = $pad1 + $pad2 + 3;
 $line = str_pad('', $pad_line, '-');
 
 // iterations
-$iterations         = 25;
+$iterations         = 250;
 $time_per_iteration = 0.500;
 
 echo('PHP benchmark' ."\n\n".
@@ -39,8 +41,6 @@ echo('PHP benchmark' ."\n\n".
     str_pad('iterations', $pad1) .' : '. str_pad($iterations, $pad2, ' ', STR_PAD_LEFT) ."\n".
     "$line\n"
 );
-
-//$total = 0;
 
 // list functions
 $functions = get_defined_functions();
@@ -61,6 +61,7 @@ foreach ($functions['user'] as $user) {
             }
         }
 
+        // analyze test results
         $result = analyze_test($timings);
 
         // check for error
@@ -72,11 +73,22 @@ foreach ($functions['user'] as $user) {
 
         echo($user ."\n");
 
+        // show test results
         foreach ($result as $key => $value) {
             echo(str_pad($key, $pad1) .' : '. format_number($value, $pad2) ."\n");
         }
 
         //echo(str_pad('values', $pad1) .' : '. all_values($timings) ."\n");
+
+        echo("\n");
+
+        // show histogram
+        $buckets = 16;
+
+        $histogram = histogram::create($timings, $buckets);
+        histogram::draw($histogram);
+
+        echo("\n");
 
         echo($line ."\n");
     }
