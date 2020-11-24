@@ -26,15 +26,16 @@ $pad_line = $pad1 + $pad2 + 3;
 $line = str_pad('', $pad_line, '-');
 
 // iterations
-$iterations         = 10;
-$time_per_iteration = 1.000;
+$iterations         = 25;
+$time_per_iteration = 0.500;
 
 echo('PHP benchmark' ."\n\n".
+    "$line\n".
     str_pad('php version', $pad1) .' : '. str_pad(PHP_VERSION, $pad2, ' ', STR_PAD_LEFT) ."\n".
     str_pad('platform', $pad1) .' : '. str_pad(PHP_OS .' '. ((PHP_INT_SIZE == 8) ? 'x64' : 'x32'), $pad2, ' ', STR_PAD_LEFT) ."\n".
     str_pad('memory limit', $pad1) .' : '. str_pad(ini_get('memory_limit'), $pad2, ' ', STR_PAD_LEFT) ."\n".
     str_pad('max execution', $pad1) .' : '. str_pad(ini_get('max_execution_time'), $pad2, ' ', STR_PAD_LEFT) ."\n".
-    str_pad('time per iteration', $pad1) .' : '. str_pad($time_per_iteration, $pad2, ' ', STR_PAD_LEFT) ."\n".
+    str_pad('time per iteration', $pad1) .' : '. str_pad($time_per_iteration .'s', $pad2, ' ', STR_PAD_LEFT) ."\n".
     str_pad('iterations', $pad1) .' : '. str_pad($iterations, $pad2, ' ', STR_PAD_LEFT) ."\n".
     "$line\n"
 );
@@ -75,17 +76,11 @@ foreach ($functions['user'] as $user) {
             echo(str_pad($key, $pad1) .' : '. format_number($value, $pad2) ."\n");
         }
 
+        //echo(str_pad('values', $pad1) .' : '. all_values($timings) ."\n");
+
         echo($line ."\n");
-//        variability($timings) .' '. interval($timings) .' - '. show_all($timings) ."\n");
     }
 }
-
-/* FIX ME total doesn't work for the time being
-echo(str_pad('-', $pad_line, '-') ."\n".
-    str_pad('Total time ', $pad1) .' : '.
-    format_number($total, $pad2, true)
-);
-*/
 
 exit();
 
@@ -541,23 +536,6 @@ function format_bytes($size, $precision = 2)
 
 
 /**
- * Calculate array total
- * @param  array $cells
- * @return float
- */
-function total(array $cells)
-{
-    $total = 0;
-
-    foreach ($cells as $cell) {
-        $total += $cell;
-    }
-
-    return $total;
-}
-
-
-/**
  * Calculate array average
  * @param  array $cells
  * @return float
@@ -590,40 +568,12 @@ function median(array $cells)
 
 
 /**
- * Get array min - max interval
+ * Get all array values
  * @param  array $cells
  * @return string
  */
-function interval($cells)
+function all_values($cells)
 {
-    // interval
-    return '['. format_number(min($cells), 0) .' - '. format_number(max($cells), 0) .']';
-}
-
-
-/**
- * Get array fluctuation from median
- * @param  array $cells
- * @return string
- */
-function variability($cells)
-{
-    $variability = (max($cells) - min($cells)) / median($cells) * 100 / 2;
-
-    return '±'. number_format($variability, 1) .'%';
-}
-
-
-/**
- * Get all array values /* sorted from min to max* /
- * @param  array $cells
- * @return string
- */
-function show_all($cells)
-{
-    // sort array values ascending
-    //sort($cells, SORT_NUMERIC);
-
     $str = '';
 
     foreach ($cells as $cell) {
