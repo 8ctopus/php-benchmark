@@ -102,7 +102,7 @@ exit();
  * @param  float $limit time limit in seconds
  * @return int iterations done in allocated time
  */
-function test_math($limit)
+function test_math(float $limit)
 {
     $time_start = microtime(true);
     $time_limit = $time_start + $limit;
@@ -133,10 +133,10 @@ function test_math($limit)
 
 /**
  * Test string functions
- * @param  int $limit time limit in microseconds
+ * @param  float $limit time limit in seconds
  * @return int iterations done in allocated time
  */
-function test_strings($limit)
+function test_strings(float $limit)
 {
     $time_start = microtime(true);
     $time_limit = $time_start + $limit;
@@ -165,10 +165,10 @@ function test_strings($limit)
 
 /**
  * Test loops
- * @param  int $limit time limit in microseconds
+ * @param  float $limit time limit in seconds
  * @return int iterations done in allocated time
  */
-function test_loops($limit)
+function test_loops(float $limit)
 {
     $time_start = microtime(true);
     $time_limit = $time_start + $limit;
@@ -190,10 +190,10 @@ function test_loops($limit)
 
 /**
  * Test if else
- * @param  int $limit time limit in microseconds
+ * @param  float $limit time limit in seconds
  * @return int iterations done in allocated time
  */
-function test_if_else($limit)
+function test_if_else(float $limit)
 {
     $time_start = microtime(true);
     $time_limit = $time_start + $limit;
@@ -226,10 +226,10 @@ function test_if_else($limit)
 
 /**
  * Test arrays
- * @param  int $limit time limit in microseconds
+ * @param  float $limit time limit in seconds
  * @return int iterations done in allocated time
  */
-function test_arrays($limit)
+function test_arrays(float $limit)
 {
     $time_start = microtime(true);
     $time_limit = $time_start + $limit;
@@ -253,10 +253,10 @@ function test_arrays($limit)
 
 /**
  * Test cryptographic hashes
- * @param  int $limit time limit in microseconds
+ * @param  float $limit time limit in seconds
  * @return int iterations done in allocated time
  */
-function test_hashes($limit)
+function test_hashes(float $limit)
 {
     $time_start = microtime(true);
     $time_limit = $time_start + $limit;
@@ -279,10 +279,10 @@ function test_hashes($limit)
 
 /**
  * Test file operations
- * @param  int $limit time limit in microseconds
+ * @param  float $limit time limit in seconds
  * @return int iterations done in allocated time or false on failure
  */
-function test_files($limit)
+function test_files(float $limit)
 {
     $time_start = microtime(true);
     $time_limit = $time_start + $limit;
@@ -355,10 +355,10 @@ function test_files($limit)
 
 /**
  * Test mysql operations
- * @param  int $limit time limit in microseconds
+ * @param  float $limit time limit in seconds
  * @return int iterations done in allocated time or false on failure
  */
-function test_mysql($limit)
+function test_mysql(float $limit)
 {
     $time_start = microtime(true);
     $time_limit = $time_start + $limit;
@@ -504,7 +504,7 @@ function test_mysql($limit)
  * @param  array $timings
  * @return array of strings or false if any of the test iterations failed
  */
-function analyze_test($timings)
+function analyze_test(array $timings)
 {
     // check if the test failed at least once
     if (in_array(false, $timings))
@@ -525,7 +525,7 @@ function analyze_test($timings)
  * @param  int $padding
  * @return string
  */
-function format_number($number, $padding)
+function format_number(int $number, int $padding)
 {
     return str_pad(number_format($number, 0, '.', ''), $padding, ' ', STR_PAD_LEFT);
 }
@@ -538,7 +538,7 @@ function format_number($number, $padding)
  * @return string
  * @note https://stackoverflow.com/a/2510540/10126479
  */
-function format_bytes($size, $precision = 2)
+function format_bytes(int $size, int $precision = 2)
 {
     $base = log($size, 1024);
     $suffixes = ['', 'K', 'M', 'G', 'T'];
@@ -580,11 +580,11 @@ function median(array $cells)
 
 
 /**
- * Get all array values
+ * Get all array values as string
  * @param  array $cells
  * @return string
  */
-function all_values($cells)
+function all_values(array $cells)
 {
     $str = '';
 
