@@ -28,8 +28,8 @@ $pad_line = $pad1 + $pad2 + 3;
 $line = str_pad('', $pad_line, '-');
 
 // iterations
-$iterations         = 250;
-$time_per_iteration = 0.050;
+$iterations         = 1000;
+$time_per_iteration = 100;
 
 echo('PHP benchmark' ."\n\n".
     "$line\n".
@@ -37,7 +37,7 @@ echo('PHP benchmark' ."\n\n".
     str_pad('platform', $pad1) .' : '. str_pad(PHP_OS .' '. ((PHP_INT_SIZE == 8) ? 'x64' : 'x32'), $pad2, ' ', STR_PAD_LEFT) ."\n".
     str_pad('memory limit', $pad1) .' : '. str_pad(ini_get('memory_limit'), $pad2, ' ', STR_PAD_LEFT) ."\n".
     str_pad('max execution', $pad1) .' : '. str_pad(ini_get('max_execution_time'), $pad2, ' ', STR_PAD_LEFT) ."\n".
-    str_pad('time per iteration', $pad1) .' : '. str_pad($time_per_iteration .'s', $pad2, ' ', STR_PAD_LEFT) ."\n".
+    str_pad('time per iteration', $pad1) .' : '. str_pad($time_per_iteration .'ms', $pad2, ' ', STR_PAD_LEFT) ."\n".
     str_pad('iterations', $pad1) .' : '. str_pad($iterations, $pad2, ' ', STR_PAD_LEFT) ."\n".
     "$line\n"
 );
@@ -53,7 +53,7 @@ foreach ($functions['user'] as $user) {
 
         // run each test x times
         for ($i = 0; $i < $iterations; $i++) {
-            $timings[$i] = $user($time_per_iteration);
+            $timings[$i] = $user($time_per_iteration / 1000);
 
             if ($timings[$i] === false) {
                 $error = true;
@@ -78,8 +78,6 @@ foreach ($functions['user'] as $user) {
             echo(str_pad($key, $pad1) .' : '. format_number($value, $pad2) ."\n");
         }
 
-        echo(str_pad('values', $pad1) .' : '. all_values($timings) ."\n");
-
         echo("\n");
 
         // show histogram
@@ -89,6 +87,8 @@ foreach ($functions['user'] as $user) {
         histogram::draw($histogram);
 
         echo("\n");
+
+        echo(str_pad('values', $pad1) .' : '. all_values($timings) ."\n");
 
         echo($line ."\n");
     }
@@ -612,16 +612,16 @@ function standard_deviation(array $cells)
  */
 function all_values(array $cells)
 {
-    $str = "\n";
+    $str = "\n\n";
 
     foreach ($cells as $key => $value) {
         $str .= format_number($value, 0) .' ';
 
-        if ($key && !($key % 30))
+        if (!(($key + 1) % 32))
             $str .= "\n";
     }
 
-    return $str;
+    return $str ."\n";
 }
 
 
