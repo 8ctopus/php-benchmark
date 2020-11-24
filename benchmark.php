@@ -511,10 +511,11 @@ function analyze_test(array $timings)
         return false;
 
     return [
-        'average' => average($timings),
-        'median'  => median($timings),
-        'minmum'  => min($timings),
-        'maximum' => max($timings),
+        'average'       => average($timings),
+        'median'        => median($timings),
+        'minmum'        => min($timings),
+        'maximum'       => max($timings),
+        'std deviation' => standard_deviation($timings),
     ];
 }
 
@@ -576,6 +577,31 @@ function median(array $cells)
         return $cells[$index];
     else
         return ($cells[$index -1] + $cells[$index]) / 2;
+}
+
+
+/**
+ * Calculate array standard deviation
+ * @param  array $cells
+ * @return float
+ */
+function standard_deviation(array $cells)
+{
+    $variance = 0.0;
+
+    $average = average($cells);
+
+    // sum of squares
+    foreach($cells as $cell) {
+        // difference between cell and average squared
+        $variance += pow(($cell - $average), 2);
+    }
+
+    $count = count($cells) -1;
+
+    $standard_deviation = sqrt($variance) / sqrt($count);
+
+    return $standard_deviation;
 }
 
 
