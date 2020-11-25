@@ -10,6 +10,9 @@ ini_set('zend.assertions', true);
 ini_set('assert.exception', true);
 //assert(false, __METHOD__ .'() unhandled situation');
 
+require_once('stats.php');
+require_once('tests.php');
+
 // settings
 $iterations            = 100;
 $time_per_iteration    = 50;
@@ -170,6 +173,9 @@ function analyze_test(array $measurements)
         'mode'          => stats::mode($measurements),
         'minmum'        => min($measurements),
         'maximum'       => max($measurements),
+        'quartile 1'    => stats::quartiles($measurements)[0],
+        'quartile 3'    => stats::quartiles($measurements)[1],
+        'IQ range'      => stats::interquartile_range($measurements),
         'std deviation' => stats::standard_deviation($measurements),
         'normality'     => stats::test_normal($measurements) * 100,
     ];

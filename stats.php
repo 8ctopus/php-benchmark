@@ -94,6 +94,45 @@ class stats
 
 
     /**
+     * Calculate array quartiles
+     * @param  array $cells
+     * @return array quartiles
+     * @note https://en.wikipedia.org/wiki/Interquartile_range#Examples
+     */
+    public static function quartiles(array $cells)
+    {
+        // sort measures ascending
+        sort($cells);
+
+        // get half total cells adjusted for odd arrays
+        $count_half = floor(count($cells) / 2);
+
+        // 1st quartile
+        $cells1 = array_slice($cells, 0, $count_half);
+        $quartile1 = self::median($cells1);
+
+        // 3rd quartile
+        $cells3 = array_slice($cells, -$count_half, $count_half);
+        $quartile3 = self::median($cells3);
+
+        return [$quartile1, $quartile3];
+    }
+
+
+    /**
+     * Calculate array interquartile range
+     * @param  array  $cells
+     * @return float range
+     */
+    public static function interquartile_range(array $cells)
+    {
+        $quartiles = self::quartiles($cells);
+
+        return $quartiles[1] - $quartiles[0];
+    }
+
+
+    /**
      * Approximate normality test
      * @param  array  $cells
      * @return float  probability it's normal
