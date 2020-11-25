@@ -7,6 +7,107 @@
 class stats
 {
     /**
+     * Calculate array average
+     * @param  array $cells
+     * @return float
+     */
+    public static function average(array $cells)
+    {
+        return array_sum($cells) / count($cells);
+    }
+
+
+    /**
+     * Calculate array median
+     * @param  array $cells
+     * @return float
+     */
+    public static function median(array $cells)
+    {
+        // sort array values ascending
+        sort($cells, SORT_NUMERIC);
+
+        $count = count($cells);
+
+        $index = floor($count / 2);
+
+        if ($count % 2)
+            return $cells[$index];
+        else
+            return ($cells[$index -1] + $cells[$index]) / 2;
+    }
+
+
+    /**
+     * Calculate array standard deviation
+     * @param  array $cells
+     * @return float
+     */
+    public static function standard_deviation(array $cells)
+    {
+        $variance = 0.0;
+
+        $average = self::average($cells);
+
+        // sum of squares
+        foreach($cells as $cell) {
+            // difference between cell and average squared
+            $variance += pow(($cell - $average), 2);
+        }
+
+        $count = count($cells) -1;
+
+        $standard_deviation = sqrt($variance) / sqrt($count);
+
+        return $standard_deviation;
+    }
+
+
+    /**
+     * Calculate array mode
+     * @param  array $cells
+     * @return float first peak
+     */
+    public static function mode(array $cells)
+    {
+        return self::modes($cells)[0];
+    }
+
+
+    /**
+     * Calculate array modes
+     * @param  array $cells
+     * @return array modes
+     */
+    public static function modes(array $cells)
+    {
+        // group array by count
+        $values = array_count_values($cells);
+
+        // sort (lowest first)
+        asort($values);
+
+        // get modes
+        return array_keys($values, max($values));
+    }
+
+
+    /**
+     * Approximate normality test
+     * @param  array  $cells
+     * @return float  probability it's normal
+     * @note found here https://www.paulstephenborile.com/2018/03/code-benchmarks-can-measure-fast-software-make-faster/
+     */
+    public static function test_normal(array $cells)
+    {
+        $average = self::average($cells);
+        $median  = self::median($cells);
+
+        return abs($average - $median) / max($average, $median);
+    }
+
+
+    /**
      * Create histogram
      * @param  array $data_points
      * @param  int $buckets number of buckets
@@ -100,77 +201,4 @@ class stats
         // draw table border
         echo($border);
     }
-
-
-    /**
-     * Calculate array average
-     * @param  array $cells
-     * @return float
-     */
-    public static function average(array $cells)
-    {
-        return array_sum($cells) / count($cells);
-    }
-
-
-    /**
-     * Calculate array median
-     * @param  array $cells
-     * @return float
-     */
-    public static function median(array $cells)
-    {
-        // sort array values ascending
-        sort($cells, SORT_NUMERIC);
-
-        $count = count($cells);
-
-        $index = floor($count / 2);
-
-        if ($count % 2)
-            return $cells[$index];
-        else
-            return ($cells[$index -1] + $cells[$index]) / 2;
-    }
-
-
-    /**
-     * Calculate array standard deviation
-     * @param  array $cells
-     * @return float
-     */
-    public static function standard_deviation(array $cells)
-    {
-        $variance = 0.0;
-
-        $average = self::average($cells);
-
-        // sum of squares
-        foreach($cells as $cell) {
-            // difference between cell and average squared
-            $variance += pow(($cell - $average), 2);
-        }
-
-        $count = count($cells) -1;
-
-        $standard_deviation = sqrt($variance) / sqrt($count);
-
-        return $standard_deviation;
-    }
-
-
-    /**
-     * Approximate normality test
-     * @param  array  $cells
-     * @return float  probability it's normal
-     * @note found here https://www.paulstephenborile.com/2018/03/code-benchmarks-can-measure-fast-software-make-faster/
-     */
-    public static function test_normal(array $cells)
-    {
-        $average = self::average($cells);
-        $median  = self::median($cells);
-
-        return abs($average - $median) / max($mean, $median);
-    }
 }
-

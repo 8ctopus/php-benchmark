@@ -5,10 +5,16 @@
  * @author 8ctopus <hello@octopuslabs.io>
  */
 
+// add assertions support
+ini_set('zend.assertions', true);
+ini_set('assert.exception', true);
+//assert(false, __METHOD__ .'() unhandled situation');
+
 // settings
 $iterations            = 100;
 $time_per_iteration    = 50;
 $show_histogram        = true;
+$histogram_buckets     = 16;
 $histogram_bar_width   = 50;
 $show_all_measurements = false;
 
@@ -43,6 +49,11 @@ if (php_sapi_name() == 'cli') {
 
             case '--histogram':
                 $show_histogram = true;
+                break;
+
+            case '--histogram-buckets':
+                $i++;
+                $histogram_buckets = $argv[$i];
                 break;
 
             case '--histogram-width':
@@ -125,8 +136,7 @@ foreach ($tests as $test) {
 
         // show histogram
         if ($show_histogram) {
-            $buckets = 16;
-            $histogram = stats::histogram($measurements, $buckets);
+            $histogram = stats::histogram($measurements, $histogram_buckets);
             stats::histogram_draw($histogram, $histogram_bar_width);
         }
 
@@ -157,6 +167,7 @@ function analyze_test(array $measurements)
     return [
         'average'       => stats::average($measurements),
         'median'        => stats::median($measurements),
+        'mode'          => stats::mode($measurements),
         'minmum'        => min($measurements),
         'maximum'       => max($measurements),
         'std deviation' => stats::standard_deviation($measurements),
