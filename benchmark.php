@@ -17,7 +17,7 @@ $time_per_iteration    = 100;
 $show_histogram        = true;
 $show_all_measurements = false;
 
-require_once('histogram.php');
+require_once('stats.php');
 
 // set error reporting
 error_reporting(E_ERROR /*| E_WARNING | E_PARSE*/);
