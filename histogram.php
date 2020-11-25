@@ -62,7 +62,7 @@ class histogram
      */
     public static function draw(array $histogram)
     {
-        $bar_max_length = 100; //$max;
+        $bar_max_length = 100;
 
         // get buckets count
         $buckets = count($histogram);
