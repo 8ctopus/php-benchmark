@@ -226,6 +226,14 @@ test_mysql         :    FAILED
 
 > --<cite>[calculatorsoup.com](https://www.calculatorsoup.com/calculators/statistics/mean-median-mode.php)</cite>
 
+> The interquartile range (IQR) is the difference between the first quartile and third quartile. The formula for this is:
+
+> IQR = Q3 - Q1
+
+> There are many measurements of the variability of a set of data. Both the range and standard deviation tell us how spread out our data is. The problem with these descriptive statistics is that they are quite sensitive to outliers. A measurement of the spread of a dataset that is more resistant to the presence of outliers is the interquartile range.
+
+> --<cite>[thoughtco.com](https://www.thoughtco.com/what-is-the-interquartile-range-3126245)</cite>
+
 # interesting reads
 https://kinsta.com/blog/php-benchmarks/
 https://www.paulstephenborile.com/2018/03/code-benchmarks-can-measure-fast-software-make-faster/
