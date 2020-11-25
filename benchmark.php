@@ -165,7 +165,7 @@ function analyze_test(array $measurements)
         return false;
 
     return [
-        'average'       => stats::average($measurements),
+        'mean'          => stats::mean($measurements),
         'median'        => stats::median($measurements),
         'mode'          => stats::mode($measurements),
         'minmum'        => min($measurements),

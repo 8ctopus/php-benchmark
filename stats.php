@@ -7,11 +7,11 @@
 class stats
 {
     /**
-     * Calculate array average
+     * Calculate array mean
      * @param  array $cells
      * @return float
      */
-    public static function average(array $cells)
+    public static function mean(array $cells)
     {
         return array_sum($cells) / count($cells);
     }
@@ -47,12 +47,12 @@ class stats
     {
         $variance = 0.0;
 
-        $average = self::average($cells);
+        $mean = self::mean($cells);
 
         // sum of squares
         foreach($cells as $cell) {
-            // difference between cell and average squared
-            $variance += pow(($cell - $average), 2);
+            // difference between cell and mean squared
+            $variance += pow(($cell - $mean), 2);
         }
 
         $count = count($cells) -1;
@@ -64,9 +64,9 @@ class stats
 
 
     /**
-     * Calculate array mode
+     * Get array first mode
      * @param  array $cells
-     * @return float first peak
+     * @return float first mode
      */
     public static function mode(array $cells)
     {
@@ -78,6 +78,7 @@ class stats
      * Calculate array modes
      * @param  array $cells
      * @return array modes
+     * @note https://www.calculatorsoup.com/calculators/statistics/mean-median-mode.php
      */
     public static function modes(array $cells)
     {
@@ -100,10 +101,10 @@ class stats
      */
     public static function test_normal(array $cells)
     {
-        $average = self::average($cells);
+        $mean = self::mean($cells);
         $median  = self::median($cells);
 
-        return abs($average - $median) / max($average, $median);
+        return abs($mean - $median) / max($mean, $median);
     }
 
 
