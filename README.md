@@ -216,6 +216,16 @@ test_mysql         :    FAILED
 ------------------------------
 ```
 
+# definitions
+
+> The mean is the same as the average value of a data set and is found using a calculation. Add up all of the numbers and divide by the number of numbers in the data set.
+
+> The median is the central number of a data set. Arrange data points from smallest to largest and locate the central number. This is the median. If there are 2 numbers in the middle, the median is the average of those 2 numbers.
+
+> The mode is the number in a data set that occurs most frequently. Count how many times each number occurs in the data set. The mode is the number with the highest tally. It's ok if there is more than one mode. And if all numbers occur the same number of times there is no mode.
+
+> --<cite>[calculatorsoup.com](https://www.calculatorsoup.com/calculators/statistics/mean-median-mode.php)</cite>
+
 # interesting reads
 https://kinsta.com/blog/php-benchmarks/
 https://www.paulstephenborile.com/2018/03/code-benchmarks-can-measure-fast-software-make-faster/
