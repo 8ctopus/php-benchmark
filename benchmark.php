@@ -19,8 +19,50 @@ require_once('tests.php');
 error_reporting(E_ERROR /*| E_WARNING | E_PARSE*/);
 
 // check if running from cli
-if (php_sapi_name() != 'cli')
+if (php_sapi_name() == 'cli') {
+    // get command line arguments
+    for ($i = 1; $i < count($argv); $i++)
+    {
+        $argument = $argv[$i];
+
+        if (strpos($argument, '--') != 0) {
+            echo("unknown argument {$argument}");
+            exit();
+        }
+
+        switch ($argument) {
+            case '--iterations':
+                $i++;
+                $iterations = $argv[$i];
+                break;
+
+            case '--time-per-iteration':
+                $i++;
+                $time_per_iteration = $argv[$i];
+                break;
+
+            case '--histogram':
+                $show_histogram = true;
+                break;
+
+            case '--histogram-width':
+                $i++;
+                $histogram_bar_width = $argv[$i];
+                break;
+
+            case '--show-all':
+                $show_all_measurements = true;
+                break;
+
+            default:
+                echo("unknown argument {$argument}");
+                exit();
+        }
+    }
+}
+else
     echo('<pre>');
+
 
 // paddings
 $pad1     = 18;
