@@ -9,6 +9,7 @@
 $iterations            = 100;
 $time_per_iteration    = 50;
 $show_histogram        = true;
+$histogram_bar_width   = 50;
 $show_all_measurements = false;
 
 require_once('stats.php');
@@ -81,7 +82,7 @@ foreach ($tests as $test) {
         if ($show_histogram) {
             $buckets = 16;
             $histogram = stats::histogram($measurements, $buckets);
-            stats::histogram_draw($histogram);
+            stats::histogram_draw($histogram, $histogram_bar_width);
         }
 
         // output all measurements

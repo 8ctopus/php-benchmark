@@ -58,12 +58,11 @@ class stats
     /**
      * Draw histogram
      * @param  array  $histogram
+     * @param  int    $bar_max_length
      * @return void
      */
-    public static function histogram_draw(array $histogram)
+    public static function histogram_draw(array $histogram, int $bar_max_length)
     {
-        $bar_max_length = 100;
-
         // get buckets count
         $buckets = count($histogram);
 
