@@ -46,20 +46,20 @@ $tests = get_class_methods('tests');
 foreach ($tests as $test) {
     // filter tests
     if (preg_match('/^test_/', $test)) {
-        $timings = [];
+        $measurements = [];
 
         // run each test x times
         for ($i = 0; $i < $iterations; $i++) {
-            $timings[$i] = tests::$test($time_per_iteration / 1000);
+            $measurements[$i] = tests::$test($time_per_iteration / 1000);
 
-            if ($timings[$i] === false) {
+            if ($measurements[$i] === false) {
                 $error = true;
                 break;
             }
         }
 
         // analyze test results
-        $result = analyze_test($timings);
+        $result = analyze_test($measurements);
 
         // check for error
         if ($result === false) {
@@ -80,14 +80,14 @@ foreach ($tests as $test) {
         // show histogram
         if ($show_histogram) {
             $buckets = 16;
-            $histogram = stats::histogram($timings, $buckets);
+            $histogram = stats::histogram($measurements, $buckets);
             stats::histogram_draw($histogram);
         }
 
         // output all measurements
         if ($show_all_measurements) {
             echo("\n");
-            echo(str_pad('values', $pad1) .' : '. all_measurements($timings) ."\n");
+            echo(str_pad('values', $pad1) .' : '. all_measurements($measurements) ."\n");
         }
 
         echo($line ."\n");
@@ -99,21 +99,22 @@ exit();
 
 /**
  * Analyze test results
- * @param  array $timings
+ * @param  array $measurements
  * @return array of strings or false if any of the test iterations failed
  */
-function analyze_test(array $timings)
+function analyze_test(array $measurements)
 {
     // check if the test failed at least once
-    if (in_array(false, $timings))
+    if (in_array(false, $measurements))
         return false;
 
     return [
-        'average'       => stats::average($timings),
-        'median'        => stats::median($timings),
-        'minmum'        => min($timings),
-        'maximum'       => max($timings),
-        'std deviation' => stats::standard_deviation($timings),
+        'average'       => stats::average($measurements),
+        'median'        => stats::median($measurements),
+        'minmum'        => min($measurements),
+        'maximum'       => max($measurements),
+        'std deviation' => stats::standard_deviation($measurements),
+        'normality'     => stats::test_normal($measurements) * 100,
     ];
 }
 

@@ -158,4 +158,20 @@ class stats
 
         return $standard_deviation;
     }
+
+
+    /**
+     * Approximate normality test
+     * @param  array  $cells
+     * @return probability it's normal
+     * @note found here https://www.paulstephenborile.com/2018/03/code-benchmarks-can-measure-fast-software-make-faster/
+     */
+    public static function test_normal(array $cells)
+    {
+        $average = self::average($cells);
+        $median  = self::median($cells);
+
+        return ($average - $median) / max($mean, $median);
+    }
 }
+
