@@ -133,6 +133,36 @@ class stats
 
 
     /**
+     * Get array outliers
+     * @param  array  $cells
+     * @return array outliers
+     * @note Outliers are values that lie outside the upper and lower fences
+     * upper fence = Q3 + 1.5 × interquartile range
+     * lower fence = Q1 − 1.5 × interquartile range
+     */
+    public static function outliers(array $cells)
+    {
+        $quartiles = self::quartiles($cells);
+        $iqr       = self::interquartile_range($cells);
+
+        // calculate fences
+        $fence_upper = $quartiles[1] + 1.5 * $iqr;
+        $fence_lower = $quartiles[0] - 1.5 * $iqr;
+
+        sort($cells);
+
+        $outliers = [];
+
+        foreach ($cells as $cell) {
+            if ($cell < $fence_lower || $cell > $fence_upper)
+                $outliers[] = $cell;
+        }
+
+        return $outliers;
+    }
+
+
+    /**
      * Approximate normality test
      * @param  array  $cells
      * @return float  probability it's normal
@@ -140,8 +170,8 @@ class stats
      */
     public static function test_normal(array $cells)
     {
-        $mean = self::mean($cells);
-        $median  = self::median($cells);
+        $mean   = self::mean($cells);
+        $median = self::median($cells);
 
         return abs($mean - $median) / max($mean, $median);
     }

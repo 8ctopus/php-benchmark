@@ -19,6 +19,7 @@ $time_per_iteration    = 50;
 $show_histogram        = true;
 $histogram_buckets     = 16;
 $histogram_bar_width   = 50;
+$show_outliers         = true;
 $show_all_measurements = false;
 
 require_once('stats.php');
@@ -143,6 +144,12 @@ foreach ($tests as $test) {
             stats::histogram_draw($histogram, $histogram_bar_width);
         }
 
+        // output outliers
+        if ($show_outliers) {
+            echo("\n");
+            echo(str_pad('outliers', $pad1) .' : '. outliers($measurements) ."\n");
+        }
+
         // output all measurements
         if ($show_all_measurements) {
             echo("\n");
@@ -221,6 +228,28 @@ function all_measurements(array $cells)
 
     foreach ($cells as $key => $value) {
         $str .= format_number($value, 0) .' ';
+
+        if (!(($key + 1) % 32))
+            $str .= "\n";
+    }
+
+    return $str ."\n";
+}
+
+
+/**
+ * Get outliers as string
+ * @param  array $cells
+ * @return string
+ */
+function outliers(array $cells)
+{
+    $outliers = stats::outliers($cells);
+
+    $str = "\n\n";
+
+    foreach ($outliers as $key => $outlier) {
+        $str .= format_number($outlier, 0) .' ';
 
         if (!(($key + 1) % 32))
             $str .= "\n";
