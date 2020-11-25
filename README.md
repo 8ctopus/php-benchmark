@@ -224,7 +224,7 @@ test_mysql         :    FAILED
 
 > The mode is the number in a data set that occurs most frequently. Count how many times each number occurs in the data set. The mode is the number with the highest tally. It's ok if there is more than one mode. And if all numbers occur the same number of times there is no mode.
 
-> --<cite>[calculatorsoup.com](https://www.calculatorsoup.com/calculators/statistics/mean-median-mode.php)</cite>
+> -- <cite>[calculatorsoup.com](https://www.calculatorsoup.com/calculators/statistics/mean-median-mode.php)</cite>
 
 > The interquartile range (IQR) is the difference between the first quartile and third quartile. The formula for this is:
 
@@ -232,7 +232,13 @@ test_mysql         :    FAILED
 
 > There are many measurements of the variability of a set of data. Both the range and standard deviation tell us how spread out our data is. The problem with these descriptive statistics is that they are quite sensitive to outliers. A measurement of the spread of a dataset that is more resistant to the presence of outliers is the interquartile range.
 
-> --<cite>[thoughtco.com](https://www.thoughtco.com/what-is-the-interquartile-range-3126245)</cite>
+> -- <cite>[thoughtco.com](https://www.thoughtco.com/what-is-the-interquartile-range-3126245)</cite>
+
+> Outliers are values that lie above the Upper Fence or below the Lower Fence of the sample set.
+> Upper Fence = Q3 + 1.5 × Interquartile Range
+> Lower Fence = Q1 − 1.5 × Interquartile Range
+
+> -- <cite>[calculatorsoup.com](https://www.calculatorsoup.com/calculators/statistics/mean-median-mode.php)</cite>
 
 # interesting reads
 https://kinsta.com/blog/php-benchmarks/
