@@ -73,7 +73,10 @@ foreach ($tests as $test) {
 
         // show test results
         foreach ($result as $key => $value) {
-            echo(str_pad($key, $pad1) .' : '. format_number($value, $pad2) ."\n");
+            if ($key == 'normality')
+                echo(str_pad($key, $pad1) .' : '. format_number($value, $pad2 -1) ."%\n");
+            else
+                echo(str_pad($key, $pad1) .' : '. format_number($value, $pad2) ."\n");
         }
 
         echo("\n");

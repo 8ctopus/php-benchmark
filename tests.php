@@ -4,7 +4,7 @@
  * Tests
  * original author
  * @author Alessandro Torrisi
- * The original version of the script is available at http://www.php-benchmark-script.com
+ * The original tests are available at http://www.php-benchmark-script.com
  *
  * modified version author
  * @author 8ctopus <hello@octopuslabs.io>
