@@ -39,18 +39,18 @@ echo('PHP benchmark' ."\n\n".
     "$line\n"
 );
 
-// list functions
-$functions = get_defined_functions();
+// list tests
+$tests = get_class_methods('tests');
 
 // run tests
-foreach ($functions['user'] as $user) {
-    // check if function starts with test
-    if (preg_match('/^test_/', $user)) {
+foreach ($tests as $test) {
+    // filter tests
+    if (preg_match('/^test_/', $test)) {
         $timings = [];
 
         // run each test x times
         for ($i = 0; $i < $iterations; $i++) {
-            $timings[$i] = $user($time_per_iteration / 1000);
+            $timings[$i] = tests::$test($time_per_iteration / 1000);
 
             if ($timings[$i] === false) {
                 $error = true;
@@ -63,12 +63,12 @@ foreach ($functions['user'] as $user) {
 
         // check for error
         if ($result === false) {
-            echo(str_pad($user, $pad1) .' : '. str_pad('FAILED', $pad2, ' ', STR_PAD_LEFT) ."\n");
+            echo(str_pad($test, $pad1) .' : '. str_pad('FAILED', $pad2, ' ', STR_PAD_LEFT) ."\n");
             echo($line ."\n");
             continue;
         }
 
-        echo($user ."\n");
+        echo($test ."\n");
 
         // show test results
         foreach ($result as $key => $value) {
