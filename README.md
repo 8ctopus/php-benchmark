@@ -218,3 +218,4 @@ test_mysql         :    FAILED
 
 # interesting reads
 https://kinsta.com/blog/php-benchmarks/
+https://www.paulstephenborile.com/2018/03/code-benchmarks-can-measure-fast-software-make-faster/
