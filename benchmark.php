@@ -11,6 +11,12 @@
  * @author 8ctopus <hello@octopuslabs.io>
  */
 
+// settings
+$iterations            = 1000;
+$time_per_iteration    = 100;
+$show_histogram        = true;
+$show_all_measurements = false;
+
 require_once('histogram.php');
 
 // set error reporting
@@ -26,10 +32,6 @@ $pad2     =  9;
 $pad_line = $pad1 + $pad2 + 3;
 
 $line = str_pad('', $pad_line, '-');
-
-// iterations
-$iterations         = 1000;
-$time_per_iteration = 100;
 
 echo('PHP benchmark' ."\n\n".
     "$line\n".
@@ -81,14 +83,17 @@ foreach ($functions['user'] as $user) {
         echo("\n");
 
         // show histogram
-        $buckets = 16;
+        if ($show_histogram) {
+            $buckets = 16;
+            $histogram = histogram::create($timings, $buckets);
+            histogram::draw($histogram);
+        }
 
-        $histogram = histogram::create($timings, $buckets);
-        histogram::draw($histogram);
-
-        echo("\n");
-
-        echo(str_pad('values', $pad1) .' : '. all_values($timings) ."\n");
+        // output all measurements
+        if ($show_all_measurements) {
+            echo("\n");
+            echo(str_pad('values', $pad1) .' : '. all_measurements($timings) ."\n");
+        }
 
         echo($line ."\n");
     }
@@ -610,7 +615,7 @@ function standard_deviation(array $cells)
  * @param  array $cells
  * @return string
  */
-function all_values(array $cells)
+function all_measurements(array $cells)
 {
     $str = "\n\n";
 
