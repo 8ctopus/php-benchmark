@@ -12,8 +12,8 @@
  */
 
 // settings
-$iterations            = 1000;
-$time_per_iteration    = 100;
+$iterations            = 100;
+$time_per_iteration    = 50;
 $show_histogram        = true;
 $show_all_measurements = false;
 
@@ -85,8 +85,8 @@ foreach ($functions['user'] as $user) {
         // show histogram
         if ($show_histogram) {
             $buckets = 16;
-            $histogram = histogram::create($timings, $buckets);
-            histogram::draw($histogram);
+            $histogram = stats::histogram($timings, $buckets);
+            stats::histogram_draw($histogram);
         }
 
         // output all measurements
@@ -516,11 +516,11 @@ function analyze_test(array $timings)
         return false;
 
     return [
-        'average'       => average($timings),
-        'median'        => median($timings),
+        'average'       => stats::average($timings),
+        'median'        => stats::median($timings),
         'minmum'        => min($timings),
         'maximum'       => max($timings),
-        'std deviation' => standard_deviation($timings),
+        'std deviation' => stats::standard_deviation($timings),
     ];
 }
 
@@ -550,63 +550,6 @@ function format_bytes(int $size, int $precision = 2)
     $suffixes = ['', 'K', 'M', 'G', 'T'];
 
     return round(pow(1024, $base - floor($base)), $precision) .' '. $suffixes[floor($base)];
-}
-
-
-/**
- * Calculate array average
- * @param  array $cells
- * @return float
- */
-function average(array $cells)
-{
-    return array_sum($cells) / count($cells);
-}
-
-
-/**
- * Calculate array median
- * @param  array $cells
- * @return float
- */
-function median(array $cells)
-{
-    // sort array values ascending
-    sort($cells, SORT_NUMERIC);
-
-    $count = count($cells);
-
-    $index = floor($count / 2);
-
-    if ($count % 2)
-        return $cells[$index];
-    else
-        return ($cells[$index -1] + $cells[$index]) / 2;
-}
-
-
-/**
- * Calculate array standard deviation
- * @param  array $cells
- * @return float
- */
-function standard_deviation(array $cells)
-{
-    $variance = 0.0;
-
-    $average = average($cells);
-
-    // sum of squares
-    foreach($cells as $cell) {
-        // difference between cell and average squared
-        $variance += pow(($cell - $average), 2);
-    }
-
-    $count = count($cells) -1;
-
-    $standard_deviation = sqrt($variance) / sqrt($count);
-
-    return $standard_deviation;
 }
 
 

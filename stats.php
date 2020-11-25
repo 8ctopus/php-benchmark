@@ -1,10 +1,10 @@
 <?php
 
 /**
- * Histogram class
+ * Stats class
  * @author 8ctopus <hello@octopuslabs.io>
  */
-class histogram
+class stats
 {
     /**
      * Create histogram
@@ -12,7 +12,7 @@ class histogram
      * @param  int $buckets number of buckets
      * @return array histogram
      */
-    public static function create(array $data_points, int $buckets)
+    public static function histogram(array $data_points, int $buckets)
     {
         // get min and max
         $max = max($data_points);
@@ -60,7 +60,7 @@ class histogram
      * @param  array  $histogram
      * @return void
      */
-    public static function draw(array $histogram)
+    public static function histogram_draw(array $histogram)
     {
         $bar_max_length = 100;
 
@@ -100,5 +100,62 @@ class histogram
 
         // draw table border
         echo($border);
+    }
+
+
+    /**
+     * Calculate array average
+     * @param  array $cells
+     * @return float
+     */
+    public static function average(array $cells)
+    {
+        return array_sum($cells) / count($cells);
+    }
+
+
+    /**
+     * Calculate array median
+     * @param  array $cells
+     * @return float
+     */
+    public static function median(array $cells)
+    {
+        // sort array values ascending
+        sort($cells, SORT_NUMERIC);
+
+        $count = count($cells);
+
+        $index = floor($count / 2);
+
+        if ($count % 2)
+            return $cells[$index];
+        else
+            return ($cells[$index -1] + $cells[$index]) / 2;
+    }
+
+
+    /**
+     * Calculate array standard deviation
+     * @param  array $cells
+     * @return float
+     */
+    public static function standard_deviation(array $cells)
+    {
+        $variance = 0.0;
+
+        $average = self::average($cells);
+
+        // sum of squares
+        foreach($cells as $cell) {
+            // difference between cell and average squared
+            $variance += pow(($cell - $average), 2);
+        }
+
+        $count = count($cells) -1;
+
+        $standard_deviation = sqrt($variance) / sqrt($count);
+
+        return $standard_deviation;
     }
 }
