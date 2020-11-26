@@ -52,7 +52,7 @@ class helper
      */
     public static function format_percentage(float $number, int $padding)
     {
-        return str_pad(number_format(100 * $number, 0, '.', '') .'%', $padding, ' ', STR_PAD_LEFT);
+        return str_pad(number_format(100 * $number, 1, '.', '') .'%', $padding, ' ', STR_PAD_LEFT);
     }
 
 
