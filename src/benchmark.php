@@ -14,20 +14,22 @@ require_once('stats.php');
 require_once('tests.php');
 
 // settings
-$iterations            = 100;
-$time_per_iteration    = 50;
-$show_histogram        = false;
-$histogram_buckets     = 16;
-$histogram_bar_width   = 50;
-$show_outliers         = false;
-$show_all_measurements = false;
-$save_to_file          = true;
+$settings = [
+    'iterations'            => 100,
+    'time_per_iteration'    => 50,
+    'show_histogram'        => false,
+    'histogram_buckets'     => 16,
+    'histogram_bar_width'   => 50,
+    'show_outliers'         => false,
+    'show_all_measurements' => false,
+    'save_to_file'          => true,
+];
 
 require_once('stats.php');
 require_once('tests.php');
 
 // set error reporting
-error_reporting(E_ERROR /*| E_WARNING | E_PARSE*/);
+error_reporting(E_ERROR /*| E_WARNING */ | E_PARSE);
 
 // check if running from cli
 if (php_sapi_name() == 'cli') {
@@ -44,34 +46,34 @@ if (php_sapi_name() == 'cli') {
         switch ($argument) {
             case '--iterations':
                 $i++;
-                $iterations = $argv[$i];
+                $settings['iterations'] = $argv[$i];
                 break;
 
             case '--time-per-iteration':
                 $i++;
-                $time_per_iteration = $argv[$i];
+                $settings['time_per_iteration'] = $argv[$i];
                 break;
 
             case '--histogram':
-                $show_histogram = true;
+                $settings['show_histogram'] = true;
                 break;
 
             case '--histogram-buckets':
                 $i++;
-                $histogram_buckets = $argv[$i];
+                $settings['histogram_buckets'] = $argv[$i];
                 break;
 
             case '--histogram-width':
                 $i++;
-                $histogram_bar_width = $argv[$i];
+                $settings['histogram_bar_width'] = $argv[$i];
                 break;
 
             case '--show-all':
-                $show_all_measurements = true;
+                $settings['show_all_measurements'] = true;
                 break;
 
             case '--show-outliers':
-                $show_outliers = true;
+                $settings['show_outliers'] = true;
                 break;
 
             default:
@@ -97,8 +99,8 @@ echo('PHP benchmark' ."\n\n".
     str_pad('platform', $pad1) .' : '. str_pad(PHP_OS .' '. ((PHP_INT_SIZE == 8) ? 'x64' : 'x32'), $pad2, ' ', STR_PAD_LEFT) ."\n".
     str_pad('memory limit', $pad1) .' : '. str_pad(ini_get('memory_limit'), $pad2, ' ', STR_PAD_LEFT) ."\n".
     str_pad('max execution', $pad1) .' : '. str_pad(ini_get('max_execution_time'), $pad2, ' ', STR_PAD_LEFT) ."\n".
-    str_pad('time per iteration', $pad1) .' : '. str_pad($time_per_iteration .'ms', $pad2, ' ', STR_PAD_LEFT) ."\n".
-    str_pad('iterations', $pad1) .' : '. str_pad($iterations, $pad2, ' ', STR_PAD_LEFT) ."\n".
+    str_pad('time per iteration', $pad1) .' : '. str_pad($settings['time_per_iteration'] .'ms', $pad2, ' ', STR_PAD_LEFT) ."\n".
+    str_pad('iterations', $pad1) .' : '. str_pad($settings['iterations'], $pad2, ' ', STR_PAD_LEFT) ."\n".
     "$line\n"
 );
 
@@ -114,8 +116,8 @@ foreach ($tests as $test) {
         $measurements = [];
 
         // run each test x times
-        for ($i = 0; $i < $iterations; $i++) {
-            $measurements[$i] = tests::$test($time_per_iteration / 1000);
+        for ($i = 0; $i < $settings['iterations']; $i++) {
+            $measurements[$i] = tests::$test($settings['time_per_iteration'] / 1000);
 
             if ($measurements[$i] === false) {
                 $error = true;
@@ -144,20 +146,20 @@ foreach ($tests as $test) {
         }
 
         // show histogram
-        if ($show_histogram) {
+        if ($settings['show_histogram']) {
             echo("\n");
-            $histogram = stats::histogram($measurements, $histogram_buckets);
-            stats::histogram_draw($histogram, $histogram_bar_width);
+            $histogram = stats::histogram($measurements, $settings['histogram_buckets']);
+            stats::histogram_draw($histogram, $settings['histogram_bar_width']);
         }
 
         // output outliers
-        if ($show_outliers) {
+        if ($settings['show_outliers']) {
             echo("\n");
             echo(str_pad('outliers', $pad1) .' : '. outliers($measurements) ."\n");
         }
 
         // output all measurements
-        if ($show_all_measurements) {
+        if ($settings['show_all_measurements']) {
             echo("\n");
             echo(str_pad('values', $pad1) .' : '. all_measurements($measurements) ."\n");
         }
@@ -172,7 +174,7 @@ foreach ($tests as $test) {
 }
 
 // save to file
-if ($save_to_file) {
+if ($settings['save_to_file']) {
     $file = 'benchmark_'. date('Y-m-d_Hms') .'.txt';
     file_put_contents($file, serialize($save));
     echo("benchmark saved to {$file}\n");
