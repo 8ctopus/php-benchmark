@@ -10,8 +10,12 @@ ini_set('zend.assertions', true);
 ini_set('assert.exception', true);
 //assert(false, __METHOD__ .'() unhandled situation');
 
-require_once('stats.php');
+// set error reporting
+error_reporting(E_ERROR /*| E_WARNING */ | E_PARSE);
+
 require_once('tests.php');
+require_once('stats.php');
+require_once('helper.php');
 
 // settings
 $settings = [
@@ -24,12 +28,6 @@ $settings = [
     'show_all_measurements' => false,
     'save_to_file'          => false,
 ];
-
-require_once('stats.php');
-require_once('tests.php');
-
-// set error reporting
-error_reporting(E_ERROR /*| E_WARNING */ | E_PARSE);
 
 // check if running from cli
 if (php_sapi_name() == 'cli') {
@@ -130,7 +128,7 @@ foreach ($tests as $test) {
         }
 
         // analyze test results
-        $result = analyze_test($measurements);
+        $result = helper::analyze_test($measurements);
 
         // check for error
         if ($result === false) {
@@ -144,9 +142,9 @@ foreach ($tests as $test) {
         // show test results
         foreach ($result as $key => $value) {
             if ($key == 'normality')
-                echo(str_pad($key, $pad1) .' : '. format_number($value, $pad2 -1) ."%\n");
+                echo(str_pad($key, $pad1) .' : '. helper::format_number($value, $pad2 -1) ."%\n");
             else
-                echo(str_pad($key, $pad1) .' : '. format_number($value, $pad2) ."\n");
+                echo(str_pad($key, $pad1) .' : '. helper::format_number($value, $pad2) ."\n");
         }
 
         // show histogram
@@ -159,22 +157,20 @@ foreach ($tests as $test) {
         // output outliers
         if ($settings['show_outliers']) {
             echo("\n");
-            echo(str_pad('outliers', $pad1) .' : '. outliers($measurements) ."\n");
+            echo(str_pad('outliers', $pad1) .' : '. helper::outliers($measurements) ."\n");
         }
 
         // output all measurements
         if ($settings['show_all_measurements']) {
             echo("\n");
-            echo(str_pad('values', $pad1) .' : '. all_measurements($measurements) ."\n");
+            echo(str_pad('values', $pad1) .' : '. helper::all_measurements($measurements) ."\n");
         }
 
         echo($line ."\n");
     }
 
     // save test
-    $save[] = [
-        $test => $measurements,
-    ];
+    $save[$test] = $measurements;
 }
 
 // save to file
@@ -182,121 +178,4 @@ if ($settings['save_to_file']) {
     $file = 'benchmark_'. date('Y-m-d_Hms') .'.txt';
     file_put_contents($file, serialize($save));
     echo("benchmark saved to {$file}\n");
-}
-
-exit();
-
-
-/**
- * Analyze test results
- * @param  array $measurements
- * @return array of strings or false if any of the test iterations failed
- */
-function analyze_test(array $measurements)
-{
-    // check if the test failed at least once
-    if (in_array(false, $measurements))
-        return false;
-
-    return [
-        'mean'          => stats::mean($measurements),
-        'median'        => stats::median($measurements),
-        'mode'          => stats::mode($measurements),
-        'minmum'        => min($measurements),
-        'maximum'       => max($measurements),
-        'quartile 1'    => stats::quartiles($measurements)[0],
-        'quartile 3'    => stats::quartiles($measurements)[1],
-        'IQ range'      => stats::interquartile_range($measurements),
-        'std deviation' => stats::standard_deviation($measurements),
-        'normality'     => stats::test_normal($measurements) * 100,
-    ];
-}
-
-
-/**
- * Format number
- * @param  int $number
- * @param  int $padding
- * @return string
- */
-function format_number(int $number, int $padding)
-{
-    return str_pad(number_format($number, 0, '.', ''), $padding, ' ', STR_PAD_LEFT);
-}
-
-
-/**
- * Format bytes
- * @param  int $size
- * @param  int $precision
- * @return string
- * @note https://stackoverflow.com/a/2510540/10126479
- */
-function format_bytes(int $size, int $precision = 2)
-{
-    $base = log($size, 1024);
-    $suffixes = ['', 'K', 'M', 'G', 'T'];
-
-    return round(pow(1024, $base - floor($base)), $precision) .' '. $suffixes[floor($base)];
-}
-
-
-/**
- * Get all array values as string
- * @param  array $cells
- * @return string
- */
-function all_measurements(array $cells)
-{
-    $str = "\n\n";
-
-    foreach ($cells as $key => $value) {
-        $str .= format_number($value, 0) .' ';
-
-        if (!(($key + 1) % 32))
-            $str .= "\n";
-    }
-
-    return $str ."\n";
-}
-
-
-/**
- * Get outliers as string
- * @param  array $cells
- * @return string
- */
-function outliers(array $cells)
-{
-    $outliers = stats::outliers($cells);
-
-    $str = "\n\n";
-
-    foreach ($outliers as $key => $outlier) {
-        $str .= format_number($outlier, 0) .' ';
-
-        if (!(($key + 1) % 32))
-            $str .= "\n";
-    }
-
-    return $str ."\n";
-}
-
-
-/**
- * Check functions exist
- * @param  array  $functions
- * @return array  only existing functions are returned
- */
-function check_functions_exist(array $functions)
-{
-    // remove functions that don't exist
-    foreach ($functions as $key => $function) {
-        if (!function_exists($function)) {
-            echo("Removed $function as it does not exist");
-            unset($functions[$key]);
-        }
-    }
-
-    return $functions;
 }
