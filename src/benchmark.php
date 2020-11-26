@@ -27,6 +27,9 @@ $settings = [
     'show_outliers'         => false,
     'show_all_measurements' => false,
     'save_to_file'          => false,
+    'save_filename_base'    => 'benchmark_',
+    'save_filename_extra'   => '',
+    'save_filename_ext'     => date('Y-m-d-H-i-s') .'.txt',
 ];
 
 // check if running from cli
@@ -68,6 +71,11 @@ if (php_sapi_name() == 'cli') {
 
             case '--save':
                 $settings['save_to_file'] = true;
+                break;
+
+            case '--save-extra':
+                $i++;
+                $settings['save_filename_extra'] = $argv[$i];
                 break;
 
             case '--show-all':
@@ -175,7 +183,12 @@ foreach ($tests as $test) {
 
 // save to file
 if ($settings['save_to_file']) {
-    $file = 'benchmark_'. date('Y-m-d_His') .'.txt';
+
+    if (!empty($settings['save_filename_extra']))
+        $settings['save_filename_extra'] .= '_';
+
+    $file = $settings['save_filename_base'] . $settings['save_filename_extra'] . $settings['save_filename_ext'];
+
     file_put_contents($file, serialize($save));
     echo("benchmark saved to {$file}\n");
 }

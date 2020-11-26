@@ -1,7 +1,7 @@
 <?php
 
 /**
- * compare results
+ * Compare results
  * @author 8ctopus <hello@octopuslabs.io>
  */
 
