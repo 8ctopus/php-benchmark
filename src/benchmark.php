@@ -175,7 +175,7 @@ foreach ($tests as $test) {
 
 // save to file
 if ($settings['save_to_file']) {
-    $file = 'benchmark_'. date('Y-m-d_Hms') .'.txt';
+    $file = 'benchmark_'. date('Y-m-d_His') .'.txt';
     file_put_contents($file, serialize($save));
     echo("benchmark saved to {$file}\n");
 }
