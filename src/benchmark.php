@@ -16,11 +16,12 @@ require_once('tests.php');
 // settings
 $iterations            = 100;
 $time_per_iteration    = 50;
-$show_histogram        = true;
+$show_histogram        = false;
 $histogram_buckets     = 16;
 $histogram_bar_width   = 50;
-$show_outliers         = true;
+$show_outliers         = false;
 $show_all_measurements = false;
+$save_to_file          = true;
 
 require_once('stats.php');
 require_once('tests.php');
@@ -105,6 +106,8 @@ echo('PHP benchmark' ."\n\n".
 $tests = get_class_methods('tests');
 
 // run tests
+$save = [];
+
 foreach ($tests as $test) {
     // filter tests
     if (preg_match('/^test_/', $test)) {
@@ -140,10 +143,9 @@ foreach ($tests as $test) {
                 echo(str_pad($key, $pad1) .' : '. format_number($value, $pad2) ."\n");
         }
 
-        echo("\n");
-
         // show histogram
         if ($show_histogram) {
+            echo("\n");
             $histogram = stats::histogram($measurements, $histogram_buckets);
             stats::histogram_draw($histogram, $histogram_bar_width);
         }
@@ -162,6 +164,18 @@ foreach ($tests as $test) {
 
         echo($line ."\n");
     }
+
+    // save test
+    $save[] = [
+        $test => $measurements,
+    ];
+}
+
+// save to file
+if ($save_to_file) {
+    $file = 'benchmark_'. date('Y-m-d_Hms') .'.txt';
+    file_put_contents($file, serialize($save));
+    echo("benchmark saved to {$file}\n");
 }
 
 exit();
