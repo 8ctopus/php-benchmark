@@ -69,6 +69,10 @@ if (php_sapi_name() == 'cli') {
                 $show_all_measurements = true;
                 break;
 
+            case '--show-outliers':
+                $show_outliers = true;
+                break;
+
             default:
                 echo("unknown argument {$argument}");
                 exit();
