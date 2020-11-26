@@ -22,7 +22,7 @@ $settings = [
     'histogram_bar_width'   => 50,
     'show_outliers'         => false,
     'show_all_measurements' => false,
-    'save_to_file'          => true,
+    'save_to_file'          => false,
 ];
 
 require_once('stats.php');
@@ -66,6 +66,10 @@ if (php_sapi_name() == 'cli') {
             case '--histogram-width':
                 $i++;
                 $settings['histogram_bar_width'] = $argv[$i];
+                break;
+
+            case '--save':
+                $settings['save_to_file'] = true;
                 break;
 
             case '--show-all':
