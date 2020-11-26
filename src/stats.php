@@ -271,4 +271,18 @@ class stats
         // draw table border
         echo($border);
     }
+
+
+    /**
+     * Relative difference between 2 numbers
+     * @param  float $n1
+     * @param  float $n2
+     * @param  float relative difference between n1 and n2, taking n1 as base
+     */
+    public static function relative_difference(float $n1, float $n2)
+    {
+        $absolute_difference = $n2 - $n1;
+
+        return $absolute_difference / $n1;
+    }
 }

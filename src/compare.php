@@ -64,13 +64,15 @@ if (!file_exists($file1) || !file_exists($file2)) {
 // paddings
 $pad1     = 18;
 $pad2     =  9;
-$pad_line = $pad1 + 2 * $pad2 + 3;
+$pad_line = $pad1 + 3 * $pad2 + 3;
 
 $line = str_pad('', $pad_line, '-');
 
 // get data sets
 $data1 = unserialize(file_get_contents($file1));
 $data2 = unserialize(file_get_contents($file2));
+
+echo($line ."\n");
 
 // compare data
 foreach ($data1 as $test1 => $measurements1) {
@@ -96,9 +98,12 @@ foreach ($data1 as $test1 => $measurements1) {
         $value2 = $result2[$key];
 
         if ($key == 'normality')
-            echo(str_pad($key, $pad1) .' : '. helper::format_number($value1, $pad2 -1) .'%'. helper::format_number($value1, $pad2 -1) ."%\n");
-        else
-            echo(str_pad($key, $pad1) .' : '. helper::format_number($value1, $pad2) . helper::format_number($value2, $pad2) ."\n");
+            echo(str_pad($key, $pad1) .' : '. helper::format_percentage($value1, $pad2) . helper::format_percentage($value1, $pad2) ."\n");
+        else {
+            $delta = stats::relative_difference($value1, $value2);
+
+            echo(str_pad($key, $pad1) .' : '. helper::format_number($value1, $pad2) . helper::format_number($value2, $pad2) . helper::format_percentage($delta, $pad2) ."\n");
+        }
     }
 
     echo($line ."\n");

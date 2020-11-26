@@ -27,7 +27,7 @@ class helper
             'quartile 3'    => stats::quartiles($measurements)[1],
             'IQ range'      => stats::interquartile_range($measurements),
             'std deviation' => stats::standard_deviation($measurements),
-            'normality'     => stats::test_normal($measurements) * 100,
+            'normality'     => stats::test_normal($measurements),
         ];
     }
 
@@ -41,6 +41,18 @@ class helper
     public static function format_number(int $number, int $padding)
     {
         return str_pad(number_format($number, 0, '.', ''), $padding, ' ', STR_PAD_LEFT);
+    }
+
+
+    /**
+     * Format percentage
+     * @param  float $number
+     * @param  int $padding
+     * @return string
+     */
+    public static function format_percentage(float $number, int $padding)
+    {
+        return str_pad(number_format(100 * $number, 0, '.', '') .'%', $padding, ' ', STR_PAD_LEFT);
     }
 
 

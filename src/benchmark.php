@@ -142,7 +142,7 @@ foreach ($tests as $test) {
         // show test results
         foreach ($result as $key => $value) {
             if ($key == 'normality')
-                echo(str_pad($key, $pad1) .' : '. helper::format_number($value, $pad2 -1) ."%\n");
+                echo(str_pad($key, $pad1) .' : '. helper::format_percentage($value, $pad2) ."\n");
             else
                 echo(str_pad($key, $pad1) .' : '. helper::format_number($value, $pad2) ."\n");
         }
