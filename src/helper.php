@@ -82,7 +82,7 @@ class helper
         $str = "\n\n";
 
         foreach ($cells as $key => $value) {
-            $str .= format_number($value, 0) .' ';
+            $str .= self::format_number($value, 0) .' ';
 
             if (!(($key + 1) % 32))
                 $str .= "\n";
@@ -104,7 +104,7 @@ class helper
         $str = "\n\n";
 
         foreach ($outliers as $key => $outlier) {
-            $str .= format_number($outlier, 0) .' ';
+            $str .= self::format_number($outlier, 0) .' ';
 
             if (!(($key + 1) % 32))
                 $str .= "\n";

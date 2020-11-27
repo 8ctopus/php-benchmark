@@ -248,8 +248,14 @@ class tests
 
             $total_bytes += $bytes_to_write;
 
-            // write bytes_to_write bytes to file
+            // write bytes to file
             $result = fwrite($handle, random_bytes($bytes_to_write));
+
+            // get file size
+            $file_size = filesize($tmp_filename);
+
+            // get file size alternate
+            $stat = fstat($handle);
 
             // seek to random position
             $result = fseek($handle, rand(1, $bytes_to_write));
@@ -257,11 +263,10 @@ class tests
             // get current position
             $position = ftell($handle);
 
-            // get file size
-            $file_size = filesize($tmp_filename);
+            $max_bytes_to_read = $file_size - $position;
 
             // calculate bytes to read
-            $bytes_to_read = rand(1, $file_size - $position);
+            $bytes_to_read = rand(1, $max_bytes_to_read);
 
             $total_bytes += $bytes_to_read;
 
@@ -277,7 +282,7 @@ class tests
             $iterations++;
         }
 
-        //echo('total bytes : '. format_bytes($total_bytes) ."\n");
+        //echo('total bytes : '. format_bytes($total_bytes, 2) ."\n");
         return $iterations;
     }
 
@@ -301,6 +306,9 @@ class tests
         $db_created = false;
         $exception  = false;
 
+        if (!function_exists('mysqli_connect'))
+            return false;
+
         try {
             while (microtime(true) < $time_limit) {
                 // connect to database
@@ -318,7 +326,7 @@ class tests
                             INFORMATION_SCHEMA.SCHEMATA
                         WHERE
                             SCHEMA_NAME = '{$db}'
-                    TAG;
+TAG;
 
                     $result = mysqli_query($mysqli, $query);
 
@@ -333,7 +341,7 @@ class tests
                     // create database
                     $query = <<<TAG
                         CREATE DATABASE `{$db}`;
-                    TAG;
+TAG;
 
                     if (!mysqli_query($mysqli, $query))
                         throw new Exception('Create database - FAILED');
@@ -353,7 +361,7 @@ class tests
                             `date` timestamp NOT NULL,
                             `string` varchar(512) NOT NULL
                         );
-                    TAG;
+TAG;
 
                     if (!mysqli_query($mysqli, $query))
                         throw new Exception('Create table - FAILED');
@@ -367,7 +375,7 @@ class tests
                         `{$table}` (`date`, `string`)
                     VALUES
                         (CURRENT_TIMESTAMP, '{$str}');
-                TAG;
+TAG;
 
                 if (!mysqli_query($mysqli, $query))
                     throw new Exception('Insert into table - FAILED');
@@ -380,7 +388,7 @@ class tests
                         `{$table}`
                     WHERE
                         1;
-                TAG;
+TAG;
 
                 $result = mysqli_query($mysqli, $query);
 
@@ -415,7 +423,7 @@ class tests
                 // drop database
                 $query = <<<TAG
                     DROP DATABASE `{$db}`;
-                TAG;
+TAG;
 
                 mysqli_query($mysqli, $query);
             }
