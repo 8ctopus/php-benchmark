@@ -185,7 +185,7 @@ class tests
      * @param  float $limit time limit in seconds
      * @return int iterations done in allocated time
      */
-    function test_hashes(float $limit)
+    public static function test_hashes(float $limit)
     {
         $time_start = microtime(true);
         $time_limit = $time_start + $limit;
