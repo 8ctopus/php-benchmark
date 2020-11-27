@@ -13,31 +13,85 @@
 class tests
 {
     /**
-     * Test math functions
+     * Test if else
      * @param  float $limit time limit in seconds
      * @return int iterations done in allocated time
      */
-    public static function test_math(float $limit)
+    public static function test_if_else(float $limit)
     {
         $time_start = microtime(true);
         $time_limit = $time_start + $limit;
         $iterations = 0;
 
-        $functions  = ['abs', 'acos', 'asin', 'atan', 'decbin', 'exp', 'floor', 'exp', 'is_finite',
-            'is_nan', 'log', 'log10', 'log1p', 'pi', 'pow', 'sin', 'sqrt', 'tan'];
+        $i = 0;
+        $j = 0;
 
-        // remove functions that don't exist
-        $functions = helper::check_functions_exist($functions);
-
-        // run tests
         while (microtime(true) < $time_limit) {
-            foreach ($functions as $function) {
-                // get function arguments count
-                $reflection = new ReflectionFunction($function);
-                $arguments  = $reflection->getNumberOfParameters();
-
-                call_user_func_array($function, $arguments == 1 ? [$iterations + 1] : [$iterations + 1, $iterations + 1]);
+            if ($i % 2 == 0) {
+                $j = 1;
             }
+            elseif ($i % 3 == 0) {
+                $j = 2;
+            }
+            else
+            if ($i % 5 == 0) {
+                $j = 3;
+            }
+            else {
+                $j = 4;
+            }
+
+            $iterations++;
+        }
+
+        return $iterations;
+    }
+
+
+    /**
+     * Test loops
+     * @param  float $limit time limit in seconds
+     * @return int iterations done in allocated time
+     */
+    public static function test_loops(float $limit)
+    {
+        $time_start = microtime(true);
+        $time_limit = $time_start + $limit;
+        $iterations = 0;
+
+        while (microtime(true) < $time_limit) {
+            $j = 0;
+
+            for ($i = 0; $i < 100; $i++) {
+                $j++;
+            }
+
+            $iterations++;
+        }
+
+        return $iterations;
+    }
+
+
+    /**
+     * Test arrays
+     * @param  float $limit time limit in seconds
+     * @return int iterations done in allocated time
+     */
+    public static function test_arrays(float $limit)
+    {
+        $time_start = microtime(true);
+        $time_limit = $time_start + $limit;
+        $iterations = 0;
+
+        $a = [];
+
+        while (microtime(true) < $time_limit) {
+            array_push($a, [
+                rand() => random_bytes(10)
+            ]);
+
+            array_search(random_bytes(10), $a, true);
 
             $iterations++;
         }
@@ -79,85 +133,31 @@ class tests
 
 
     /**
-     * Test loops
+     * Test math functions
      * @param  float $limit time limit in seconds
      * @return int iterations done in allocated time
      */
-    public static function test_loops(float $limit)
+    public static function test_math(float $limit)
     {
         $time_start = microtime(true);
         $time_limit = $time_start + $limit;
         $iterations = 0;
 
+        $functions  = ['abs', 'acos', 'asin', 'atan', 'decbin', 'exp', 'floor', 'exp', 'is_finite',
+            'is_nan', 'log', 'log10', 'log1p', 'pi', 'pow', 'sin', 'sqrt', 'tan'];
+
+        // remove functions that don't exist
+        $functions = helper::check_functions_exist($functions);
+
+        // run tests
         while (microtime(true) < $time_limit) {
-            $j = 0;
+            foreach ($functions as $function) {
+                // get function arguments count
+                $reflection = new ReflectionFunction($function);
+                $arguments  = $reflection->getNumberOfParameters();
 
-            for ($i = 0; $i < 100; $i++) {
-                $j++;
+                call_user_func_array($function, $arguments == 1 ? [$iterations + 1] : [$iterations + 1, $iterations + 1]);
             }
-
-            $iterations++;
-        }
-
-        return $iterations;
-    }
-
-
-    /**
-     * Test if else
-     * @param  float $limit time limit in seconds
-     * @return int iterations done in allocated time
-     */
-    public static function test_if_else(float $limit)
-    {
-        $time_start = microtime(true);
-        $time_limit = $time_start + $limit;
-        $iterations = 0;
-
-        $i = 0;
-        $j = 0;
-
-        while (microtime(true) < $time_limit) {
-            if ($i % 2 == 0) {
-                $j = 1;
-            }
-            elseif ($i % 3 == 0) {
-                $j = 2;
-            }
-            else
-            if ($i % 5 == 0) {
-                $j = 3;
-            }
-            else {
-                $j = 4;
-            }
-
-            $iterations++;
-        }
-
-        return $iterations;
-    }
-
-
-    /**
-     * Test arrays
-     * @param  float $limit time limit in seconds
-     * @return int iterations done in allocated time
-     */
-    public static function test_arrays(float $limit)
-    {
-        $time_start = microtime(true);
-        $time_limit = $time_start + $limit;
-        $iterations = 0;
-
-        $a = [];
-
-        while (microtime(true) < $time_limit) {
-            array_push($a, [
-                rand() => random_bytes(10)
-            ]);
-
-            array_search(random_bytes(10), $a, true);
 
             $iterations++;
         }
