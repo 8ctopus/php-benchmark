@@ -115,9 +115,9 @@ $line = str_pad('', $pad_line, '-');
 
 echo('PHP benchmark' ."\n\n".
     "$line\n".
+    str_pad('platform', $pad1) .' : '. str_pad(PHP_OS .' '. ((PHP_INT_SIZE == 8) ? 'x64' : 'x32'), $pad2, ' ', STR_PAD_LEFT) ."\n".
     str_pad('php version', $pad1) .' : '. str_pad(PHP_VERSION, $pad2, ' ', STR_PAD_LEFT) ."\n".
     str_pad('xdebug', $pad1) .' : '. str_pad(extension_loaded('xdebug') ? 'on' : 'off', $pad2, ' ', STR_PAD_LEFT) ."\n".
-    str_pad('platform', $pad1) .' : '. str_pad(PHP_OS .' '. ((PHP_INT_SIZE == 8) ? 'x64' : 'x32'), $pad2, ' ', STR_PAD_LEFT) ."\n".
     str_pad('memory limit', $pad1) .' : '. str_pad(ini_get('memory_limit'), $pad2, ' ', STR_PAD_LEFT) ."\n".
     str_pad('max execution', $pad1) .' : '. str_pad(ini_get('max_execution_time'), $pad2, ' ', STR_PAD_LEFT) ."\n".
     str_pad('time per iteration', $pad1) .' : '. str_pad($settings['time_per_iteration'] .'ms', $pad2, ' ', STR_PAD_LEFT) ."\n".
