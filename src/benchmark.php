@@ -19,13 +19,18 @@ require_once('helper.php');
 
 // settings
 $settings = [
-    'iterations'            => 100,
-    'time_per_iteration'    => 50,
     'show_histogram'        => false,
     'histogram_buckets'     => 16,
     'histogram_bar_width'   => 50,
+
+    'iterations'            => 100,
+    'time_per_iteration'    => 50,
+
+    'filter'                => '/^test_/',
+
     'show_outliers'         => false,
     'show_all_measurements' => false,
+
     'save_to_file'          => false,
     'save_filename_base'    => 'benchmark_',
     'save_filename_extra'   => '',
@@ -45,14 +50,9 @@ if (php_sapi_name() == 'cli') {
         }
 
         switch ($argument) {
-            case '--iterations':
+            case '--filter':
                 $i++;
-                $settings['iterations'] = $argv[$i];
-                break;
-
-            case '--time-per-iteration':
-                $i++;
-                $settings['time_per_iteration'] = $argv[$i];
+                $settings['filter'] = $argv[$i];
                 break;
 
             case '--histogram':
@@ -67,6 +67,11 @@ if (php_sapi_name() == 'cli') {
             case '--histogram-width':
                 $i++;
                 $settings['histogram_bar_width'] = $argv[$i];
+                break;
+
+            case '--iterations':
+                $i++;
+                $settings['iterations'] = $argv[$i];
                 break;
 
             case '--save':
@@ -84,6 +89,11 @@ if (php_sapi_name() == 'cli') {
 
             case '--show-outliers':
                 $settings['show_outliers'] = true;
+                break;
+
+            case '--time-per-iteration':
+                $i++;
+                $settings['time_per_iteration'] = $argv[$i];
                 break;
 
             default:
@@ -122,7 +132,7 @@ $save = [];
 
 foreach ($tests as $test) {
     // filter tests
-    if (preg_match('/^test_/', $test)) {
+    if (preg_match($settings['filter'], $test)) {
         $measurements = [];
 
         // run each test x times
