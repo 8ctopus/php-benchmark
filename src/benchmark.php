@@ -19,14 +19,14 @@ require_once('helper.php');
 
 // settings
 $settings = [
-    'show_histogram'        => false,
-    'histogram_buckets'     => 16,
-    'histogram_bar_width'   => 50,
-
     'iterations'            => 100,
     'time_per_iteration'    => 50,
 
     'filter'                => '/^test_/',
+
+    'show_histogram'        => false,
+    'histogram_buckets'     => 16,
+    'histogram_bar_width'   => 50,
 
     'show_outliers'         => false,
     'show_all_measurements' => false,
