@@ -154,9 +154,23 @@ class tests
             foreach ($functions as $function) {
                 // get function arguments count
                 $reflection = new ReflectionFunction($function);
-                $arguments  = $reflection->getNumberOfParameters();
+                $count      = $reflection->getNumberOfParameters();
 
-                call_user_func_array($function, $arguments == 1 ? [$iterations + 1] : [$iterations + 1, $iterations + 1]);
+                switch ($count) {
+                    case 1:
+                        $arguments = [$iterations + 1];
+                        break;
+
+                    case 2:
+                        $arguments = [$iterations + 1, $iterations + 1];
+                        break;
+
+                    default:
+                        $arguments = [];
+                        break;
+                }
+
+                call_user_func_array($function, $arguments);
             }
 
             $iterations++;
