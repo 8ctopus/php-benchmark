@@ -31,10 +31,10 @@ $settings = [
     'show_outliers'         => false,
     'show_all_measurements' => false,
 
-    'save_to_file'          => false,
+    'save'                  => false,
+    'save_filename'         => '',
     'save_filename_base'    => 'benchmark_',
-    'save_filename_extra'   => '',
-    'save_filename_ext'     => date('Y-m-d-H-i-s') .'.txt',
+    'save_filename_ext'     => date('Ymd-Hi') .'.txt',
 ];
 
 // check if running from cli
@@ -75,12 +75,12 @@ if (php_sapi_name() == 'cli') {
                 break;
 
             case '--save':
-                $settings['save_to_file'] = true;
-                break;
+                $settings['save'] = true;
+                if (!empty($argv[$i]) && strpos($argument, '--') == 0) {
+                    $i++;
+                    $settings['save_filename'] = $settings['save_filename_base'] . $argv[$i] .'_'. $settings['save_filename_ext'];
+                }
 
-            case '--save-extra':
-                $i++;
-                $settings['save_filename_extra'] = $argv[$i];
                 break;
 
             case '--show-all':
@@ -192,13 +192,11 @@ foreach ($tests as $test) {
 }
 
 // save to file
-if ($settings['save_to_file']) {
+if ($settings['save']) {
 
-    if (!empty($settings['save_filename_extra']))
-        $settings['save_filename_extra'] .= '_';
+    if (empty($settings['save_filename']))
+        $settings['save_filename'] = $settings['save_filename_base'] . $settings['save_filename_ext'];
 
-    $file = $settings['save_filename_base'] . $settings['save_filename_extra'] . $settings['save_filename_ext'];
-
-    file_put_contents($file, serialize($save));
-    echo("benchmark saved to {$file}\n");
+    file_put_contents($settings['save_filename'], serialize($save));
+    echo("benchmark saved to {$settings['save_filename']}\n");
 }
