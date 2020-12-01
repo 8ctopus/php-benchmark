@@ -134,6 +134,98 @@ normality          :      1.3%     1.3%
 ------------------------------------------------
 ```
 
+## is php 7.4.12 faster than 5.6.40?
+
+ANSWER: it's 3x - 5x faster accross all tests except hashes where there is a 12% improvement.
+
+```bash
+# run test in php 5.6
+$ winpty docker run -it --volume "/$(pwd -W):/test/" php:5.6.40-cli-alpine sh
+$ cd test
+$ php src/benchmark.php --histogram --show-outliers --show-all --save php5.6_1
+
+# run test in php 7.4
+$ winpty docker run -it --volume "/$(pwd -W):/test/" php:7.4.12-cli-alpine sh
+$ cd test
+$ php src/benchmark.php --histogram --show-outliers --show-all --save php7.4.12_1
+
+# compare
+$ php src/compare.php --file1 benchmark_php5.6_1_20201201-0441.txt --file2 benchmark_php7.4.12_1_20201201-0447.txt
+
+------------------------------------------------
+test_if_else
+mean               :    102215   390219   281.8%
+median             :    105779   404147   282.1%
+mode               :    106411   303052   184.8%
+minmum             :     53583   234585   337.8%
+maximum            :    107758   412297   282.6%
+quartile 1         :    102834   398856   287.9%
+quartile 3         :    106769   406755   281.0%
+IQ range           :      3935     7899   100.7%
+std deviation      :      9422    36180   284.0%
+normality          :      3.4%     3.4%
+------------------------------------------------
+test_loops
+mean               :      3033    12050   297.3%
+median             :      3127    12431   297.5%
+mode               :      3156    12598   299.2%
+minmum             :      1579     8338   428.1%
+maximum            :      3184    12641   297.0%
+quartile 1         :      3068    12204   297.8%
+quartile 3         :      3155    12554   298.0%
+IQ range           :        87      350   302.3%
+std deviation      :       269      922   242.9%
+normality          :      3.0%     3.0%
+------------------------------------------------
+test_arrays
+mean               :      1666     4628   177.9%
+median             :      1751     4713   169.2%
+mode               :      1775     4733   166.6%
+minmum             :      1044     3321   218.1%
+maximum            :      1797     4769   165.4%
+quartile 1         :      1621     4661   187.5%
+quartile 3         :      1767     4737   168.1%
+IQ range           :       146       76   -47.9%
+std deviation      :       179      248    38.8%
+normality          :      4.9%     4.9%
+------------------------------------------------
+test_strings
+mean               :      2164     7462   244.8%
+median             :      2215     7815   252.9%
+mode               :      2188     7958   263.7%
+minmum             :      1064     4043   280.0%
+maximum            :      2293     8066   251.8%
+quartile 1         :      2181     7520   244.8%
+quartile 3         :      2241     7925   253.6%
+IQ range           :        60      405   574.2%
+std deviation      :       182      854   369.8%
+normality          :      2.3%     2.3%
+------------------------------------------------
+test_math
+mean               :       809     3900   382.0%
+median             :       831     4055   388.3%
+mode               :       889     4083   359.3%
+minmum             :       424     2023   377.1%
+maximum            :       939     4166   343.7%
+quartile 1         :       771     3876   403.0%
+quartile 3         :       888     4114   363.5%
+IQ range           :       117      239   103.8%
+std deviation      :       109      385   252.1%
+normality          :      2.6%     2.6%
+------------------------------------------------
+test_hashes
+mean               :       921     1033    12.2%
+median             :       971     1087    11.9%
+mode               :       978     1094    11.9%
+minmum             :       500      623    24.6%
+maximum            :      1008     1111    10.2%
+quartile 1         :       898     1051    17.0%
+quartile 3         :       993     1097    10.5%
+IQ range           :        95       46   -51.3%
+std deviation      :       109      116     6.7%
+normality          :      5.2%     5.2%
+```
+
 # definitions
 
 > The mean is the same as the average value of a data set and is found using a calculation. Add up all of the numbers and divide by the number of numbers in the data set.
