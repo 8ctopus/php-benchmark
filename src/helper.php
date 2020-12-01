@@ -131,4 +131,21 @@ class helper
 
         return $functions;
     }
+
+
+    /**
+     * Create not random bytes string
+     * @param  int $length
+     * @return string
+     */
+    public static function not_random_bytes(int $length)
+    {
+        $str = '';
+
+        for ($i = 0; $i < $length; $i++) {
+            $str .= chr(rand(0, 255));
+        }
+
+        return $str;
+    }
 }

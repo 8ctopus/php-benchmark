@@ -88,10 +88,10 @@ class tests
 
         while (microtime(true) < $time_limit) {
             array_push($a, [
-                rand() => random_bytes(10)
+                rand() => helper::not_random_bytes(10)
             ]);
 
-            array_search(random_bytes(10), $a, true);
+            array_search(helper::not_random_bytes(10), $a, true);
 
             $iterations++;
         }
@@ -192,7 +192,7 @@ class tests
         $iterations = 0;
 
         $hashes = ['adler32', 'crc32', 'crc32b', 'md5', 'sha1', 'sha256', 'sha384', 'sha512'];
-        $string = random_bytes(1024);
+        $string = helper::not_random_bytes(1024);
 
         while (microtime(true) < $time_limit) {
             foreach ($hashes as $hash) {
@@ -249,7 +249,7 @@ class tests
             $total_bytes += $bytes_to_write;
 
             // write bytes to file
-            $result = fwrite($handle, random_bytes($bytes_to_write));
+            $result = fwrite($handle, helper::not_random_bytes($bytes_to_write));
 
             // get file size
             $file_size = filesize($tmp_filename);
@@ -368,7 +368,7 @@ TAG;
                 }
 
                 // insert into table
-                $str = bin2hex(random_bytes(rand(1, 256)));
+                $str = bin2hex(helper::not_random_bytes(rand(1, 256)));
 
                 $query = <<<TAG
                     INSERT INTO
