@@ -2,7 +2,11 @@
 
 Benchmark your php code. The project is built on top of the original work from Alessandro Torrisi [www.php-benchmark-script.com](http://www.php-benchmark-script.com)
 
-# examples
+# compatibility
+
+test with php 5.6.40 (use the `php5.6-compatibility` tag) - 8.0.0 RC5
+
+# how to use examples
 
 ## does xdebug slow down code execution?
 
