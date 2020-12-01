@@ -17,7 +17,7 @@ class tests
      * @param  float $limit time limit in seconds
      * @return int iterations done in allocated time
      */
-    public static function test_if_else(float $limit)
+    public static function test_if_else($limit)
     {
         $time_start = microtime(true);
         $time_limit = $time_start + $limit;
@@ -53,7 +53,7 @@ class tests
      * @param  float $limit time limit in seconds
      * @return int iterations done in allocated time
      */
-    public static function test_loops(float $limit)
+    public static function test_loops($limit)
     {
         $time_start = microtime(true);
         $time_limit = $time_start + $limit;
@@ -78,7 +78,7 @@ class tests
      * @param  float $limit time limit in seconds
      * @return int iterations done in allocated time
      */
-    public static function test_arrays(float $limit)
+    public static function test_arrays($limit)
     {
         $time_start = microtime(true);
         $time_limit = $time_start + $limit;
@@ -105,7 +105,7 @@ class tests
      * @param  float $limit time limit in seconds
      * @return int iterations done in allocated time
      */
-    public static function test_strings(float $limit)
+    public static function test_strings($limit)
     {
         $time_start = microtime(true);
         $time_limit = $time_start + $limit;
@@ -137,7 +137,7 @@ class tests
      * @param  float $limit time limit in seconds
      * @return int iterations done in allocated time
      */
-    public static function test_math(float $limit)
+    public static function test_math($limit)
     {
         $time_start = microtime(true);
         $time_limit = $time_start + $limit;
@@ -185,7 +185,7 @@ class tests
      * @param  float $limit time limit in seconds
      * @return int iterations done in allocated time
      */
-    public static function test_hashes(float $limit)
+    public static function test_hashes($limit)
     {
         $time_start = microtime(true);
         $time_limit = $time_start + $limit;
@@ -211,7 +211,7 @@ class tests
      * @param  float $limit time limit in seconds
      * @return int iterations done in allocated time or false on failure
      */
-    public static function test_files(float $limit)
+    public static function test_files($limit)
     {
         $time_start = microtime(true);
         $time_limit = $time_start + $limit;
@@ -292,7 +292,7 @@ class tests
      * @param  float $limit time limit in seconds
      * @return int iterations done in allocated time or false on failure
      */
-    public static function test_mysql(float $limit)
+    public static function test_mysql($limit)
     {
         $time_start = microtime(true);
         $time_limit = $time_start + $limit;

@@ -38,7 +38,7 @@ class helper
      * @param  int $padding
      * @return string
      */
-    public static function format_number(int $number, int $padding)
+    public static function format_number($number, $padding)
     {
         return str_pad(number_format($number, 0, '.', ''), $padding, ' ', STR_PAD_LEFT);
     }
@@ -50,7 +50,7 @@ class helper
      * @param  int $padding
      * @return string
      */
-    public static function format_percentage(float $number, int $padding)
+    public static function format_percentage($number, $padding)
     {
         return str_pad(number_format(100 * $number, 1, '.', '') .'%', $padding, ' ', STR_PAD_LEFT);
     }
@@ -63,7 +63,7 @@ class helper
      * @return string
      * @note https://stackoverflow.com/a/2510540/10126479
      */
-    public static function format_bytes(int $size, int $precision = 2)
+    public static function format_bytes($size, $precision)
     {
         $base = log($size, 1024);
         $suffixes = ['', 'K', 'M', 'G', 'T'];
@@ -138,7 +138,7 @@ class helper
      * @param  int $length
      * @return string
      */
-    public static function not_random_bytes(int $length)
+    public static function not_random_bytes($length)
     {
         $str = '';
 
