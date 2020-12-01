@@ -13,16 +13,13 @@ ini_set('assert.exception', true);
 // set error reporting
 error_reporting(E_ERROR /*| E_WARNING */ | E_PARSE);
 
-require_once('tests.php');
-require_once('stats.php');
-require_once('helper.php');
-
 // settings
 $settings = [
     'iterations'            => 100,
     'time_per_iteration'    => 50,
 
-    'filter'                => '/^test_/',
+    'filter_test'           => '/^test_/',
+    'custom_tests'          => false,
 
     'show_histogram'        => false,
     'histogram_buckets'     => 16,
@@ -50,9 +47,13 @@ if (php_sapi_name() == 'cli') {
         }
 
         switch ($argument) {
+            case '--custom':
+                $settings['custom_tests'] = true;
+                break;
+
             case '--filter':
                 $i++;
-                $settings['filter'] = $argv[$i];
+                $settings['filter_test'] = $argv[$i];
                 break;
 
             case '--histogram':
@@ -105,6 +106,14 @@ if (php_sapi_name() == 'cli') {
 else
     echo('<pre>');
 
+require_once('stats.php');
+require_once('helper.php');
+
+// include either user or standard tests
+if ($settings['custom_tests'])
+    require_once('tests_user.php');
+else
+    require_once('tests.php');
 
 // paddings
 $pad1     = 18;
@@ -133,7 +142,7 @@ $save = [];
 
 foreach ($tests as $test) {
     // filter tests
-    if (preg_match($settings['filter'], $test)) {
+    if (preg_match($settings['filter_test'], $test)) {
         $measurements = [];
 
         // run each test x times
