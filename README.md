@@ -144,12 +144,12 @@ ANSWER: it's 3x - 5x faster accross all tests except hashes where there is a 12%
 
 ```bash
 # run test in php 5.6
-$ winpty docker run -it --volume "/$(pwd -W):/test/" php:5.6.40-cli-alpine sh
+$ docker run -it --volume "/$(pwd -W):/test/" php:5.6.40-cli-alpine sh
 $ cd test
 $ php src/benchmark.php --histogram --show-outliers --show-all --save php5.6_1
 
 # run test in php 7.4
-$ winpty docker run -it --volume "/$(pwd -W):/test/" php:7.4.12-cli-alpine sh
+$ docker run -it --volume "/$(pwd -W):/test/" php:7.4.12-cli-alpine sh
 $ cd test
 $ php src/benchmark.php --histogram --show-outliers --show-all --save php7.4.12_1
 
@@ -228,6 +228,14 @@ quartile 3         :       993     1097    10.5%
 IQ range           :        95       46   -51.3%
 std deviation      :       109      116     6.7%
 normality          :      5.2%     5.2%
+```
+
+## run your own tests
+
+`tests_user.php` serves as a template to create your own tests. To run your tests
+
+```bash
+$ php src/benchmark.php --custom
 ```
 
 # definitions
