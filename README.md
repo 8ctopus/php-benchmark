@@ -6,6 +6,8 @@ Benchmark your php code. The project is built on top of the original work from A
 
 ## does xdebug slow down code execution?
 
+ANSWER: yes, from 2x to 7x depending on the test.
+
 ```bash
 # disable xdebug extension in php.ini
 $ php src/benchmark.php --iterations 1000 --time-per-iteration 50 --save xdebug_off
@@ -28,10 +30,12 @@ IQ range           :      1498      105   -93.0%
 std deviation      :       984       87   -91.1%
 normality          :     11.0%    11.0%
 ------------------------------------------------
-...
+[CROPPED]
 ```
 
-## is php 8.0 faster than 7.4? it depends
+## is php 8.0 faster than 7.4?
+
+ANSWER: it's way faster in tested loops (+73%) and math functions (+17%) and not significant differences in the rest of tests.
 
 ```bash
 $ docker run -it --volume "/$(pwd -W):/test/" php:7.4.12-cli-alpine sh
