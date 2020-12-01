@@ -11,7 +11,7 @@ class stats
      * @param  array $cells
      * @return float
      */
-    public static function mean(array $cells)
+    public static function mean(array $cells) : float
     {
         return array_sum($cells) / count($cells);
     }
@@ -22,7 +22,7 @@ class stats
      * @param  array $cells
      * @return float
      */
-    public static function median(array $cells)
+    public static function median(array $cells) : float
     {
         // sort array values ascending
         sort($cells, SORT_NUMERIC);
@@ -43,7 +43,7 @@ class stats
      * @param  array $cells
      * @return float
      */
-    public static function standard_deviation(array $cells)
+    public static function standard_deviation(array $cells) : float
     {
         $variance = 0.0;
 
@@ -68,7 +68,7 @@ class stats
      * @param  array $cells
      * @return float first mode
      */
-    public static function mode(array $cells)
+    public static function mode(array $cells) : float
     {
         return self::modes($cells)[0];
     }
@@ -80,7 +80,7 @@ class stats
      * @return array modes
      * @note https://www.calculatorsoup.com/calculators/statistics/mean-median-mode.php
      */
-    public static function modes(array $cells)
+    public static function modes(array $cells) : array
     {
         // group array by count
         $values = array_count_values($cells);
@@ -99,7 +99,7 @@ class stats
      * @return array quartiles
      * @note https://en.wikipedia.org/wiki/Interquartile_range#Examples
      */
-    public static function quartiles(array $cells)
+    public static function quartiles(array $cells) : array
     {
         // sort measures ascending
         sort($cells);
@@ -124,7 +124,7 @@ class stats
      * @param  array  $cells
      * @return float range
      */
-    public static function interquartile_range(array $cells)
+    public static function interquartile_range(array $cells) : float
     {
         $quartiles = self::quartiles($cells);
 
@@ -140,7 +140,7 @@ class stats
      * upper fence = Q3 + 1.5 × interquartile range
      * lower fence = Q1 − 1.5 × interquartile range
      */
-    public static function outliers(array $cells)
+    public static function outliers(array $cells) : array
     {
         $quartiles = self::quartiles($cells);
         $iqr       = self::interquartile_range($cells);
@@ -168,7 +168,7 @@ class stats
      * @return float  probability it's normal
      * @note found here https://www.paulstephenborile.com/2018/03/code-benchmarks-can-measure-fast-software-make-faster/
      */
-    public static function test_normal(array $cells)
+    public static function test_normal(array $cells) : float
     {
         $mean   = self::mean($cells);
         $median = self::median($cells);
@@ -183,7 +183,7 @@ class stats
      * @param  int $buckets number of buckets
      * @return array histogram
      */
-    public static function histogram(array $data_points, int $buckets)
+    public static function histogram(array $data_points, int $buckets) : array
     {
         // get min and max
         $max = max($data_points);
@@ -232,7 +232,7 @@ class stats
      * @param  int    $bar_max_length
      * @return void
      */
-    public static function histogram_draw(array $histogram, int $bar_max_length)
+    public static function histogram_draw(array $histogram, int $bar_max_length) : void
     {
         // get buckets count
         $buckets = count($histogram);
@@ -279,7 +279,7 @@ class stats
      * @param  float $n2
      * @param  float relative difference between n1 and n2, taking n1 as base
      */
-    public static function relative_difference(float $n1, float $n2)
+    public static function relative_difference(float $n1, float $n2) : float
     {
         $absolute_difference = $n2 - $n1;
 

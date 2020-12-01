@@ -150,7 +150,7 @@ foreach ($tests as $test) {
         $result = helper::analyze_test($measurements);
 
         // check for error
-        if ($result === false) {
+        if ($result === null) {
             echo(str_pad($test, $pad1) .' : '. str_pad('FAILED', $pad2, ' ', STR_PAD_LEFT) ."\n");
             echo($line ."\n");
             continue;

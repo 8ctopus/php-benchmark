@@ -84,7 +84,7 @@ foreach ($data1 as $test1 => $measurements1) {
     $result2 = helper::analyze_test($measurements2);
 
     // check for error
-    if ($result1 === false || $result2 === false) {
+    if ($result1 === null || $result2 === null) {
         echo(str_pad($test1, $pad1) .' : '. str_pad('FAILED', $pad2, ' ', STR_PAD_LEFT) ."\n");
         echo($line ."\n");
         continue;

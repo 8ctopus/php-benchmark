@@ -9,13 +9,13 @@ class helper
     /**
      * Analyze test results
      * @param  array $measurements
-     * @return array of strings or false if any of the test iterations failed
+     * @return array of strings or null if any of the test iterations failed
      */
-    public static function analyze_test(array $measurements)
+    public static function analyze_test(array $measurements) : ?array
     {
         // check if the test failed at least once
         if (in_array(false, $measurements))
-            return false;
+            return null;
 
         return [
             'mean'          => stats::mean($measurements),
@@ -38,7 +38,7 @@ class helper
      * @param  int $padding
      * @return string
      */
-    public static function format_number(int $number, int $padding)
+    public static function format_number(int $number, int $padding) : string
     {
         return str_pad(number_format($number, 0, '.', ''), $padding, ' ', STR_PAD_LEFT);
     }
@@ -50,7 +50,7 @@ class helper
      * @param  int $padding
      * @return string
      */
-    public static function format_percentage(float $number, int $padding)
+    public static function format_percentage(float $number, int $padding) : string
     {
         return str_pad(number_format(100 * $number, 1, '.', '') .'%', $padding, ' ', STR_PAD_LEFT);
     }
@@ -63,7 +63,7 @@ class helper
      * @return string
      * @note https://stackoverflow.com/a/2510540/10126479
      */
-    public static function format_bytes(int $size, int $precision = 2)
+    public static function format_bytes(int $size, int $precision = 2) : string
     {
         $base = log($size, 1024);
         $suffixes = ['', 'K', 'M', 'G', 'T'];
@@ -77,7 +77,7 @@ class helper
      * @param  array $cells
      * @return string
      */
-    public static function all_measurements(array $cells)
+    public static function all_measurements(array $cells) : string
     {
         $str = "\n\n";
 
@@ -97,7 +97,7 @@ class helper
      * @param  array $cells
      * @return string
      */
-    public static function outliers(array $cells)
+    public static function outliers(array $cells) : string
     {
         $outliers = stats::outliers($cells);
 
@@ -119,7 +119,7 @@ class helper
      * @param  array  $functions
      * @return array  only existing functions are returned
      */
-    public static function check_functions_exist(array $functions)
+    public static function check_functions_exist(array $functions) : array
     {
         // remove functions that don't exist
         foreach ($functions as $key => $function) {
@@ -138,7 +138,7 @@ class helper
      * @param  int $length
      * @return string
      */
-    public static function not_random_bytes(int $length)
+    public static function not_random_bytes(int $length) : string
     {
         $str = '';
 
