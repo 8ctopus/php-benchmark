@@ -183,7 +183,7 @@ class stats
      * @param  int $buckets number of buckets
      * @return array histogram
      */
-    public static function histogram(array $data_points, $buckets)
+    public static function histogram(array $data_points, int $buckets)
     {
         // get min and max
         $max = max($data_points);
@@ -232,7 +232,7 @@ class stats
      * @param  int    $bar_max_length
      * @return void
      */
-    public static function histogram_draw(array $histogram, $bar_max_length)
+    public static function histogram_draw(array $histogram, int $bar_max_length)
     {
         // get buckets count
         $buckets = count($histogram);
@@ -279,7 +279,7 @@ class stats
      * @param  float $n2
      * @param  float relative difference between n1 and n2, taking n1 as base
      */
-    public static function relative_difference($n1, $n2)
+    public static function relative_difference(float $n1, float $n2)
     {
         $absolute_difference = $n2 - $n1;
 
