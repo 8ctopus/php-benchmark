@@ -230,9 +230,39 @@ std deviation      :       109      116     6.7%
 normality          :      5.2%     5.2%
 ```
 
+## is strpos + regex faster than pure regex?
+
+Consider the real life example of parsing an Apache access log for zip files download.
+
+```txt
+8.8.8.8 - - [01/Dec/2020:06:56:08 +0100] "GET /bin/filev1.048.zip HTTP/2.0" 200 11853462 "
+```
+
+```php
+// code 1
+foreach ($apachelog as $line) {
+    $result = preg_match("GET /bin/(.*?)v\d\.\d{3}\.zip~", $line, $matches);
+    ...
+}
+
+// code 2
+foreach ($apachelog as $line) {
+    if (strpos($line, '.zip') !== false) {
+        $result = preg_match("GET /bin/(.*?)v\d\.\d{3}\.zip~", $line, $matches);
+        ...
+    }
+}
+```
+
+Which code is faster? Well the answer is not as obvious as it seems as it depends on the frequency of lines with zip downloads in the Apache log. If every line is a zip download code 1 is faster, while if zip downloads are more scarce then code 2 becomes faster. You can check the test results.
+
+```bash
+$ php src/benchmark.php --custom
+```
+
 ## run your own tests
 
-`tests_user.php` serves as a template to create your own tests. To run your tests
+`tests_user.php` serves as a template to create your own tests. To run your tests.
 
 ```bash
 $ php src/benchmark.php --custom
