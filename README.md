@@ -41,22 +41,15 @@ normality          :     11.0%    11.0%
 
 ```php
 // equal_1
-$a = 1;
-$b = true;
-
+...
 if ($a == $b)
-    $c = 1;
-else
-    $c = 0;
+...
 
 // equal_2
-$a = 1;
-$b = true;
-
+...
 if ($a === $b)
     $c = 1;
-else
-    $c = 0;
+...
 ```
 
 `===` is approximately 15% faster than `==`.
