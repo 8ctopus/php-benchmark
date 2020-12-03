@@ -8,11 +8,71 @@
 class tests
 {
     /**
-     * Custom test 1
+     * Equality variant 1
      * @param  float $limit time limit in seconds
      * @return int iterations done in allocated time
      */
-    public static function test_1(float $limit) : int
+    public static function equal_1(float $limit) : int
+    {
+        $time_start = microtime(true);
+        $time_limit = $time_start + $limit;
+        $iterations = 0;
+
+        while (microtime(true) < $time_limit) {
+            // test code starts here
+
+            $a = 1;
+            $b = true;
+
+            if ($a == $b)
+                $c = 1;
+            else
+                $c = 0;
+
+            // test code ends here
+            $iterations++;
+        }
+
+        return $iterations;
+    }
+
+
+    /**
+     * Equality variant 1
+     * @param  float $limit time limit in seconds
+     * @return int iterations done in allocated time
+     */
+    public static function equal_2(float $limit) : int
+    {
+        $time_start = microtime(true);
+        $time_limit = $time_start + $limit;
+        $iterations = 0;
+
+        while (microtime(true) < $time_limit) {
+            // test code starts here
+
+            $a = 1;
+            $b = true;
+
+            if ($a === $b)
+                $c = 1;
+            else
+                $c = 0;
+
+            // test code ends here
+            $iterations++;
+        }
+
+        return $iterations;
+    }
+
+
+    /**
+     * Regex variant 1
+     * @param  float $limit time limit in seconds
+     * @return int iterations done in allocated time
+     */
+    public static function regex_1(float $limit) : int
     {
         $time_start = microtime(true);
         $time_limit = $time_start + $limit;
@@ -38,11 +98,11 @@ class tests
 
 
     /**
-     * Custom test 2
+     * Regex variant 2
      * @param  float $limit time limit in seconds
      * @return int iterations done in allocated time
      */
-    public static function test_2(float $limit) : int
+    public static function regex_2(float $limit) : int
     {
         $time_start = microtime(true);
         $time_limit = $time_start + $limit;

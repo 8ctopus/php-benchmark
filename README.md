@@ -37,6 +37,49 @@ normality          :     11.0%    11.0%
 [CROPPED]
 ```
 
+## is === faster than ==?
+
+```php
+// equal_1
+$a = 1;
+$b = true;
+
+if ($a == $b)
+    $c = 1;
+else
+    $c = 0;
+
+// equal_2
+$a = 1;
+$b = true;
+
+if ($a === $b)
+    $c = 1;
+else
+    $c = 0;
+```
+
+`===` is approximately 10% faster than `==`.
+
+```bash
+$ php src/benchmark.php --custom --filter ~equal~
+
+php 7.4.5 on Windows x64
+---------------------------------------------------
+0                  :    equal_1   equal_2
+mean               :      40461     45002    +11.2%
+median             :      40933     45568    +11.3%
+mode               :      42026     45816     +9.0%
+minmum             :      31280     33413     +6.8%
+maximum            :      42945     47037     +9.5%
+quartile 1         :      40084     44699    +11.5%
+quartile 3         :      41528     46096    +11.0%
+IQ range           :       1444      1397     -3.3%
+std deviation      :       1771      2161    +22.0%
+normality          :       1.2%      1.2%
+---------------------------------------------------
+```
+
 ## is strpos + regex faster than pure regex?
 
 Consider the real life example of parsing an Apache access log for zip file downloads.
@@ -47,13 +90,13 @@ Consider the real life example of parsing an Apache access log for zip file down
 ```
 
 ```php
-// test_1
+// regex_1
 foreach ($apachelog as $line) {
     $result = preg_match("GET /bin/(.*?)v\d\.\d{3}\.zip~", $line, $matches);
     ...
 }
 
-// test_2
+// regex_2
 foreach ($apachelog as $line) {
     if (strpos($line, '.zip') !== false) {
         $result = preg_match("GET /bin/(.*?)v\d\.\d{3}\.zip~", $line, $matches);
@@ -64,14 +107,14 @@ foreach ($apachelog as $line) {
 
 Which code is faster?
 
-Well the answer is not as obvious as it seems as it depends on the frequency of lines with zip downloads in the Apache log. If every line is a zip download `test_1` is faster, while if zip downloads are more scarce then `test_2` becomes faster. Here are the results:
+Well the answer is not as obvious as it seems as it depends on the frequency of lines with zip downloads in the Apache log. If every line is a zip download `regex_1` is faster, while if zip downloads are more scarce then `regex_2` becomes faster. Here are the results:
 
 ```bash
-$ php src/benchmark.php --custom
+$ php src/benchmark.php --custom --filter ~regex~
 
 # comparison when every line is a zip file
 ---------------------------------------------------
-0                  :     test_1    test_2
+0                  :     regex_1    regex_2
 mean               :      13762     10609    -22.9%
 median             :      13853     10637    -23.2%
 mode               :      13854     10771    -22.3%
@@ -86,7 +129,7 @@ normality          :       0.7%      0.7%
 
 # results when every 350th line is a zip file
 ---------------------------------------------------
-0                  :     test_1    test_2
+0                  :     regex_1    regex_2
 mean               :      13058     14034     +7.5%
 median             :      13506     14659     +8.5%
 mode               :      14092     15225     +8.0%
