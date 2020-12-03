@@ -124,11 +124,9 @@ else
     require_once('tests.php');
 
 // paddings
-$pad1     = 18;
-$pad2     = 10;
-$pad_line = $pad1 + $pad2 + 3;
-
-$line = str_pad('', $pad_line, '-');
+$pad1 = 18;
+$pad2 = 10;
+$line = str_pad('', $pad1 + $pad2 + 3, '-');
 
 echo('PHP benchmark' ."\n\n".
     "$line\n".
@@ -189,48 +187,7 @@ if ($settings['save']) {
 }
 
 if (!$settings['compare']) {
-    // analyze test results
-    foreach ($save as $test => $measurements) {
-        $result = helper::analyze_test($measurements);
-
-        // check for error
-        if ($result === null) {
-            echo(str_pad($test, $pad1) .' : '. str_pad('FAILED', $pad2, ' ', STR_PAD_LEFT) ."\n");
-            echo($line ."\n");
-            continue;
-        }
-
-        // show test results
-        echo(str_pad($test, $pad1) .' : '. str_pad('iterations', $pad2, ' ', STR_PAD_LEFT) ."\n");
-
-        foreach ($result as $key => $value) {
-            if ($key == 'normality')
-                echo(str_pad($key, $pad1) .' : '. helper::format_percentage($value, false, $pad2) ."\n");
-            else
-                echo(str_pad($key, $pad1) .' : '. helper::format_number($value, $pad2) ."\n");
-        }
-
-        // show histogram
-        if ($settings['show_histogram']) {
-            echo("\n");
-            $histogram = stats::histogram($measurements, $settings['histogram_buckets']);
-            stats::histogram_draw($histogram, $settings['histogram_bar_width']);
-        }
-
-        // output outliers
-        if ($settings['show_outliers']) {
-            echo("\n");
-            echo(str_pad('outliers', $pad1) .' : '. helper::outliers($measurements) ."\n");
-        }
-
-        // output all measurements
-        if ($settings['show_all_measurements']) {
-            echo("\n");
-            echo(str_pad('values', $pad1) .' : '. helper::all_measurements($measurements) ."\n");
-        }
-
-        echo($line ."\n");
-    }
+    helper::show_benchmark($save);
 }
 else {
     // get compare data set
