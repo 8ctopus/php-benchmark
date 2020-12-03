@@ -43,6 +43,7 @@ Consider the real life example of parsing an Apache access log for zip file down
 
 ```txt
 8.8.8.8 - - [01/Dec/2020:06:56:08 +0100] "GET /bin/filev1.048.zip HTTP/2.0" 200 11853462 "
+8.8.8.8 - - [01/Dec/2020:06:56:08 +0100] "GET /css/someotherfile.css HTTP/2.0" 200 11853462 "
 ```
 
 ```php
