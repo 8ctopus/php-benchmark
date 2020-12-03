@@ -53,6 +53,8 @@ class helper
      */
     public static function format_percentage(float $number, bool $sign, int $padding) : string
     {
+        $str = '';
+
         if ($sign)
             $str = ($number > 0) ? '+' : '';
 
