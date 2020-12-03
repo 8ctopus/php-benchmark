@@ -137,65 +137,68 @@ echo('PHP benchmark' ."\n\n".
 // list tests
 $tests = get_class_methods('tests');
 
+// filter tests
+foreach ($tests as $key => $test)
+    if (preg_match($settings['filter_test'], $test) == 0)
+        // remove test
+        unset($tests[$key]);
+
 // run tests
 $save = [];
 
 foreach ($tests as $test) {
-    // filter tests
-    if (preg_match($settings['filter_test'], $test)) {
-        $measurements = [];
+    $measurements = [];
 
-        // run each test x times
-        for ($i = 0; $i < $settings['iterations']; $i++) {
-            $measurements[$i] = tests::$test($settings['time_per_iteration'] / 1000);
+    // run each test x times
+    for ($i = 0; $i < $settings['iterations']; $i++) {
+        $measurements[$i] = tests::$test($settings['time_per_iteration'] / 1000);
 
-            if ($measurements[$i] === false) {
-                $error = true;
-                break;
-            }
+        if ($measurements[$i] === false) {
+            $error = true;
+            break;
         }
-
-        // analyze test results
-        $result = helper::analyze_test($measurements);
-
-        // check for error
-        if ($result === null) {
-            echo(str_pad($test, $pad1) .' : '. str_pad('FAILED', $pad2, ' ', STR_PAD_LEFT) ."\n");
-            echo($line ."\n");
-            continue;
-        }
-
-        echo($test ."\n");
-
-        // show test results
-        foreach ($result as $key => $value) {
-            if ($key == 'normality')
-                echo(str_pad($key, $pad1) .' : '. helper::format_percentage($value, false, $pad2) ."\n");
-            else
-                echo(str_pad($key, $pad1) .' : '. helper::format_number($value, $pad2) ."\n");
-        }
-
-        // show histogram
-        if ($settings['show_histogram']) {
-            echo("\n");
-            $histogram = stats::histogram($measurements, $settings['histogram_buckets']);
-            stats::histogram_draw($histogram, $settings['histogram_bar_width']);
-        }
-
-        // output outliers
-        if ($settings['show_outliers']) {
-            echo("\n");
-            echo(str_pad('outliers', $pad1) .' : '. helper::outliers($measurements) ."\n");
-        }
-
-        // output all measurements
-        if ($settings['show_all_measurements']) {
-            echo("\n");
-            echo(str_pad('values', $pad1) .' : '. helper::all_measurements($measurements) ."\n");
-        }
-
-        echo($line ."\n");
     }
+
+    // analyze test results
+    $result = helper::analyze_test($measurements);
+
+    // check for error
+    if ($result === null) {
+        echo(str_pad($test, $pad1) .' : '. str_pad('FAILED', $pad2, ' ', STR_PAD_LEFT) ."\n");
+        echo($line ."\n");
+        continue;
+    }
+
+    echo($test ."\n");
+
+    // show test results
+    foreach ($result as $key => $value) {
+        if ($key == 'normality')
+            echo(str_pad($key, $pad1) .' : '. helper::format_percentage($value, false, $pad2) ."\n");
+        else
+            echo(str_pad($key, $pad1) .' : '. helper::format_number($value, $pad2) ."\n");
+    }
+
+    // show histogram
+    if ($settings['show_histogram']) {
+        echo("\n");
+        $histogram = stats::histogram($measurements, $settings['histogram_buckets']);
+        stats::histogram_draw($histogram, $settings['histogram_bar_width']);
+    }
+
+    // output outliers
+    if ($settings['show_outliers']) {
+        echo("\n");
+        echo(str_pad('outliers', $pad1) .' : '. helper::outliers($measurements) ."\n");
+    }
+
+    // output all measurements
+    if ($settings['show_all_measurements']) {
+        echo("\n");
+        echo(str_pad('values', $pad1) .' : '. helper::all_measurements($measurements) ."\n");
+    }
+
+    echo($line ."\n");
 
     // save test
     $save[$test] = $measurements;
