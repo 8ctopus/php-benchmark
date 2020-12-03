@@ -59,24 +59,35 @@ else
     $c = 0;
 ```
 
-`===` is approximately 10% faster than `==`.
+`===` is approximately 15% faster than `==`.
 
 ```bash
+$ docker run -it --volume "/$(pwd -W):/test/" php:7.4.12-cli-alpine sh
+$ cd test
 $ php src/benchmark.php --custom --filter ~equal~
+PHP benchmark
 
-php 7.4.5 on Windows x64
+-------------------------------
+platform           :  Linux x64
+php version        :     7.4.12
+xdebug             :        off
+memory limit       :       128M
+max execution      :          0
+time per iteration :       50ms
+iterations         :        100
+-------------------------------
 ---------------------------------------------------
 0                  :    equal_1   equal_2
-mean               :      40461     45002    +11.2%
-median             :      40933     45568    +11.3%
-mode               :      42026     45816     +9.0%
-minmum             :      31280     33413     +6.8%
-maximum            :      42945     47037     +9.5%
-quartile 1         :      40084     44699    +11.5%
-quartile 3         :      41528     46096    +11.0%
-IQ range           :       1444      1397     -3.3%
-std deviation      :       1771      2161    +22.0%
-normality          :       1.2%      1.2%
+mean               :     393752    458817    +16.5%
+median             :     399673    461316    +15.4%
+mode               :     390417    421821     +8.0%
+minimum            :     314032    371168    +18.2%
+maximum            :     408390    475810    +16.5%
+quartile 1         :     395429    458062    +15.8%
+quartile 3         :     402433    466956    +16.0%
+IQ range           :       7004      8894    +27.0%
+std deviation      :      18190     15341    -15.7%
+normality          :       1.5%      1.5%
 ---------------------------------------------------
 ```
 
