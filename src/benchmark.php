@@ -35,76 +35,77 @@ $settings = [
 ];
 
 // check if running from cli
-if (php_sapi_name() == 'cli') {
-    // get command line arguments
-    for ($i = 1; $i < count($argv); $i++)
-    {
-        $argument = $argv[$i];
+if (php_sapi_name() != 'cli') {
+    echo('Please run the script from cli');
+    exit();
+}
 
-        if (strpos($argument, '--') != 0) {
+// get command line arguments
+for ($i = 1; $i < count($argv); $i++)
+{
+    $argument = $argv[$i];
+
+    if (strpos($argument, '--') != 0) {
+        echo("unknown argument {$argument}");
+        exit();
+    }
+
+    switch ($argument) {
+        case '--custom':
+            $settings['custom_tests'] = true;
+            break;
+
+        case '--filter':
+            $i++;
+            $settings['filter_test'] = $argv[$i];
+            break;
+
+        case '--histogram':
+            $settings['show_histogram'] = true;
+            break;
+
+        case '--histogram-buckets':
+            $i++;
+            $settings['histogram_buckets'] = $argv[$i];
+            break;
+
+        case '--histogram-width':
+            $i++;
+            $settings['histogram_bar_width'] = $argv[$i];
+            break;
+
+        case '--iterations':
+            $i++;
+            $settings['iterations'] = $argv[$i];
+            break;
+
+        case '--save':
+            $settings['save'] = true;
+            if (!empty($argv[$i + 1]) && strpos($argv[$i + 1], '--') == 0) {
+                $i++;
+                $settings['save_filename'] = $settings['save_filename_base'] . $argv[$i] .'_'. $settings['save_filename_ext'];
+            }
+
+            break;
+
+        case '--show-all':
+            $settings['show_all_measurements'] = true;
+            break;
+
+        case '--show-outliers':
+            $settings['show_outliers'] = true;
+            break;
+
+        case '--time-per-iteration':
+            $i++;
+            $settings['time_per_iteration'] = $argv[$i];
+            break;
+
+        default:
             echo("unknown argument {$argument}");
             exit();
-        }
-
-        switch ($argument) {
-            case '--custom':
-                $settings['custom_tests'] = true;
-                break;
-
-            case '--filter':
-                $i++;
-                $settings['filter_test'] = $argv[$i];
-                break;
-
-            case '--histogram':
-                $settings['show_histogram'] = true;
-                break;
-
-            case '--histogram-buckets':
-                $i++;
-                $settings['histogram_buckets'] = $argv[$i];
-                break;
-
-            case '--histogram-width':
-                $i++;
-                $settings['histogram_bar_width'] = $argv[$i];
-                break;
-
-            case '--iterations':
-                $i++;
-                $settings['iterations'] = $argv[$i];
-                break;
-
-            case '--save':
-                $settings['save'] = true;
-                if (!empty($argv[$i + 1]) && strpos($argv[$i + 1], '--') == 0) {
-                    $i++;
-                    $settings['save_filename'] = $settings['save_filename_base'] . $argv[$i] .'_'. $settings['save_filename_ext'];
-                }
-
-                break;
-
-            case '--show-all':
-                $settings['show_all_measurements'] = true;
-                break;
-
-            case '--show-outliers':
-                $settings['show_outliers'] = true;
-                break;
-
-            case '--time-per-iteration':
-                $i++;
-                $settings['time_per_iteration'] = $argv[$i];
-                break;
-
-            default:
-                echo("unknown argument {$argument}");
-                exit();
-        }
     }
 }
-else
-    echo('<pre>');
 
 require_once('stats.php');
 require_once('helper.php');
