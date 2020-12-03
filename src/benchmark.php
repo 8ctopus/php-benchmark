@@ -146,23 +146,23 @@ foreach ($tests as $key => $test)
 // run tests
 $save = [];
 
-foreach ($tests as $test) {
-    $measurements = [];
+// run tests x times
+for ($i = 0; $i < $settings['iterations']; $i++) {
+    foreach ($tests as $j => $test) {
+        $measurement = tests::$test($settings['time_per_iteration'] / 1000);
 
-    // run each test x times
-    for ($i = 0; $i < $settings['iterations']; $i++) {
-        $measurements[$i] = tests::$test($settings['time_per_iteration'] / 1000);
+        if (!$i)
+            $save[$test] = [$measurement];
+        else
+            array_push($save[$test], $measurement);
 
-        // check for test error
-        if ($measurements[$i] === null)
-            break;
+        // remove test if it failed
+        if ($measurement === null)
+            unset($tests[$j]);
     }
-
-    // save test
-    $save[$test] = $measurements;
 }
 
-// save tests to file
+// save results to file
 if ($settings['save']) {
     if (empty($settings['save_filename']))
         $settings['save_filename'] = $settings['save_filename_base'] . $settings['save_filename_ext'];
