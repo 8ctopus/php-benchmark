@@ -77,7 +77,7 @@ if (php_sapi_name() == 'cli') {
 
             case '--save':
                 $settings['save'] = true;
-                if (!empty($argv[$i]) && strpos($argument, '--') == 0) {
+                if (!empty($argv[$i + 1]) && strpos($argv[$i + 1], '--') == 0) {
                     $i++;
                     $settings['save_filename'] = $settings['save_filename_base'] . $argv[$i] .'_'. $settings['save_filename_ext'];
                 }
