@@ -153,13 +153,27 @@ foreach ($tests as $test) {
     for ($i = 0; $i < $settings['iterations']; $i++) {
         $measurements[$i] = tests::$test($settings['time_per_iteration'] / 1000);
 
-        if ($measurements[$i] === false) {
-            $error = true;
+        // check for test error
+        if ($measurements[$i] === null)
             break;
-        }
     }
 
-    // analyze test results
+    // save test
+    $save[$test] = $measurements;
+}
+
+// save tests to file
+if ($settings['save']) {
+    if (empty($settings['save_filename']))
+        $settings['save_filename'] = $settings['save_filename_base'] . $settings['save_filename_ext'];
+
+    file_put_contents($settings['save_filename'], serialize($save));
+    echo("benchmark saved to {$settings['save_filename']}\n");
+    echo("$line\n");
+}
+
+// analyze test results
+foreach ($save as $test => $measurements) {
     $result = helper::analyze_test($measurements);
 
     // check for error
@@ -199,17 +213,4 @@ foreach ($tests as $test) {
     }
 
     echo($line ."\n");
-
-    // save test
-    $save[$test] = $measurements;
-}
-
-// save to file
-if ($settings['save']) {
-
-    if (empty($settings['save_filename']))
-        $settings['save_filename'] = $settings['save_filename_base'] . $settings['save_filename_ext'];
-
-    file_put_contents($settings['save_filename'], serialize($save));
-    echo("benchmark saved to {$settings['save_filename']}\n");
 }
