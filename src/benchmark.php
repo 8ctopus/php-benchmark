@@ -21,6 +21,8 @@ $settings = [
     'filter_test'           => '/^test_/',
     'custom_tests'          => false,
 
+    'compare'               => false,
+
     'show_histogram'        => false,
     'histogram_buckets'     => 16,
     'histogram_bar_width'   => 50,
@@ -45,12 +47,17 @@ for ($i = 1; $i < count($argv); $i++)
 {
     $argument = $argv[$i];
 
-    if (strpos($argument, '--') != 0) {
+    if (strpos($argument, '--') !== 0) {
         echo("unknown argument {$argument}");
         exit();
     }
 
     switch ($argument) {
+        case '--compare':
+            $i++;
+            $settings['compare'] = $argv[$i];
+            break;
+
         case '--custom':
             $settings['custom_tests'] = true;
             break;
@@ -81,7 +88,7 @@ for ($i = 1; $i < count($argv); $i++)
 
         case '--save':
             $settings['save'] = true;
-            if (!empty($argv[$i + 1]) && strpos($argv[$i + 1], '--') == 0) {
+            if (!empty($argv[$i + 1]) && strpos($argv[$i + 1], '--') === false) {
                 $i++;
                 $settings['save_filename'] = $settings['save_filename_base'] . $argv[$i] .'_'. $settings['save_filename_ext'];
             }
@@ -181,45 +188,101 @@ if ($settings['save']) {
     echo("$line\n");
 }
 
-// analyze test results
-foreach ($save as $test => $measurements) {
-    $result = helper::analyze_test($measurements);
+if (!$settings['compare']) {
+    // analyze test results
+    foreach ($save as $test => $measurements) {
+        $result = helper::analyze_test($measurements);
 
-    // check for error
-    if ($result === null) {
-        echo(str_pad($test, $pad1) .' : '. str_pad('FAILED', $pad2, ' ', STR_PAD_LEFT) ."\n");
+        // check for error
+        if ($result === null) {
+            echo(str_pad($test, $pad1) .' : '. str_pad('FAILED', $pad2, ' ', STR_PAD_LEFT) ."\n");
+            echo($line ."\n");
+            continue;
+        }
+
+        // show test results
+        echo(str_pad($test, $pad1) .' : '. str_pad('iterations', $pad2, ' ', STR_PAD_LEFT) ."\n");
+
+        foreach ($result as $key => $value) {
+            if ($key == 'normality')
+                echo(str_pad($key, $pad1) .' : '. helper::format_percentage($value, false, $pad2) ."\n");
+            else
+                echo(str_pad($key, $pad1) .' : '. helper::format_number($value, $pad2) ."\n");
+        }
+
+        // show histogram
+        if ($settings['show_histogram']) {
+            echo("\n");
+            $histogram = stats::histogram($measurements, $settings['histogram_buckets']);
+            stats::histogram_draw($histogram, $settings['histogram_bar_width']);
+        }
+
+        // output outliers
+        if ($settings['show_outliers']) {
+            echo("\n");
+            echo(str_pad('outliers', $pad1) .' : '. helper::outliers($measurements) ."\n");
+        }
+
+        // output all measurements
+        if ($settings['show_all_measurements']) {
+            echo("\n");
+            echo(str_pad('values', $pad1) .' : '. helper::all_measurements($measurements) ."\n");
+        }
+
         echo($line ."\n");
-        continue;
     }
+}
+else {
+    // update paddings
+    $pad1     = 18;
+    $pad2     =  9;
+    $pad_line = $pad1 + 3 * $pad2 + 3;
 
-    // show test results
-    echo(str_pad($test, $pad1) .' : '. str_pad('iterations', $pad2, ' ', STR_PAD_LEFT) ."\n");
+    $line = str_pad('', $pad_line, '-');
 
-    foreach ($result as $key => $value) {
-        if ($key == 'normality')
-            echo(str_pad($key, $pad1) .' : '. helper::format_percentage($value, false, $pad2) ."\n");
-        else
-            echo(str_pad($key, $pad1) .' : '. helper::format_number($value, $pad2) ."\n");
-    }
-
-    // show histogram
-    if ($settings['show_histogram']) {
-        echo("\n");
-        $histogram = stats::histogram($measurements, $settings['histogram_buckets']);
-        stats::histogram_draw($histogram, $settings['histogram_bar_width']);
-    }
-
-    // output outliers
-    if ($settings['show_outliers']) {
-        echo("\n");
-        echo(str_pad('outliers', $pad1) .' : '. helper::outliers($measurements) ."\n");
-    }
-
-    // output all measurements
-    if ($settings['show_all_measurements']) {
-        echo("\n");
-        echo(str_pad('values', $pad1) .' : '. helper::all_measurements($measurements) ."\n");
-    }
+    // get compare data set
+    $data2 = unserialize(file_get_contents($settings['compare']));
 
     echo($line ."\n");
+
+    // analyze test results
+    foreach ($save as $test1 => $measurements1) {
+        // get compare measurements
+        $measurements2 = $data2[$test1];
+
+        // analyze test results
+        $result1 = helper::analyze_test($measurements1);
+        $result2 = helper::analyze_test($measurements2);
+
+        // check for error
+        if ($result1 === null || $result2 === null) {
+            echo(str_pad($test1, $pad1) .' : '. str_pad('FAILED', $pad2, ' ', STR_PAD_LEFT) ."\n");
+            echo($line ."\n");
+            continue;
+        }
+
+        // show test results
+        echo(str_pad($test1, $pad1) .' : '. str_pad('iterations', $pad2, ' ', STR_PAD_LEFT) ."\n");
+
+        // show test results
+        foreach ($result1 as $key => $value1) {
+            // get data2 result for key
+            $value2 = $result2[$key];
+
+            if ($key == 'normality')
+                echo(str_pad($key, $pad1) .' : '. helper::format_percentage($value1, false, $pad2) . helper::format_percentage($value1, false, $pad2) ."\n");
+            else {
+                try {
+                    $delta = stats::relative_difference($value1, $value2);
+
+                    echo(str_pad($key, $pad1) .' : '. helper::format_number($value1, $pad2) . helper::format_number($value2, $pad2) . helper::format_percentage($delta, true, $pad2) ."\n");
+                }
+                catch (DivisionByZeroError $e) {
+                    echo(str_pad($key, $pad1) .' : '. helper::format_number($value1, $pad2) . helper::format_number($value2, $pad2) . str_pad('nan', $pad2 + 1, ' ', STR_PAD_LEFT) ."\n");
+                }
+            }
+        }
+
+        echo($line ."\n");
+    }
 }
