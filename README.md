@@ -4,7 +4,7 @@ Benchmark your php code. The project is built on top of the original work from A
 
 # compatibility
 
-test with php 5.6.40 (use the `php5.6-compatibility` tag) - 8.0.0 RC5
+php 5.6.40 (use the `php5.6-compatibility` tag) to 8.0.0 RC5
 
 # how to use examples
 
