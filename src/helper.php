@@ -63,10 +63,12 @@ class helper
         $str = str_pad($str, $padding, ' ', STR_PAD_LEFT);
 
         if ($sign) {
+            // add color
             if ($number > 0)
-                $str = "\033[01;32m {$str}\033[0m";
+                $str = "\033[01;32m{$str}\033[0m";
             else
-                $str = "\033[01;31m {$str}\033[0m";
+            if ($number < 0)
+                $str = "\033[01;31m{$str}\033[0m";
         }
 
         return $str;

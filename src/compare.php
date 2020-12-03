@@ -106,7 +106,7 @@ foreach ($data1 as $test1 => $measurements1) {
                 echo(str_pad($key, $pad1) .' : '. helper::format_number($value1, $pad2) . helper::format_number($value2, $pad2) . helper::format_percentage($delta, true, $pad2) ."\n");
             }
             catch (DivisionByZeroError $e) {
-                echo(str_pad($key, $pad1) .' : '. helper::format_number($value1, $pad2) . helper::format_number($value2, $pad2) . str_pad('nan', $pad2 + 1, ' ', STR_PAD_LEFT) ."\n");
+                echo(str_pad($key, $pad1) .' : '. helper::format_number($value1, $pad2) . helper::format_number($value2, $pad2) . str_pad('nan', $pad2, ' ', STR_PAD_LEFT) ."\n");
             }
         }
     }
