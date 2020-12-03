@@ -74,7 +74,7 @@ $data2 = unserialize(file_get_contents($file2));
 
 echo($line ."\n");
 
-// compare data
+// compare tests
 foreach ($data1 as $test1 => $measurements1) {
     // get data2 measurements
     $measurements2 = $data2[$test1];
@@ -90,7 +90,8 @@ foreach ($data1 as $test1 => $measurements1) {
         continue;
     }
 
-    echo($test1 ."\n");
+    // show test results
+    echo(str_pad($test1, $pad1) .' : '. str_pad('iterations', $pad2, ' ', STR_PAD_LEFT) ."\n");
 
     // show test results
     foreach ($result1 as $key => $value1) {

@@ -245,9 +245,9 @@ else {
 
     echo($line ."\n");
 
-    // analyze test results
+    // compare tests
     foreach ($save as $test1 => $measurements1) {
-        // get compare measurements
+        // get data2 measurements
         $measurements2 = $data2[$test1];
 
         // analyze test results
