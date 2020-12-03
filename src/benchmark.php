@@ -123,20 +123,17 @@ if ($settings['custom_tests'])
 else
     require_once('tests.php');
 
-// paddings
-$pad1 = 18;
-$pad2 = 10;
-$line = str_pad('', $pad1 + $pad2 + 3, '-');
+$line = str_pad('', helper::$pad1 + helper::$pad2 + 3, '-');
 
 echo('PHP benchmark' ."\n\n".
     "$line\n".
-    str_pad('platform', $pad1) .' : '. str_pad(PHP_OS .' '. ((PHP_INT_SIZE == 8) ? 'x64' : 'x32'), $pad2, ' ', STR_PAD_LEFT) ."\n".
-    str_pad('php version', $pad1) .' : '. str_pad(PHP_VERSION, $pad2, ' ', STR_PAD_LEFT) ."\n".
-    str_pad('xdebug', $pad1) .' : '. str_pad(extension_loaded('xdebug') ? 'on' : 'off', $pad2, ' ', STR_PAD_LEFT) ."\n".
-    str_pad('memory limit', $pad1) .' : '. str_pad(ini_get('memory_limit'), $pad2, ' ', STR_PAD_LEFT) ."\n".
-    str_pad('max execution', $pad1) .' : '. str_pad(ini_get('max_execution_time'), $pad2, ' ', STR_PAD_LEFT) ."\n".
-    str_pad('time per iteration', $pad1) .' : '. str_pad($settings['time_per_iteration'] .'ms', $pad2, ' ', STR_PAD_LEFT) ."\n".
-    str_pad('iterations', $pad1) .' : '. str_pad($settings['iterations'], $pad2, ' ', STR_PAD_LEFT) ."\n".
+    str_pad('platform', helper::$pad1) .' : '. str_pad(PHP_OS .' '. ((PHP_INT_SIZE == 8) ? 'x64' : 'x32'), helper::$pad2, ' ', STR_PAD_LEFT) ."\n".
+    str_pad('php version', helper::$pad1) .' : '. str_pad(PHP_VERSION, helper::$pad2, ' ', STR_PAD_LEFT) ."\n".
+    str_pad('xdebug', helper::$pad1) .' : '. str_pad(extension_loaded('xdebug') ? 'on' : 'off', helper::$pad2, ' ', STR_PAD_LEFT) ."\n".
+    str_pad('memory limit', helper::$pad1) .' : '. str_pad(ini_get('memory_limit'), helper::$pad2, ' ', STR_PAD_LEFT) ."\n".
+    str_pad('max execution', helper::$pad1) .' : '. str_pad(ini_get('max_execution_time'), helper::$pad2, ' ', STR_PAD_LEFT) ."\n".
+    str_pad('time per iteration', helper::$pad1) .' : '. str_pad($settings['time_per_iteration'] .'ms', helper::$pad2, ' ', STR_PAD_LEFT) ."\n".
+    str_pad('iterations', helper::$pad1) .' : '. str_pad($settings['iterations'], helper::$pad2, ' ', STR_PAD_LEFT) ."\n".
     "$line\n"
 );
 

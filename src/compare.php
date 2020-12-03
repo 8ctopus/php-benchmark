@@ -65,4 +65,5 @@ if (!file_exists($file1) || !file_exists($file2)) {
 $data1 = unserialize(file_get_contents($file1));
 $data2 = unserialize(file_get_contents($file2));
 
+// show compare results
 helper::show_compare($data1, $data2);
