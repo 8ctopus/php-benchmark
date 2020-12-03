@@ -98,11 +98,11 @@ foreach ($data1 as $test1 => $measurements1) {
         $value2 = $result2[$key];
 
         if ($key == 'normality')
-            echo(str_pad($key, $pad1) .' : '. helper::format_percentage($value1, $pad2) . helper::format_percentage($value1, $pad2) ."\n");
+            echo(str_pad($key, $pad1) .' : '. helper::format_percentage($value1, false, $pad2) . helper::format_percentage($value1, false, $pad2) ."\n");
         else {
             $delta = stats::relative_difference($value1, $value2);
 
-            echo(str_pad($key, $pad1) .' : '. helper::format_number($value1, $pad2) . helper::format_number($value2, $pad2) . helper::format_percentage($delta, $pad2) ."\n");
+            echo(str_pad($key, $pad1) .' : '. helper::format_number($value1, $pad2) . helper::format_number($value2, $pad2) . helper::format_percentage($delta, true, $pad2) ."\n");
         }
     }
 

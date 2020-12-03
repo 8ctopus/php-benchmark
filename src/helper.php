@@ -47,12 +47,18 @@ class helper
     /**
      * Format percentage
      * @param  float $number
+     * @param  bool $sign
      * @param  int $padding
      * @return string
      */
-    public static function format_percentage(float $number, int $padding) : string
+    public static function format_percentage(float $number, bool $sign, int $padding) : string
     {
-        return str_pad(number_format(100 * $number, 1, '.', '') .'%', $padding, ' ', STR_PAD_LEFT);
+        if ($sign)
+            $str = ($number > 0) ? '+' : '';
+
+        $str .= number_format(100 * $number, 1, '.', '') .'%';
+
+        return str_pad($str, $padding, ' ', STR_PAD_LEFT);
     }
 
 
