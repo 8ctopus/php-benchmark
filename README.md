@@ -43,6 +43,7 @@ normality          :     11.0%    11.0%
 // equal_1
 ...
 if ($a == $b)
+    $c = 1;
 ...
 
 // equal_2
