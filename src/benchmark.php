@@ -183,13 +183,24 @@ if ($settings['save']) {
     echo("$line\n");
 }
 
-if (!$settings['compare']) {
-    helper::show_benchmark($save);
+if ($settings['custom_tests'] && count($tests) % 2 == 0) {
+
+    $keys = array_keys($save);
+
+    $test1 = array_values(array_slice($save, 0, 1, false));
+    $test2 = array_values(array_slice($save, 1, 1, false));
+
+    // compare custom tests
+    helper::show_compare($test1, $keys[0], $test2, $keys[1]);
 }
-else {
+else
+if ($settings['compare']) {
     // get compare data set
     $baseline = unserialize(file_get_contents($settings['compare']));
 
     // show comparison
-    helper::show_compare($baseline, $save);
+    helper::show_compare($baseline, 'file', $save, 'test');
 }
+else
+    helper::show_benchmark($save);
+

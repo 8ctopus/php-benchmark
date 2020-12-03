@@ -93,10 +93,12 @@ class helper
     /**
      * Show comparison
      * @param array $baseline
+     * @param string $btitle
      * @param array $latest
+     * @param string $title
      * @return void
      */
-    public static function show_compare(array $baseline, array $latest) : void
+    public static function show_compare(array $baseline, string $btitle, array $latest, string $ltitle) : void
     {
         // paddings
         self::$pad1 = 18;
@@ -122,7 +124,7 @@ class helper
             }
 
             // show test results
-            echo(str_pad($test1, self::$pad1) .' : '. str_pad('baseline', self::$pad2, ' ', STR_PAD_LEFT) . str_pad('latest', self::$pad2, ' ', STR_PAD_LEFT) ."\n");
+            echo(str_pad($test1, self::$pad1) .' : '. str_pad($btitle, self::$pad2, ' ', STR_PAD_LEFT) . str_pad($ltitle, self::$pad2, ' ', STR_PAD_LEFT) ."\n");
 
             // show test results
             foreach ($result1 as $key => $value1) {
