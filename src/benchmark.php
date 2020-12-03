@@ -202,5 +202,5 @@ if ($settings['compare']) {
     helper::show_compare($baseline, 'file', $save, 'test');
 }
 else
-    helper::show_benchmark($save);
+    helper::show_benchmark($save, $settings);
 

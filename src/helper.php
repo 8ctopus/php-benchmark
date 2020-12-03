@@ -39,9 +39,10 @@ class helper
     /**
      * Show benchmark results
      * @param  array $data
+     * @param  array $settings
      * @return void
      */
-    public static function show_benchmark(array $data) : void
+    public static function show_benchmark(array $data, array $settings) : void
     {
         $line = str_pad('', self::$pad1 + self::$pad2 + 3, '-');
 
