@@ -278,9 +278,13 @@ class stats
      * @param  float $n1
      * @param  float $n2
      * @param  float relative difference between n1 and n2, taking n1 as base
+     * @throws Division by zero
      */
     public static function relative_difference(float $n1, float $n2) : float
     {
+        if (!$n1)
+            throw new DivisionByZeroError();
+
         $absolute_difference = $n2 - $n1;
 
         return $absolute_difference / $n1;

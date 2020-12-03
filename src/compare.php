@@ -100,9 +100,14 @@ foreach ($data1 as $test1 => $measurements1) {
         if ($key == 'normality')
             echo(str_pad($key, $pad1) .' : '. helper::format_percentage($value1, false, $pad2) . helper::format_percentage($value1, false, $pad2) ."\n");
         else {
-            $delta = stats::relative_difference($value1, $value2);
+            try {
+                $delta = stats::relative_difference($value1, $value2);
 
-            echo(str_pad($key, $pad1) .' : '. helper::format_number($value1, $pad2) . helper::format_number($value2, $pad2) . helper::format_percentage($delta, true, $pad2) ."\n");
+                echo(str_pad($key, $pad1) .' : '. helper::format_number($value1, $pad2) . helper::format_number($value2, $pad2) . helper::format_percentage($delta, true, $pad2) ."\n");
+            }
+            catch (DivisionByZeroError $e) {
+                echo(str_pad($key, $pad1) .' : '. helper::format_number($value1, $pad2) . helper::format_number($value2, $pad2) . str_pad('nan', $pad2 + 1, ' ', STR_PAD_LEFT) ."\n");
+            }
         }
     }
 
