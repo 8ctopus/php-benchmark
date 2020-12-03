@@ -209,9 +209,9 @@ class tests
     /**
      * Test file operations
      * @param  float $limit time limit in seconds
-     * @return int iterations done in allocated time or false on failure
+     * @return int iterations done in allocated time or null on failure
      */
-    public static function test_files(float $limit) : int
+    public static function test_files(float $limit) : ?int
     {
         $time_start = microtime(true);
         $time_limit = $time_start + $limit;
@@ -229,19 +229,19 @@ class tests
             $list = scandir($tmp_dir);
 
             if (!$list)
-                return false;
+                return null;
 
             // get temporary file name in temporary dir
             $tmp_filename = tempnam($tmp_dir, '');
 
             if (!$tmp_filename)
-                return false;
+                return null;
 
             // open temp file
             $handle = fopen($tmp_filename, 'r+');
 
             if (!$handle)
-                return false;
+                return null;
 
             // get bytes count to write to file
             $bytes_to_write = rand(1, $bytes_to_write_max);
@@ -290,9 +290,9 @@ class tests
     /**
      * Test mysql operations
      * @param  float $limit time limit in seconds
-     * @return int iterations done in allocated time or false on failure
+     * @return int iterations done in allocated time or null on failure
      */
-    public static function test_mysql(float $limit) : int
+    public static function test_mysql(float $limit) : ?int
     {
         $time_start = microtime(true);
         $time_limit = $time_start + $limit;
@@ -307,7 +307,7 @@ class tests
         $exception  = false;
 
         if (!function_exists('mysqli_connect'))
-            return false;
+            return null;
 
         try {
             while (microtime(true) < $time_limit) {
@@ -413,7 +413,7 @@ TAG;
         finally {
             // check for connection failure
             if (!$mysqli)
-                return false;
+                return null;
 
             if (!$exception)
                 // connect to database
