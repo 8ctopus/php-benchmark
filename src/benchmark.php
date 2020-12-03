@@ -117,7 +117,7 @@ else
 
 // paddings
 $pad1     = 18;
-$pad2     =  9;
+$pad2     = 10;
 $pad_line = $pad1 + $pad2 + 3;
 
 $line = str_pad('', $pad_line, '-');
@@ -169,9 +169,9 @@ foreach ($tests as $test) {
         continue;
     }
 
-    echo($test ."\n");
-
     // show test results
+    echo(str_pad($test, $pad1) .' : '. str_pad('iterations', $pad2, ' ', STR_PAD_LEFT) ."\n");
+
     foreach ($result as $key => $value) {
         if ($key == 'normality')
             echo(str_pad($key, $pad1) .' : '. helper::format_percentage($value, false, $pad2) ."\n");
