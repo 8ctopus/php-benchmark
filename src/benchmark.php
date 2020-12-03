@@ -233,56 +233,9 @@ if (!$settings['compare']) {
     }
 }
 else {
-    // update paddings
-    $pad1     = 18;
-    $pad2     =  9;
-    $pad_line = $pad1 + 3 * $pad2 + 3;
-
-    $line = str_pad('', $pad_line, '-');
-
     // get compare data set
-    $data2 = unserialize(file_get_contents($settings['compare']));
+    $baseline = unserialize(file_get_contents($settings['compare']));
 
-    echo($line ."\n");
-
-    // compare tests
-    foreach ($save as $test1 => $measurements1) {
-        // get data2 measurements
-        $measurements2 = $data2[$test1];
-
-        // analyze test results
-        $result1 = helper::analyze_test($measurements1);
-        $result2 = helper::analyze_test($measurements2);
-
-        // check for error
-        if ($result1 === null || $result2 === null) {
-            echo(str_pad($test1, $pad1) .' : '. str_pad('FAILED', $pad2, ' ', STR_PAD_LEFT) ."\n");
-            echo($line ."\n");
-            continue;
-        }
-
-        // show test results
-        echo(str_pad($test1, $pad1) .' : '. str_pad('iterations', $pad2, ' ', STR_PAD_LEFT) ."\n");
-
-        // show test results
-        foreach ($result1 as $key => $value1) {
-            // get data2 result for key
-            $value2 = $result2[$key];
-
-            if ($key == 'normality')
-                echo(str_pad($key, $pad1) .' : '. helper::format_percentage($value1, false, $pad2) . helper::format_percentage($value1, false, $pad2) ."\n");
-            else {
-                try {
-                    $delta = stats::relative_difference($value1, $value2);
-
-                    echo(str_pad($key, $pad1) .' : '. helper::format_number($value1, $pad2) . helper::format_number($value2, $pad2) . helper::format_percentage($delta, true, $pad2) ."\n");
-                }
-                catch (DivisionByZeroError $e) {
-                    echo(str_pad($key, $pad1) .' : '. helper::format_number($value1, $pad2) . helper::format_number($value2, $pad2) . str_pad('nan', $pad2, ' ', STR_PAD_LEFT) ."\n");
-                }
-            }
-        }
-
-        echo($line ."\n");
-    }
+    // show comparison
+    helper::show_compare($baseline, $save);
 }
