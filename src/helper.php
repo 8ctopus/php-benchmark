@@ -60,6 +60,8 @@ class helper
 
         $str .= number_format(100 * $number, 1, '.', '') .'%';
 
+        $str = str_pad($str, $padding, ' ', STR_PAD_LEFT);
+
         if ($sign) {
             if ($number > 0)
                 $str = "\033[01;32m {$str}\033[0m";
@@ -67,7 +69,7 @@ class helper
                 $str = "\033[01;31m {$str}\033[0m";
         }
 
-        return str_pad($str, $padding, ' ', STR_PAD_LEFT);
+        return $str;
     }
 
 
