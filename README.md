@@ -39,20 +39,20 @@ normality          :     11.0%    11.0%
 
 ## is strpos + regex faster than pure regex?
 
-Consider the real life example of parsing an Apache access log for zip files download.
+Consider the real life example of parsing an Apache access log for zip file downloads.
 
 ```txt
 8.8.8.8 - - [01/Dec/2020:06:56:08 +0100] "GET /bin/filev1.048.zip HTTP/2.0" 200 11853462 "
 ```
 
 ```php
-// code 1
+// test_1
 foreach ($apachelog as $line) {
     $result = preg_match("GET /bin/(.*?)v\d\.\d{3}\.zip~", $line, $matches);
     ...
 }
 
-// code 2
+// test_2
 foreach ($apachelog as $line) {
     if (strpos($line, '.zip') !== false) {
         $result = preg_match("GET /bin/(.*?)v\d\.\d{3}\.zip~", $line, $matches);
@@ -61,10 +61,42 @@ foreach ($apachelog as $line) {
 }
 ```
 
-Which code is faster? Well the answer is not as obvious as it seems as it depends on the frequency of lines with zip downloads in the Apache log. If every line is a zip download code 1 is faster, while if zip downloads are more scarce then code 2 becomes faster. You can check the test results.
+Which code is faster?
+
+Well the answer is not as obvious as it seems as it depends on the frequency of lines with zip downloads in the Apache log. If every line is a zip download `test_1` is faster, while if zip downloads are more scarce then `test_2` becomes faster. Here are the results:
 
 ```bash
 $ php src/benchmark.php --custom
+
+# comparison when every line is a zip file
+---------------------------------------------------
+0                  :     test_1    test_2
+mean               :      13762     10609    -22.9%
+median             :      13853     10637    -23.2%
+mode               :      13854     10771    -22.3%
+minmum             :      10473     10096     -3.6%
+maximum            :      14206     10957    -22.9%
+quartile 1         :      13720     10523    -23.3%
+quartile 3         :      13945     10706    -23.2%
+IQ range           :        225       183    -18.7%
+std deviation      :        446       158    -64.5%
+normality          :       0.7%      0.7%
+---------------------------------------------------
+
+# results when every 350th line is a zip file
+---------------------------------------------------
+0                  :     test_1    test_2
+mean               :      13058     14034     +7.5%
+median             :      13506     14659     +8.5%
+mode               :      14092     15225     +8.0%
+minmum             :       8520      9024     +5.9%
+maximum            :      14415     15555     +7.9%
+quartile 1         :      12315     12871     +4.5%
+quartile 3         :      14108     15280     +8.3%
+IQ range           :       1793      2409    +34.3%
+std deviation      :       1335      1511    +13.2%
+normality          :       3.3%      3.3%
+---------------------------------------------------
 ```
 
 ## is php 8.0 faster than 7.4?

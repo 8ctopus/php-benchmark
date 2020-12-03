@@ -21,8 +21,8 @@ class tests
         while (microtime(true) < $time_limit) {
             // test code starts here
 
-            // there's only one chance in 337 to see a zip string
-            if (mt_rand(1, 337) == 1)
+            // there's only one chance in 350 to see a zip string
+            if (mt_rand(1, 350) == 1)
                 $string = '8.8.8.8 - - [01/Dec/2020:06:56:08 +0100] "GET /bin/filev1.048.zip HTTP/2.0" 200 11853462 "';
             else
                 $string = '8.8.8.8 - - [01/Dec/2020:06:56:08 +0100] "GET /css/someotherfile.css HTTP/2.0" 200 11853462 "';
@@ -51,8 +51,8 @@ class tests
         while (microtime(true) < $time_limit) {
             // test code starts here
 
-            // there's only one chance in 337 to see a zip string
-            if (mt_rand(1, 337) == 1)
+            // there's only one chance in 350 to see a zip string
+            if (mt_rand(1, 350) == 1)
                 $string = '8.8.8.8 - - [01/Dec/2020:06:56:08 +0100] "GET /bin/filev1.048.zip HTTP/2.0" 200 11853462 "';
             else
                 $string = '8.8.8.8 - - [01/Dec/2020:06:56:08 +0100] "GET /css/someotherfile.css HTTP/2.0" 200 11853462 "';
