@@ -148,6 +148,14 @@ $save = [];
 
 // run tests x times
 for ($i = 0; $i < $settings['iterations']; $i++) {
+    // update test progress
+    $progress = helper::format_percentage($i / $settings['iterations'], false, 3);
+    $text     = "Running tests {$progress}...";
+    $len      = strlen($text);
+
+    echo($text);
+    echo("\033[{$len}D");
+
     foreach ($tests as $j => $test) {
         $measurement = tests::$test($settings['time_per_iteration'] / 1000);
 
