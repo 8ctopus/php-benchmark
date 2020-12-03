@@ -25,7 +25,7 @@ class helper
             'mean'          => stats::mean($measurements),
             'median'        => stats::median($measurements),
             'mode'          => stats::mode($measurements),
-            'minmum'        => min($measurements),
+            'minimum'       => min($measurements),
             'maximum'       => max($measurements),
             'quartile 1'    => stats::quartiles($measurements)[0],
             'quartile 3'    => stats::quartiles($measurements)[1],
