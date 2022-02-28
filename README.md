@@ -349,7 +349,7 @@ normality          :      5.2%     5.2%
 $ php src/benchmark.php --custom
 ```
 
-# definitions
+## definitions
 
 > The mean is the same as the average value of a data set and is found using a calculation. Add up all of the numbers and divide by the number of numbers in the data set.
 
@@ -373,6 +373,12 @@ $ php src/benchmark.php --custom
 
 > -- <cite>[calculatorsoup.com](https://www.calculatorsoup.com/calculators/statistics/mean-median-mode.php)</cite>
 
-# interesting reads
+## interesting reads
+
 https://kinsta.com/blog/php-benchmarks/
 https://www.paulstephenborile.com/2018/03/code-benchmarks-can-measure-fast-software-make-faster/
+
+## todo
+
+- save test conditions - save environment variables and compare them
+- show tests in multiple columns
