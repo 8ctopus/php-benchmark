@@ -171,4 +171,64 @@ class tests
 
         return $iterations;
     }
+
+    public static function str_br1(string $str) : string
+    {
+        return $str . PHP_EOL;
+    }
+
+    public static function str_br2(string &$str) : string
+    {
+        return $str . PHP_EOL;
+    }
+
+    /**
+     * Pass function argument variant 1
+     * @param  float $limit time limit in seconds
+     * @return int iterations done in allocated time
+     */
+    public static function fn_argument_1(float $limit) : int
+    {
+        $time_start = microtime(true);
+        $time_limit = $time_start + $limit;
+        $iterations = 0;
+
+        $str = 'hello world how are you doing today?';
+
+        while (microtime(true) < $time_limit) {
+            // test code starts here
+
+            $str = self::str_br2($str);
+
+            // test code ends here
+            ++$iterations;
+        }
+
+        return $iterations;
+    }
+
+    /**
+     * Pass function argument variant 2
+     * @param  float $limit time limit in seconds
+     * @return int iterations done in allocated time
+     */
+    public static function fn_argument_2(float $limit) : int
+    {
+        $time_start = microtime(true);
+        $time_limit = $time_start + $limit;
+        $iterations = 0;
+
+        $str = 'hello world how are you doing today?';
+
+        while (microtime(true) < $time_limit) {
+            // test code starts here
+
+            $str = self::str_br1($str);
+
+            // test code ends here
+            ++$iterations;
+        }
+
+        return $iterations;
+    }
 }
