@@ -8,7 +8,7 @@ class helper
 {
     // paddings
     public static $pad1 = 18;
-    public static $pad2 = 10;
+    public static $pad2 = 14;
 
     /**
      * Analyze test results
@@ -102,8 +102,6 @@ class helper
     public static function show_compare(array $baseline, string $btitle, array $latest, string $ltitle) : void
     {
         // paddings
-        self::$pad1 = 18;
-        self::$pad2 = 10;
         $line = str_pad('', self::$pad1 + 3 * self::$pad2 + 3, '-');
 
         echo($line ."\n");
