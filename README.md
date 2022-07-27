@@ -1,14 +1,15 @@
 # PHP benchmark script
 
-Benchmark your php code. The project is built on top of the original work from Alessandro Torrisi [www.php-benchmark-script.com](http://www.php-benchmark-script.com)
+Benchmark your php code.\
+The project is built on top of the original work from Alessandro Torrisi [www.php-benchmark-script.com](http://www.php-benchmark-script.com)
 
-# compatibility
+## compatibility
 
-php 5.6.40 (use the `php5.6-compatibility` tag) to 8.0.0 RC5
+from php 5.6.40 (use the `php5.6-compatibility` tag) to 8.1
 
-# examples
+## examples
 
-## does xdebug slow down code execution?
+### does xdebug slow down code execution?
 
 ANSWER: yes, from 2x to 7x depending on the test.
 
@@ -37,7 +38,7 @@ normality          :     11.0%    11.0%
 [CROPPED]
 ```
 
-## is === faster than ==?
+### is === faster than ==?
 
 ```php
 // equal_1
@@ -85,7 +86,7 @@ normality          :       1.5%      1.5%
 ---------------------------------------------------
 ```
 
-## is strpos + regex faster than pure regex?
+### is strpos + regex faster than pure regex?
 
 Consider the real life example of parsing an Apache access log for zip file downloads.
 
@@ -148,7 +149,7 @@ normality          :       3.3%      3.3%
 ---------------------------------------------------
 ```
 
-## is php 8.0 faster than 7.4?
+### is php 8.0 faster than 7.4?
 
 ANSWER: it's way faster in tested loops (+73%) and math functions (+17%) and not significant differences in the rest of tests.
 
@@ -249,7 +250,7 @@ normality          :      1.3%     1.3%
 ------------------------------------------------
 ```
 
-## is php 7.4.12 faster than 5.6.40?
+### is php 7.4.12 faster than 5.6.40?
 
 ANSWER: it's 3x - 5x faster accross all tests except hashes where there is a 12% improvement.
 
