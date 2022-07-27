@@ -2,6 +2,7 @@
 
 /**
  * Compare results
+ *
  * @author 8ctopus <hello@octopuslabs.io>
  */
 
@@ -13,23 +14,22 @@ ini_set('assert.exception', true);
 // set error reporting
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
-require_once('stats.php');
-require_once('helper.php');
+require_once 'stats.php';
+require_once 'helper.php';
 
 // check if running from cli
 if (php_sapi_name() != 'cli') {
-    echo('cli required');
-    exit();
+    echo 'cli required';
+    exit;
 }
 
 // get command line arguments
-for ($i = 1; $i < count($argv); $i++)
-{
+for ($i = 1; $i < count($argv); ++$i) {
     $argument = $argv[$i];
 
     if (strpos($argument, '--') != 0) {
-        echo("unknown argument {$argument}");
-        exit();
+        echo "unknown argument {$argument}";
+        exit;
     }
 
     switch ($argument) {
@@ -44,21 +44,21 @@ for ($i = 1; $i < count($argv); $i++)
             break;
 
         default:
-            echo("unknown argument {$argument}");
-            exit();
+            echo "unknown argument {$argument}";
+            exit;
     }
 }
 
 // check for required variables
 if (!isset($file1) || !isset($file2)) {
-    echo("file1 and file2 required\n");
-    exit();
+    echo "file1 and file2 required\n";
+    exit;
 }
 
 // check files exist
 if (!file_exists($file1) || !file_exists($file2)) {
-    echo("valid file1 and file2 required\n");
-    exit();
+    echo "valid file1 and file2 required\n";
+    exit;
 }
 
 // get data sets

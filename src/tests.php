@@ -3,18 +3,20 @@
 /**
  * Tests
  * original author
+ *
  * @author Alessandro Torrisi
  * The original tests are available at http://www.php-benchmark-script.com
  *
  * modified version author
  * @author 8ctopus <hello@octopuslabs.io>
  */
-
 class tests
 {
     /**
      * Test if else
-     * @param  float $limit time limit in seconds
+     *
+     * @param float $limit time limit in seconds
+     *
      * @return int iterations done in allocated time
      */
     public static function test_if_else(float $limit) : int
@@ -29,28 +31,25 @@ class tests
         while (microtime(true) < $time_limit) {
             if ($i % 2 == 0) {
                 $j = 1;
-            }
-            elseif ($i % 3 == 0) {
+            } elseif ($i % 3 == 0) {
                 $j = 2;
-            }
-            else
-            if ($i % 5 == 0) {
+            } elseif ($i % 5 == 0) {
                 $j = 3;
-            }
-            else {
+            } else {
                 $j = 4;
             }
 
-            $iterations++;
+            ++$iterations;
         }
 
         return $iterations;
     }
 
-
     /**
      * Test loops
-     * @param  float $limit time limit in seconds
+     *
+     * @param float $limit time limit in seconds
+     *
      * @return int iterations done in allocated time
      */
     public static function test_loops(float $limit) : int
@@ -62,20 +61,21 @@ class tests
         while (microtime(true) < $time_limit) {
             $j = 0;
 
-            for ($i = 0; $i < 100; $i++) {
-                $j++;
+            for ($i = 0; $i < 100; ++$i) {
+                ++$j;
             }
 
-            $iterations++;
+            ++$iterations;
         }
 
         return $iterations;
     }
 
-
     /**
      * Test arrays
-     * @param  float $limit time limit in seconds
+     *
+     * @param float $limit time limit in seconds
+     *
      * @return int iterations done in allocated time
      */
     public static function test_arrays(float $limit) : int
@@ -88,21 +88,22 @@ class tests
 
         while (microtime(true) < $time_limit) {
             array_push($a, [
-                rand() => helper::not_random_bytes(10)
+                rand() => helper::not_random_bytes(10),
             ]);
 
             array_search(helper::not_random_bytes(10), $a, true);
 
-            $iterations++;
+            ++$iterations;
         }
 
         return $iterations;
     }
 
-
     /**
      * Test string functions
-     * @param  float $limit time limit in seconds
+     *
+     * @param float $limit time limit in seconds
+     *
      * @return int iterations done in allocated time
      */
     public static function test_strings(float $limit) : int
@@ -111,8 +112,8 @@ class tests
         $time_limit = $time_start + $limit;
         $iterations = 0;
 
-        $functions  = ['addslashes', 'chunk_split', 'ltrim', 'metaphone', 'ord', 'str_shuffle',
-            'strip_tags', 'strlen', 'strtoupper', 'strtolower', 'strrev', 'soundex', 'trim'];
+        $functions = ['addslashes', 'chunk_split', 'ltrim', 'metaphone', 'ord', 'str_shuffle',
+            'strip_tags', 'strlen', 'strtoupper', 'strtolower', 'strrev', 'soundex', 'trim', ];
 
         // remove functions that don't exist
         $functions = helper::check_functions_exist($functions);
@@ -125,16 +126,17 @@ class tests
                 call_user_func_array($function, [$string]);
             }
 
-            $iterations++;
+            ++$iterations;
         }
 
         return $iterations;
     }
 
-
     /**
      * Test math functions
-     * @param  float $limit time limit in seconds
+     *
+     * @param float $limit time limit in seconds
+     *
      * @return int iterations done in allocated time
      */
     public static function test_math(float $limit) : int
@@ -143,8 +145,8 @@ class tests
         $time_limit = $time_start + $limit;
         $iterations = 0;
 
-        $functions  = ['abs', 'acos', 'asin', 'atan', 'decbin', 'exp', 'floor', 'exp', 'is_finite',
-            'is_nan', 'log', 'log10', 'log1p', 'pi', 'pow', 'sin', 'sqrt', 'tan'];
+        $functions = ['abs', 'acos', 'asin', 'atan', 'decbin', 'exp', 'floor', 'exp', 'is_finite',
+            'is_nan', 'log', 'log10', 'log1p', 'pi', 'pow', 'sin', 'sqrt', 'tan', ];
 
         // remove functions that don't exist
         $functions = helper::check_functions_exist($functions);
@@ -154,7 +156,7 @@ class tests
             foreach ($functions as $function) {
                 // get function arguments count
                 $reflection = new ReflectionFunction($function);
-                $count      = $reflection->getNumberOfParameters();
+                $count = $reflection->getNumberOfParameters();
 
                 switch ($count) {
                     case 1:
@@ -173,16 +175,17 @@ class tests
                 call_user_func_array($function, $arguments);
             }
 
-            $iterations++;
+            ++$iterations;
         }
 
         return $iterations;
     }
 
-
     /**
      * Test cryptographic hashes
-     * @param  float $limit time limit in seconds
+     *
+     * @param float $limit time limit in seconds
+     *
      * @return int iterations done in allocated time
      */
     public static function test_hashes(float $limit) : int
@@ -199,16 +202,17 @@ class tests
                 hash($hash, $string, false);
             }
 
-            $iterations++;
+            ++$iterations;
         }
 
         return $iterations;
     }
 
-
     /**
      * Test file operations
-     * @param  float $limit time limit in seconds
+     *
+     * @param float $limit time limit in seconds
+     *
      * @return int iterations done in allocated time or null on failure
      */
     public static function test_files(float $limit) : ?int
@@ -219,7 +223,7 @@ class tests
 
         // max number of bytes to write
         $bytes_to_write_max = 0.5 * 1024 * 1024;
-        $total_bytes        = 0;
+        $total_bytes = 0;
 
         // get temporary directory
         $tmp_dir = sys_get_temp_dir() . DIRECTORY_SEPARATOR;
@@ -228,20 +232,23 @@ class tests
             // scan temp dir
             $list = scandir($tmp_dir);
 
-            if (!$list)
+            if (!$list) {
                 return null;
+            }
 
             // get temporary file name in temporary dir
             $tmp_filename = tempnam($tmp_dir, '');
 
-            if (!$tmp_filename)
+            if (!$tmp_filename) {
                 return null;
+            }
 
             // open temp file
             $handle = fopen($tmp_filename, 'r+');
 
-            if (!$handle)
+            if (!$handle) {
                 return null;
+            }
 
             // get bytes count to write to file
             $bytes_to_write = rand(1, $bytes_to_write_max);
@@ -279,17 +286,18 @@ class tests
             // delete file
             unlink($tmp_filename);
 
-            $iterations++;
+            ++$iterations;
         }
 
         //echo('total bytes : '. format_bytes($total_bytes, 2) ."\n");
         return $iterations;
     }
 
-
     /**
      * Test mysql operations
-     * @param  float $limit time limit in seconds
+     *
+     * @param float $limit time limit in seconds
+     *
      * @return int iterations done in allocated time or null on failure
      */
     public static function test_mysql(float $limit) : ?int
@@ -298,24 +306,26 @@ class tests
         $time_limit = $time_start + $limit;
         $iterations = 0;
 
-        $host       = 'localhost';
-        $user       = 'root';
-        $pass       = '123';
-        $db         = 'benchmark-test';
-        $mysqli     = null;
+        $host = 'localhost';
+        $user = 'root';
+        $pass = '123';
+        $db = 'benchmark-test';
+        $mysqli = null;
         $db_created = false;
-        $exception  = false;
+        $exception = false;
 
-        if (!function_exists('mysqli_connect'))
+        if (!function_exists('mysqli_connect')) {
             return null;
+        }
 
         try {
             while (microtime(true) < $time_limit) {
                 // connect to database
                 $mysqli = mysqli_connect($host, $user, $pass);
 
-                if (!$mysqli)
+                if (!$mysqli) {
                     throw new Exception('Connect to database - FAILED');
+                }
 
                 if (!$iterations) {
                     // check if database already exists
@@ -330,28 +340,32 @@ TAG;
 
                     $result = mysqli_query($mysqli, $query);
 
-                    if (!$result)
+                    if (!$result) {
                         throw new Exception('Check if database exists - FAILED');
+                    }
 
                     $array = mysqli_fetch_array($result);
 
-                    if (isset($array))
+                    if (isset($array)) {
                         throw new Exception('Database already exists');
+                    }
 
                     // create database
                     $query = <<<TAG
                         CREATE DATABASE `{$db}`;
 TAG;
 
-                    if (!mysqli_query($mysqli, $query))
+                    if (!mysqli_query($mysqli, $query)) {
                         throw new Exception('Create database - FAILED');
+                    }
 
                     $db_created = true;
                 }
 
                 // select database
-                if (!mysqli_select_db($mysqli, $db))
+                if (!mysqli_select_db($mysqli, $db)) {
                     throw new Exception('Select database - FAILED');
+                }
 
                 if (!$iterations) {
                     // create table
@@ -363,8 +377,9 @@ TAG;
                         );
 TAG;
 
-                    if (!mysqli_query($mysqli, $query))
+                    if (!mysqli_query($mysqli, $query)) {
                         throw new Exception('Create table - FAILED');
+                    }
                 }
 
                 // insert into table
@@ -377,8 +392,9 @@ TAG;
                         (CURRENT_TIMESTAMP, '{$str}');
 TAG;
 
-                if (!mysqli_query($mysqli, $query))
+                if (!mysqli_query($mysqli, $query)) {
                     throw new Exception('Insert into table - FAILED');
+                }
 
                 // select from table
                 $query = <<<TAG
@@ -392,32 +408,34 @@ TAG;
 
                 $result = mysqli_query($mysqli, $query);
 
-                if (!$result)
+                if (!$result) {
                     throw new Exception('Select from table - FAILED');
+                }
 
                 $array = mysqli_fetch_array($result);
 
-                if (!$array)
+                if (!$array) {
                     throw new Exception('Select from table - FAILED');
+                }
 
                 // disconnect from database
                 mysqli_close($mysqli);
 
-                $iterations++;
+                ++$iterations;
             }
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             $exception = true;
             //echo($e->getMessage() ."\n");
-        }
-        finally {
+        } finally {
             // check for connection failure
-            if (!$mysqli)
+            if (!$mysqli) {
                 return null;
+            }
 
-            if (!$exception)
+            if (!$exception) {
                 // connect to database
                 $mysqli = mysqli_connect($host, $user, $pass);
+            }
 
             if ($db_created) {
                 // drop database

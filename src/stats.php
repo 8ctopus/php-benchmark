@@ -2,13 +2,16 @@
 
 /**
  * Stats class
+ *
  * @author 8ctopus <hello@octopuslabs.io>
  */
 class stats
 {
     /**
      * Calculate array mean
-     * @param  array $cells
+     *
+     * @param array $cells
+     *
      * @return float
      */
     public static function mean(array $cells) : float
@@ -16,10 +19,11 @@ class stats
         return array_sum($cells) / count($cells);
     }
 
-
     /**
      * Calculate array median
-     * @param  array $cells
+     *
+     * @param array $cells
+     *
      * @return float
      */
     public static function median(array $cells) : float
@@ -31,16 +35,18 @@ class stats
 
         $index = floor($count / 2);
 
-        if ($count % 2)
+        if ($count % 2) {
             return $cells[$index];
-        else
-            return ($cells[$index -1] + $cells[$index]) / 2;
+        } else {
+            return ($cells[$index - 1] + $cells[$index]) / 2;
+        }
     }
-
 
     /**
      * Calculate array standard deviation
-     * @param  array $cells
+     *
+     * @param array $cells
+     *
      * @return float
      */
     public static function standard_deviation(array $cells) : float
@@ -50,22 +56,21 @@ class stats
         $mean = self::mean($cells);
 
         // sum of squares
-        foreach($cells as $cell) {
+        foreach ($cells as $cell) {
             // difference between cell and mean squared
-            $variance += pow(($cell - $mean), 2);
+            $variance += pow($cell - $mean, 2);
         }
 
-        $count = count($cells) -1;
+        $count = count($cells) - 1;
 
-        $standard_deviation = sqrt($variance) / sqrt($count);
-
-        return $standard_deviation;
+        return sqrt($variance) / sqrt($count);
     }
-
 
     /**
      * Get array first mode
-     * @param  array $cells
+     *
+     * @param array $cells
+     *
      * @return float first mode
      */
     public static function mode(array $cells) : float
@@ -73,10 +78,11 @@ class stats
         return self::modes($cells)[0];
     }
 
-
     /**
      * Calculate array modes
-     * @param  array $cells
+     *
+     * @param array $cells
+     *
      * @return array modes
      * @note https://www.calculatorsoup.com/calculators/statistics/mean-median-mode.php
      */
@@ -92,10 +98,11 @@ class stats
         return array_keys($values, max($values));
     }
 
-
     /**
      * Calculate array quartiles
-     * @param  array $cells
+     *
+     * @param array $cells
+     *
      * @return array quartiles
      * @note https://en.wikipedia.org/wiki/Interquartile_range#Examples
      */
@@ -118,10 +125,11 @@ class stats
         return [$quartile1, $quartile3];
     }
 
-
     /**
      * Calculate array interquartile range
-     * @param  array  $cells
+     *
+     * @param array $cells
+     *
      * @return float range
      */
     public static function interquartile_range(array $cells) : float
@@ -131,10 +139,11 @@ class stats
         return $quartiles[1] - $quartiles[0];
     }
 
-
     /**
      * Get array outliers
-     * @param  array  $cells
+     *
+     * @param array $cells
+     *
      * @return array outliers
      * @note Outliers are values that lie outside the upper and lower fences
      * upper fence = Q3 + 1.5 × interquartile range
@@ -143,7 +152,7 @@ class stats
     public static function outliers(array $cells) : array
     {
         $quartiles = self::quartiles($cells);
-        $iqr       = self::interquartile_range($cells);
+        $iqr = self::interquartile_range($cells);
 
         // calculate fences
         $fence_upper = $quartiles[1] + 1.5 * $iqr;
@@ -154,33 +163,36 @@ class stats
         $outliers = [];
 
         foreach ($cells as $cell) {
-            if ($cell < $fence_lower || $cell > $fence_upper)
+            if ($cell < $fence_lower || $cell > $fence_upper) {
                 $outliers[] = $cell;
+            }
         }
 
         return $outliers;
     }
 
-
     /**
      * Approximate normality test
-     * @param  array  $cells
-     * @return float  probability it's normal
+     *
+     * @param array $cells
+     *
+     * @return float probability it's normal
      * @note found here https://www.paulstephenborile.com/2018/03/code-benchmarks-can-measure-fast-software-make-faster/
      */
     public static function test_normal(array $cells) : float
     {
-        $mean   = self::mean($cells);
+        $mean = self::mean($cells);
         $median = self::median($cells);
 
         return abs($mean - $median) / max($mean, $median);
     }
 
-
     /**
      * Create histogram
-     * @param  array $data_points
-     * @param  int $buckets number of buckets
+     *
+     * @param array $data_points
+     * @param int   $buckets     number of buckets
+     *
      * @return array histogram
      */
     public static function histogram(array $data_points, int $buckets) : array
@@ -198,12 +210,12 @@ class stats
         $histogram = [];
 
         // initialize histogram buckets
-        for ($i = 0; $i < $buckets; $i++) {
+        for ($i = 0; $i < $buckets; ++$i) {
             $histogram[$i] = [
-                'bucket'      => $i,
+                'bucket' => $i,
                 'range_start' => $min + $i * $width,
-                'range_end'   => $min + ($i + 1) * $width,
-                'count'       => 0,
+                'range_end' => $min + ($i + 1) * $width,
+                'count' => 0,
             ];
         }
 
@@ -215,21 +227,23 @@ class stats
             $bucket = ceil($offset / $width) - 1;
 
             // move min value to first bucket
-            if ($bucket == -1)
+            if ($bucket == -1) {
                 $bucket = 0;
+            }
 
             // increment bucket count
-            $histogram[$bucket]['count']++;
+            ++$histogram[$bucket]['count'];
         }
 
         return $histogram;
     }
 
-
     /**
      * Draw histogram
-     * @param  array  $histogram
-     * @param  int    $bar_max_length
+     *
+     * @param array $histogram
+     * @param int   $bar_max_length
+     *
      * @return void
      */
     public static function histogram_draw(array $histogram, int $bar_max_length) : void
@@ -241,49 +255,52 @@ class stats
         $max = 0;
 
         foreach ($histogram as $value) {
-            if ($value['count'] > $max)
+            if ($value['count'] > $max) {
                 $max = $value['count'];
+            }
         }
 
         // draw table border
-        $border = "+---------------------------". str_repeat('-', $bar_max_length + 3) ."-+\n";
+        $border = '+---------------------------' . str_repeat('-', $bar_max_length + 3) . "-+\n";
 
-        echo($border);
+        echo $border;
 
         // draw table header
         $bar = str_pad('bar', $bar_max_length, ' ');
 
-        echo("| bucket | range end | count | {$bar} |\n");
+        echo "| bucket | range end | count | {$bar} |\n";
 
         // draw table border
-        echo($border);
+        echo $border;
 
-        for ($i = 0; $i < $buckets; $i++) {
+        for ($i = 0; $i < $buckets; ++$i) {
             $count = $histogram[$i]['count'];
 
-            echo("| ". str_pad($i, strlen('bucket'), ' ', STR_PAD_LEFT) ." | ".
-                str_pad(round($histogram[$i]['range_end'], 0), strlen('range end'), ' ', STR_PAD_LEFT) ." | ".
-                str_pad($count, strlen('count'), ' ', STR_PAD_LEFT) ." | ".
-                str_pad(str_repeat('|', round($bar_max_length * $count / $max, 0)), $bar_max_length, ' ', STR_PAD_RIGHT) ." |\n"
-            );
+            echo '| ' . str_pad($i, strlen('bucket'), ' ', STR_PAD_LEFT) . ' | ' .
+                str_pad(round($histogram[$i]['range_end'], 0), strlen('range end'), ' ', STR_PAD_LEFT) . ' | ' .
+                str_pad($count, strlen('count'), ' ', STR_PAD_LEFT) . ' | ' .
+                str_pad(str_repeat('|', round($bar_max_length * $count / $max, 0)), $bar_max_length, ' ', STR_PAD_RIGHT) . " |\n"
+            ;
         }
 
         // draw table border
-        echo($border);
+        echo $border;
     }
-
 
     /**
      * Relative difference between 2 numbers
-     * @param  float $n1
-     * @param  float $n2
+     *
+     * @param float $n1
+     * @param float $n2
      * @param  float relative difference between n1 and n2, taking n1 as base
+     *
      * @throws Division by zero
      */
     public static function relative_difference(float $n1, float $n2) : float
     {
-        if (!$n1)
+        if (!$n1) {
             throw new DivisionByZeroError();
+        }
 
         $absolute_difference = $n2 - $n1;
 
