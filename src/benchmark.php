@@ -141,10 +141,15 @@ echo('PHP benchmark' ."\n\n".
 $tests = get_class_methods('tests');
 
 // filter tests
-foreach ($tests as $key => $test)
-    if (preg_match($settings['filter_test'], $test) == 0)
+foreach ($tests as $key => $test) {
+    if (preg_match($settings['filter_test'], $test) === 0) {
         // remove test
         unset($tests[$key]);
+    }
+}
+
+// cleanup array
+$tests = array_values($tests);
 
 // run tests
 $save = [];
