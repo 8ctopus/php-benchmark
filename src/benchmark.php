@@ -178,8 +178,8 @@ for ($i = 0; $i < $settings['iterations']; ++$i) {
             }
 
             // remove test if it failed
-            //if ($measurement === null)
-            //    unset($tests[$j]);
+            if ($measurement === null)
+                unset($tests[$j]);
         }
     } else {
         // start from last test
@@ -194,8 +194,8 @@ for ($i = 0; $i < $settings['iterations']; ++$i) {
             }
 
             // remove test if it failed
-            //if ($measurement === null)
-            //    unset($tests[$j]);
+            if ($measurement === null)
+                unset($tests[$j]);
         }
     }
 }
