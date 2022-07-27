@@ -1,0 +1,16 @@
+{
+    "name": "8ctopus/php-benchmark",
+    "type": "project",
+    "description": "Benchmark your php code",
+    "keywords": ["speed", "benchmark"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "8ctopus",
+            "email": "hello@octopuslabs.io"
+        }
+    ],
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.8"
+    }
+}
