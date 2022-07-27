@@ -154,11 +154,11 @@ class helper
 
     /**
      * Format number
-     * @param  int $number
+     * @param  float $number
      * @param  int $padding
      * @return string
      */
-    public static function format_number(int $number, int $padding) : string
+    public static function format_number(float $number, int $padding) : string
     {
         return str_pad(number_format($number, 0, '.', ''), $padding, ' ', STR_PAD_LEFT);
     }
