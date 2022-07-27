@@ -10,8 +10,15 @@ from php 5.6.40 (use the `php5.6-compatibility` tag) to 8.1
 ## how to use
 
 - git clone the project
-- run standard tests `php src/benchmark.php`
-- run custom test `php src/benchmark.php --custom --filter ~equal~` where filter corresponds to a regular expression matching the functions that you want to test
+
+### run standard test
+
+- `php src/benchmark.php`
+
+### run custom test
+
+- `composer install`
+- `php src/benchmark.php --custom --filter ~equal~` where filter corresponds to a regular expression matching the functions that you want to test in `src/tests_user.php`
 
 ## examples
 
