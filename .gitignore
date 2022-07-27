@@ -1,2 +1,3 @@
-/*.sublime-workspace
 /composer.lock
+/.php-cs-fixer.cache
+/*.sublime-workspace

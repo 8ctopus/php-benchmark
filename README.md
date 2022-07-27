@@ -383,3 +383,9 @@ https://www.paulstephenborile.com/2018/03/code-benchmarks-can-measure-fast-softw
 
 - save test conditions - save environment variables and compare them
 - show tests in multiple columns
+
+## clean code
+
+```sh
+vendor/bin/php-cs-fixer fix
+```
