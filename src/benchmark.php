@@ -15,8 +15,8 @@ error_reporting(E_ERROR /*| E_WARNING */ | E_PARSE);
 
 // settings
 $settings = [
-    'iterations'            => 100,
-    'time_per_iteration'    => 50,
+    'iterations'            => 500,
+    'time_per_iteration'    => 10,
 
     'filter_test'           => '/^test_/',
     'custom_tests'          => false,
@@ -164,17 +164,36 @@ for ($i = 0; $i < $settings['iterations']; $i++) {
     echo($text);
     echo("\033[{$len}D");
 
-    foreach ($tests as $j => $test) {
-        $measurement = tests::$test($settings['time_per_iteration'] / 1000);
+    if (!($i % 2)) {
+        // start from first test
+        for ($j = 0; $j < count($tests); ++$j) {
+            $test = $tests[$j];
+            $measurement = tests::$test($settings['time_per_iteration'] / 1000);
 
-        if (!$i)
-            $save[$test] = [$measurement];
-        else
-            array_push($save[$test], $measurement);
+            if (!$i)
+                $save[$test] = [$measurement];
+            else
+                array_push($save[$test], $measurement);
 
-        // remove test if it failed
-        if ($measurement === null)
-            unset($tests[$j]);
+            // remove test if it failed
+            //if ($measurement === null)
+            //    unset($tests[$j]);
+        }
+    } else {
+        // start from last test
+        for ($j = count($tests) - 1; $j >= 0 ; --$j) {
+            $test = $tests[$j];
+            $measurement = tests::$test($settings['time_per_iteration'] / 1000);
+
+            if (!$i)
+                $save[$test] = [$measurement];
+            else
+                array_push($save[$test], $measurement);
+
+            // remove test if it failed
+            //if ($measurement === null)
+            //    unset($tests[$j]);
+        }
     }
 }
 
