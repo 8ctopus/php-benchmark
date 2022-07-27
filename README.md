@@ -342,6 +342,39 @@ std deviation      :       109      116     6.7%
 normality          :      5.2%     5.2%
 ```
 
+### compare loggers
+
+QUESTION: Which logger is faster? Monolog or Apix?
+ANSWER: It depends on how the log is setup but in most cases Apix is significantly faster
+
+```bash
+$ php src/benchmark.php --custom --filter ~logger~
+PHP benchmark
+
+-----------------------------------
+platform           :      WINNT x64
+php version        :          8.1.4
+xdebug             :             on
+memory limit       :           512M
+max execution      :              0
+time per iteration :           20ms
+iterations         :            250
+-----------------------------------
+---------------------------------------------------------------
+0                  : logger_monolog   logger_apix
+mean               :             70           744       +956.4%
+median             :             56           622      +1010.7%
+mode               :             37           420      +1035.1%
+minimum            :              9           206      +2188.9%
+maximum            :            141          1536       +989.4%
+quartile 1         :             37           427      +1054.1%
+quartile 3         :            104          1055       +914.4%
+IQ range           :             67           628       +837.3%
+std deviation      :             37           370       +899.8%
+normality          :          20.5%         20.5%
+---------------------------------------------------------------
+```
+
 ## run your own tests
 
 `tests_user.php` serves as a template to create your own tests. To run your tests.

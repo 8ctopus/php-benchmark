@@ -12,5 +12,13 @@
     ],
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.8"
+    },
+    "repositories": [{
+        "url": "https://github.com/8ctopus/log",
+        "type": "git"
+    }],
+    "require": {
+        "apix/log": "dev-php8",
+        "monolog/monolog": "^3.2"
     }
 }

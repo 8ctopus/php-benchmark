@@ -2,5 +2,6 @@
 /vendor/
 
 /.php-cs-fixer.cache
-/*.sublime-workspace
 /benchmark_*.txt
+/*.sublime-workspace
+/*.log

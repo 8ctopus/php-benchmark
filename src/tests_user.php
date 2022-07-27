@@ -1,5 +1,9 @@
 <?php
 
+require __DIR__ .'/../vendor/autoload.php';
+
+define('LOG_STDOUT', true);
+
 /**
  * Add your tests here
  *
@@ -241,6 +245,89 @@ class tests
             // test code starts here
 
             $str = self::str_br1($str);
+
+            // test code ends here
+            ++$iterations;
+        }
+
+        return $iterations;
+    }
+
+    /**
+     * Test monolog logger
+     *
+     * @param float $limit time limit in seconds
+     *
+     * @return int iterations done in allocated time
+     */
+    public static function logger_monolog(float $limit) : int
+    {
+        $time_start = microtime(true);
+        $time_limit = $time_start + $limit;
+        $iterations = 0;
+
+        // create a log channel
+        $log = new Monolog\Logger('test');
+        $log->pushHandler(new Monolog\Handler\StreamHandler('log_monolog.log', Monolog\Level::Warning));
+
+        if (LOG_STDOUT) {
+            // log to stdout
+            $log->pushHandler(new Monolog\Handler\StreamHandler('php://stdout', Monolog\Level::Warning));
+        }
+
+        while (microtime(true) < $time_limit) {
+            // test code starts here
+
+            $log->warning('test');
+
+            // test code ends here
+            ++$iterations;
+        }
+
+        return $iterations;
+    }
+
+    /**
+     * Test apix logger
+     *
+     * @param float $limit time limit in seconds
+     *
+     * @return int iterations done in allocated time
+     */
+    public static function logger_apix(float $limit) : int
+    {
+        $time_start = microtime(true);
+        $time_limit = $time_start + $limit;
+        $iterations = 0;
+
+        $file = new Apix\Log\Logger\File('log_apix.log');
+        $file
+            // intercept logs that are >= `warning`
+            ->setMinLevel('warning')
+            // don't propagate to further buckets
+            ->setCascading(true)
+            // postpone/accumulate logs processing
+            ->setDeferred(true);
+
+        $log = new Apix\Log\Logger([$file]);
+
+        if (LOG_STDOUT) {
+            $stdout = new Apix\Log\Logger\Stream('php://stdout', 'a');
+            $stdout
+                // intercept logs that are >= `warning`
+                ->setMinLevel('warning')
+                // don't propagate to further buckets
+                ->setCascading(true)
+                // postpone/accumulate logs processing
+                ->setDeferred(true);
+
+            $log->add($stdout);
+        }
+
+        while (microtime(true) < $time_limit) {
+            // test code starts here
+
+            $log->warning('test');
 
             // test code ends here
             ++$iterations;
