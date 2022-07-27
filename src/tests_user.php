@@ -8,6 +8,50 @@
 class tests
 {
     /**
+     * baseline 1
+     * @param  float $limit time limit in seconds
+     * @return int iterations done in allocated time
+     */
+    public static function baseline_1(float $limit) : int
+    {
+        $time_start = microtime(true);
+        $time_limit = $time_start + $limit;
+        $iterations = 0;
+
+        while (microtime(true) < $time_limit) {
+            // test code starts here
+            pow(2, 10);
+
+            // test code ends here
+            ++$iterations;
+        }
+
+        return $iterations;
+    }
+
+    /**
+     * baseline 2 (same test as baseline 1, just to test engine)
+     * @param  float $limit time limit in seconds
+     * @return int iterations done in allocated time
+     */
+    public static function baseline_2(float $limit) : int
+    {
+        $time_start = microtime(true);
+        $time_limit = $time_start + $limit;
+        $iterations = 0;
+
+        while (microtime(true) < $time_limit) {
+            // test code starts here
+            pow(2, 10);
+
+            // test code ends here
+            ++$iterations;
+        }
+
+        return $iterations;
+    }
+
+    /**
      * Equality variant 1
      * @param  float $limit time limit in seconds
      * @return int iterations done in allocated time
