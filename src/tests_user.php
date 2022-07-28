@@ -266,7 +266,6 @@ class tests
         $time_limit = $time_start + $limit;
         $iterations = 0;
 
-        // create a log channel
         $log = new Monolog\Logger('test');
         $log->pushHandler(new Monolog\Handler\StreamHandler('log_monolog.log', Monolog\Level::Warning));
 
