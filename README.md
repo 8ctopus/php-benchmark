@@ -357,7 +357,7 @@ normality          :      5.2%     5.2%
 
 ### compare loggers
 
-QUESTION: Which logger is faster? Monolog or Apix?
+QUESTION: Which logger is faster? Monolog or Apix?\
 ANSWER: It depends on how the log is setup but in most cases Apix is significantly faster
 
 ```bash

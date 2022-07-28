@@ -18,7 +18,7 @@
         "type": "git"
     }],
     "require": {
-        "apix/log": "dev-php8",
+        "apix/log": "dev-fixes",
         "monolog/monolog": "^3.2"
     }
 }
