@@ -17,7 +17,7 @@ error_reporting(E_ERROR /*| E_WARNING */ | E_PARSE);
 // settings
 $settings = [
     'iterations' => 250,
-    'time_per_iteration' => 20,
+    'time_per_iteration' => 50,
 
     'filter_test' => '/^test_/',
     'custom_tests' => false,

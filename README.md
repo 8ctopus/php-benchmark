@@ -366,25 +366,25 @@ PHP benchmark
 
 -----------------------------------
 platform           :      WINNT x64
-php version        :          8.1.4
+php version        :          8.1.9
 xdebug             :             on
 memory limit       :           512M
 max execution      :              0
-time per iteration :           20ms
+time per iteration :           50ms
 iterations         :            250
 -----------------------------------
 ---------------------------------------------------------------
 0                  : logger_monolog   logger_apix
-mean               :             25          1430      +5564.1%
-median             :             18          1756      +9934.3%
-mode               :              3          2013     +67000.0%
-minimum            :              1            28      +2700.0%
-maximum            :             73          2183      +2890.4%
-quartile 1         :              5           750     +14900.0%
-quartile 3         :             51          1979      +3780.4%
-IQ range           :             46          1229      +2571.7%
-std deviation      :             21           654      +2941.1%
-normality          :          30.7%         30.7%
+mean               :            107          2373      +2108.6%
+median             :            111          2496      +2148.2%
+mode               :             82          2600      +3070.7%
+minimum            :              3           499     +16533.3%
+maximum            :            175          3000      +1614.3%
+quartile 1         :             82          2203      +2586.6%
+quartile 3         :            136          2694      +1880.9%
+IQ range           :             54           491       +809.3%
+std deviation      :             36           476      +1234.2%
+normality          :           3.2%          3.2%
 ---------------------------------------------------------------
 ```
 

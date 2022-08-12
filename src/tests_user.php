@@ -306,7 +306,9 @@ class tests
             // don't propagate to further buckets
             ->setCascading(true)
             // postpone/accumulate logs processing
-            ->setDeferred(true);
+            ->setDeferred(true)
+            // automatically flush when >= 200 logs
+            ->setDeferredTrigger(200);
 
         $log = new Apix\Log\Logger([$file]);
 
