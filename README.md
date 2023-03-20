@@ -5,7 +5,7 @@ The project is built on top of the original work from Alessandro Torrisi [www.ph
 
 ## compatibility
 
-from php 5.6.40 (use the `php5.6-compatibility` tag) to 8.1
+from php 5.6.40 (use the `php5.6-compatibility` tag) to 8.2.x
 
 ## how to use
 
