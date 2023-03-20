@@ -414,7 +414,3 @@ ANSWER: It depends on how the log is setup but in most cases Apix is significant
 
 - save test conditions - save environment variables and compare them
 - show tests in multiple columns
-
-## clean code
-
-    vendor/bin/php-cs-fixer fix

@@ -84,6 +84,7 @@ class stats
      * @param array $cells
      *
      * @return array modes
+     *
      * @note https://www.calculatorsoup.com/calculators/statistics/mean-median-mode.php
      */
     public static function modes(array $cells) : array
@@ -104,6 +105,7 @@ class stats
      * @param array $cells
      *
      * @return array quartiles
+     *
      * @note https://en.wikipedia.org/wiki/Interquartile_range#Examples
      */
     public static function quartiles(array $cells) : array
@@ -145,6 +147,7 @@ class stats
      * @param array $cells
      *
      * @return array outliers
+     *
      * @note Outliers are values that lie outside the upper and lower fences
      * upper fence = Q3 + 1.5 × interquartile range
      * lower fence = Q1 − 1.5 × interquartile range
@@ -177,6 +180,7 @@ class stats
      * @param array $cells
      *
      * @return float probability it's normal
+     *
      * @note found here https://www.paulstephenborile.com/2018/03/code-benchmarks-can-measure-fast-software-make-faster/
      */
     public static function test_normal(array $cells) : float

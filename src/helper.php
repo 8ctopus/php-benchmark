@@ -207,6 +207,7 @@ class helper
      * @param int $precision
      *
      * @return string
+     *
      * @note https://stackoverflow.com/a/2510540/10126479
      */
     public static function format_bytes(int $size, int $precision = 2) : string
