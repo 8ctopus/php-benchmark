@@ -253,7 +253,7 @@ class tests
             }
 
             // get bytes count to write to file
-            $bytes_to_write = rand(1, $bytes_to_write_max);
+            $bytes_to_write = rand(1, (int) $bytes_to_write_max);
 
             $total_bytes += $bytes_to_write;
 
