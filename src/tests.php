@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Tests
  * original author
@@ -29,11 +31,11 @@ class tests
         $j = 0;
 
         while (microtime(true) < $time_limit) {
-            if ($i % 2 == 0) {
+            if ($i % 2 === 0) {
                 $j = 1;
-            } elseif ($i % 3 == 0) {
+            } elseif ($i % 3 === 0) {
                 $j = 2;
-            } elseif ($i % 5 == 0) {
+            } elseif ($i % 5 === 0) {
                 $j = 3;
             } else {
                 $j = 4;
@@ -87,9 +89,9 @@ class tests
         $a = [];
 
         while (microtime(true) < $time_limit) {
-            array_push($a, [
+            $a[] = [
                 rand() => helper::not_random_bytes(10),
-            ]);
+            ];
 
             array_search(helper::not_random_bytes(10), $a, true);
 

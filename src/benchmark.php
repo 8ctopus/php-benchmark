@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * PHP benchmark script
  *
@@ -38,7 +40,7 @@ $settings = [
 ];
 
 // check if running from cli
-if (php_sapi_name() != 'cli') {
+if (PHP_SAPI !== 'cli') {
     echo 'Please run the script from cli';
     exit;
 }
@@ -128,13 +130,13 @@ $line = str_pad('', helper::$pad1 + helper::$pad2 + 3, '-');
 
 echo 'PHP benchmark' . "\n\n" .
     "{$line}\n" .
-    str_pad('platform', helper::$pad1) . ' : ' . str_pad(PHP_OS . ' ' . ((PHP_INT_SIZE == 8) ? 'x64' : 'x32'), helper::$pad2, ' ', STR_PAD_LEFT) . "\n" .
+    str_pad('platform', helper::$pad1) . ' : ' . str_pad(PHP_OS . ' ' . ((PHP_INT_SIZE === 8) ? 'x64' : 'x32'), helper::$pad2, ' ', STR_PAD_LEFT) . "\n" .
     str_pad('php version', helper::$pad1) . ' : ' . str_pad(PHP_VERSION, helper::$pad2, ' ', STR_PAD_LEFT) . "\n" .
     str_pad('xdebug', helper::$pad1) . ' : ' . str_pad(extension_loaded('xdebug') ? 'on' : 'off', helper::$pad2, ' ', STR_PAD_LEFT) . "\n" .
     str_pad('memory limit', helper::$pad1) . ' : ' . str_pad(ini_get('memory_limit'), helper::$pad2, ' ', STR_PAD_LEFT) . "\n" .
     str_pad('max execution', helper::$pad1) . ' : ' . str_pad(ini_get('max_execution_time'), helper::$pad2, ' ', STR_PAD_LEFT) . "\n" .
     str_pad('time per iteration', helper::$pad1) . ' : ' . str_pad($settings['time_per_iteration'] . 'ms', helper::$pad2, ' ', STR_PAD_LEFT) . "\n" .
-    str_pad('iterations', helper::$pad1) . ' : ' . str_pad($settings['iterations'], helper::$pad2, ' ', STR_PAD_LEFT) . "\n" .
+    str_pad('iterations', helper::$pad1) . ' : ' . str_pad((string) $settings['iterations'], helper::$pad2, ' ', STR_PAD_LEFT) . "\n" .
     "{$line}\n"
 ;
 
@@ -174,7 +176,7 @@ for ($i = 0; $i < $settings['iterations']; ++$i) {
             if (!$i) {
                 $save[$test] = [$measurement];
             } else {
-                array_push($save[$test], $measurement);
+                $save[$test][] = $measurement;
             }
 
             // remove test if it failed
@@ -191,7 +193,7 @@ for ($i = 0; $i < $settings['iterations']; ++$i) {
             if (!$i) {
                 $save[$test] = [$measurement];
             } else {
-                array_push($save[$test], $measurement);
+                $save[$test][] = $measurement;
             }
 
             // remove test if it failed
@@ -213,7 +215,7 @@ if ($settings['save']) {
     echo "{$line}\n";
 }
 
-if ($settings['custom_tests'] && count($tests) % 2 == 0) {
+if ($settings['custom_tests'] && count($tests) % 2 === 0) {
     $keys = array_keys($save);
 
     $test1 = array_values(array_slice($save, 0, 1, false));

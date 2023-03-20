@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Compare results
  *
@@ -18,7 +20,7 @@ require_once 'stats.php';
 require_once 'helper.php';
 
 // check if running from cli
-if (php_sapi_name() != 'cli') {
+if (PHP_SAPI !== 'cli') {
     echo 'cli required';
     exit;
 }
@@ -27,7 +29,7 @@ if (php_sapi_name() != 'cli') {
 for ($i = 1; $i < count($argv); ++$i) {
     $argument = $argv[$i];
 
-    if (strpos($argument, '--') != 0) {
+    if (strpos($argument, '--') !== 0) {
         echo "unknown argument {$argument}";
         exit;
     }

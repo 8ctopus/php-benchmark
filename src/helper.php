@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Helper class
  *
@@ -21,7 +23,7 @@ class helper
     public static function analyze_test(array $measurements) : ?array
     {
         // check if the test failed at least once
-        if (in_array(false, $measurements)) {
+        if (in_array(false, $measurements, true)) {
             return null;
         }
 
@@ -53,7 +55,7 @@ class helper
 
         // analyze test results
         foreach ($data as $test => $measurements) {
-            $result = helper::analyze_test($measurements);
+            $result = self::analyze_test($measurements);
 
             // check for error
             if ($result === null) {
@@ -66,10 +68,10 @@ class helper
             echo str_pad($test, self::$pad1) . ' : ' . str_pad('iterations', self::$pad2, ' ', STR_PAD_LEFT) . "\n";
 
             foreach ($result as $key => $value) {
-                if ($key == 'normality') {
-                    echo str_pad($key, self::$pad1) . ' : ' . helper::format_percentage($value, false, self::$pad2) . "\n";
+                if ($key === 'normality') {
+                    echo str_pad($key, self::$pad1) . ' : ' . self::format_percentage($value, false, self::$pad2) . "\n";
                 } else {
-                    echo str_pad($key, self::$pad1) . ' : ' . helper::format_number($value, self::$pad2) . "\n";
+                    echo str_pad($key, self::$pad1) . ' : ' . self::format_number($value, self::$pad2) . "\n";
                 }
             }
 
@@ -83,13 +85,13 @@ class helper
             // output outliers
             if ($settings['show_outliers']) {
                 echo "\n";
-                echo str_pad('outliers', self::$pad1) . ' : ' . helper::outliers($measurements) . "\n";
+                echo str_pad('outliers', self::$pad1) . ' : ' . self::outliers($measurements) . "\n";
             }
 
             // output all measurements
             if ($settings['show_all_measurements']) {
                 echo "\n";
-                echo str_pad('values', self::$pad1) . ' : ' . helper::all_measurements($measurements) . "\n";
+                echo str_pad('values', self::$pad1) . ' : ' . self::all_measurements($measurements) . "\n";
             }
 
             echo $line . "\n";
@@ -119,8 +121,8 @@ class helper
             $measurements2 = $latest[$test1];
 
             // analyze test results
-            $result1 = helper::analyze_test($measurements1);
-            $result2 = helper::analyze_test($measurements2);
+            $result1 = self::analyze_test($measurements1);
+            $result2 = self::analyze_test($measurements2);
 
             // check for error
             if ($result1 === null || $result2 === null) {
@@ -130,22 +132,22 @@ class helper
             }
 
             // show test results
-            echo str_pad($test1, self::$pad1) . ' : ' . str_pad($btitle, self::$pad2, ' ', STR_PAD_LEFT) . str_pad($ltitle, self::$pad2, ' ', STR_PAD_LEFT) . "\n";
+            echo str_pad((string) $test1, self::$pad1) . ' : ' . str_pad($btitle, self::$pad2, ' ', STR_PAD_LEFT) . str_pad($ltitle, self::$pad2, ' ', STR_PAD_LEFT) . "\n";
 
             // show test results
             foreach ($result1 as $key => $value1) {
                 // get latest result for key
                 $value2 = $result2[$key];
 
-                if ($key == 'normality') {
-                    echo str_pad($key, self::$pad1) . ' : ' . helper::format_percentage($value1, false, self::$pad2) . helper::format_percentage($value1, false, self::$pad2) . "\n";
+                if ($key === 'normality') {
+                    echo str_pad($key, self::$pad1) . ' : ' . self::format_percentage($value1, false, self::$pad2) . self::format_percentage($value1, false, self::$pad2) . "\n";
                 } else {
                     try {
                         $delta = stats::relative_difference($value1, $value2);
 
-                        echo str_pad($key, self::$pad1) . ' : ' . helper::format_number($value1, self::$pad2) . helper::format_number($value2, self::$pad2) . helper::format_percentage($delta, true, self::$pad2) . "\n";
-                    } catch (DivisionByZeroError $e) {
-                        echo str_pad($key, self::$pad1) . ' : ' . helper::format_number($value1, self::$pad2) . helper::format_number($value2, self::$pad2) . str_pad('nan', self::$pad2, ' ', STR_PAD_LEFT) . "\n";
+                        echo str_pad($key, self::$pad1) . ' : ' . self::format_number($value1, self::$pad2) . self::format_number($value2, self::$pad2) . self::format_percentage($delta, true, self::$pad2) . "\n";
+                    } catch (DivisionByZeroError) {
+                        echo str_pad($key, self::$pad1) . ' : ' . self::format_number($value1, self::$pad2) . self::format_number($value2, self::$pad2) . str_pad('nan', self::$pad2, ' ', STR_PAD_LEFT) . "\n";
                     }
                 }
             }
@@ -215,7 +217,7 @@ class helper
         $base = log($size, 1024);
         $suffixes = ['', 'K', 'M', 'G', 'T'];
 
-        return round(pow(1024, $base - floor($base)), $precision) . ' ' . $suffixes[floor($base)];
+        return round(1024 ** ($base - floor($base)), $precision) . ' ' . $suffixes[floor($base)];
     }
 
     /**

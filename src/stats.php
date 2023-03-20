@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Stats class
  *
@@ -58,7 +60,7 @@ class stats
         // sum of squares
         foreach ($cells as $cell) {
             // difference between cell and mean squared
-            $variance += pow($cell - $mean, 2);
+            $variance += ($cell - $mean) ** 2;
         }
 
         $count = count($cells) - 1;
@@ -96,7 +98,7 @@ class stats
         asort($values);
 
         // get modes
-        return array_keys($values, max($values));
+        return array_keys($values, max($values), true);
     }
 
     /**
@@ -114,7 +116,7 @@ class stats
         sort($cells);
 
         // get half total cells adjusted for odd arrays
-        $count_half = floor(count($cells) / 2);
+        $count_half = (int) floor(count($cells) / 2);
 
         // 1st quartile
         $cells1 = array_slice($cells, 0, $count_half);
@@ -231,7 +233,7 @@ class stats
             $bucket = ceil($offset / $width) - 1;
 
             // move min value to first bucket
-            if ($bucket == -1) {
+            if ($bucket === -1) {
                 $bucket = 0;
             }
 
@@ -280,10 +282,10 @@ class stats
         for ($i = 0; $i < $buckets; ++$i) {
             $count = $histogram[$i]['count'];
 
-            echo '| ' . str_pad($i, strlen('bucket'), ' ', STR_PAD_LEFT) . ' | ' .
-                str_pad(round($histogram[$i]['range_end'], 0), strlen('range end'), ' ', STR_PAD_LEFT) . ' | ' .
+            echo '| ' . str_pad((string) $i, strlen('bucket'), ' ', STR_PAD_LEFT) . ' | ' .
+                str_pad((string) round($histogram[$i]['range_end'], 0), strlen('range end'), ' ', STR_PAD_LEFT) . ' | ' .
                 str_pad($count, strlen('count'), ' ', STR_PAD_LEFT) . ' | ' .
-                str_pad(str_repeat('|', round($bar_max_length * $count / $max, 0)), $bar_max_length, ' ', STR_PAD_RIGHT) . " |\n"
+                str_pad(str_repeat('|', (int) round($bar_max_length * $count / $max, 0)), $bar_max_length, ' ', STR_PAD_RIGHT) . " |\n"
             ;
         }
 
