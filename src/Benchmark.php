@@ -118,31 +118,15 @@ echo "PHP benchmark\n\n" .
     str_pad('iterations', Helper::$pad1) . ' : ' . str_pad((string) $settings['iterations'], Helper::$pad2, ' ', STR_PAD_LEFT) . "\n" .
     "{$line}\n";
 
-// list tests
 $class = $settings['custom_tests'] ? TestsUser::class : Tests::class;
-$tests = get_class_methods($class);
 
-// filter tests
-foreach ($tests as $index => $test) {
-    if (preg_match($settings['test_filter'], $test) !== 1) {
-        // remove not matching test
-        unset($tests[$index]);
-    }
-}
-
-// reset array keys
-$tests = array_values($tests);
+$tests = getTests($class, $settings['test_filter']);
 
 $save = [];
 
 // run tests x times
 for ($i = 0; $i < $settings['iterations']; ++$i) {
-    // update test progress
-    $progress = Helper::formatPercentage($i / $settings['iterations'], false, 3);
-    $text = "Running tests {$progress}...";
-    $length = strlen($text);
-
-    echo "{$text}\033[{$length}D";
+    updateProgress($i / $settings['iterations']);
 
     if (!($i % 2)) {
         // start from first test
@@ -205,4 +189,29 @@ if ($settings['custom_tests'] && count($tests) % 2 === 0) {
     Helper::showCompare($baseline, 'file', $save, 'test');
 } else {
     Helper::showBenchmark($save, $settings);
+}
+
+function getTests(string $class, string $filter) : array
+{
+    $tests = get_class_methods($class);
+
+    // filter tests
+    foreach ($tests as $index => $test) {
+        if (preg_match($filter, $test) !== 1) {
+            // remove not matching test
+            unset($tests[$index]);
+        }
+    }
+
+    // reset array keys
+    return array_values($tests);
+}
+
+function updateProgress(float $percentage) : void
+{
+    $progress = Helper::formatPercentage($percentage, false, 3);
+    $text = "Running tests {$progress}...";
+    $length = strlen($text);
+
+    echo "{$text}\033[{$length}D";
 }
