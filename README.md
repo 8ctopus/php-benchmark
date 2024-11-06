@@ -377,7 +377,7 @@ ANSWER: It depends on how the log is setup but in most cases Apix is significant
 
 ## run your own tests
 
-`tests_user.php` serves as a template to create your own tests. To run your tests.
+`TestsUser.php` serves as a template to create your own tests. To run your tests.
 
     $ php src/Benchmark.php --custom
 
