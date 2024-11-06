@@ -54,7 +54,7 @@ class TestsUser
 
         while (microtime(true) < $timeLimit) {
             // test code starts here
-            2 ** 10;
+            pow(2, 10);
 
             // test code ends here
             ++$iterations;
