@@ -10,8 +10,8 @@ ini_set('assert.exception', true);
 // set error reporting
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
-require_once 'stats.php';
-require_once 'helper.php';
+require_once __DIR__ . '/Stats.php';
+require_once __DIR__ . '/Helper.php';
 
 // check if running from cli
 if (PHP_SAPI !== 'cli') {

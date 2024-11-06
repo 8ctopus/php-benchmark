@@ -110,14 +110,14 @@ for ($i = 1; $i < count($argv); ++$i) {
     }
 }
 
-require_once 'stats.php';
-require_once 'helper.php';
+require_once __DIR__ . '/Stats.php';
+require_once __DIR__ . '/Helper.php';
 
 // include either user or standard tests
 if ($settings['custom_tests']) {
-    require_once 'tests_user.php';
+    require_once __DIR__ . 'TestsUser.php';
 } else {
-    require_once 'tests.php';
+    require_once __DIR__ . 'Tests.php';
 }
 
 $line = str_pad('', Helper::$pad1 + Helper::$pad2 + 3, '-');
