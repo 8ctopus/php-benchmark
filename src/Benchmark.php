@@ -19,7 +19,6 @@ if (PHP_SAPI !== 'cli') {
     throw new Exception('Please run the script from cli');
 }
 
-// settings
 $settings = [
     'iterations' => 250,
     'time_per_iteration' => 50,
