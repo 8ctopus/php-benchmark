@@ -87,8 +87,10 @@ class TestsUser
             $b = true;
 
             if ($a == $b) {
+                /** @disregard P1003 */
                 $c = 1;
             } else {
+                /** @disregard P1003 */
                 $c = 0;
             }
 
@@ -119,8 +121,10 @@ class TestsUser
             $b = true;
 
             if ($a === $b) {
+                /** @disregard P1003 */
                 $c = 1;
             } else {
+                /** @disregard P1003 */
                 $c = 0;
             }
 
@@ -154,6 +158,7 @@ class TestsUser
                 $string = '8.8.8.8 - - [01/Dec/2020:06:56:08 +0100] "GET /css/someotherfile.css HTTP/2.0" 200 11853462 "';
             }
 
+            /** @disregard P1003 */
             $result = preg_match('~GET /bin/(.*?)v\d\.\d{3}\.zip~', $string, $matches);
 
             // test code ends here
@@ -187,6 +192,7 @@ class TestsUser
             }
 
             if (strpos($string, '.zip') !== false) {
+                /** @disregard P1003 */
                 $result = preg_match('~GET /bin/(.*?)v\d\.\d{3}\.zip~', $string, $matches);
             }
 

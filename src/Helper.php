@@ -23,16 +23,16 @@ class Helper
         }
 
         return [
-            'mean' => stats::mean($measurements),
-            'median' => stats::median($measurements),
-            'mode' => stats::mode($measurements),
+            'mean' => Stats::mean($measurements),
+            'median' => Stats::median($measurements),
+            'mode' => Stats::mode($measurements),
             'minimum' => min($measurements),
             'maximum' => max($measurements),
-            'quartile 1' => stats::quartiles($measurements)[0],
-            'quartile 3' => stats::quartiles($measurements)[1],
-            'IQ range' => stats::interquartile_range($measurements),
-            'std deviation' => stats::standard_deviation($measurements),
-            'normality' => stats::test_normal($measurements),
+            'quartile 1' => Stats::quartiles($measurements)[0],
+            'quartile 3' => Stats::quartiles($measurements)[1],
+            'IQ range' => Stats::interquartileRange($measurements),
+            'std deviation' => Stats::standardDeviation($measurements),
+            'normality' => Stats::testNormal($measurements),
         ];
     }
 
@@ -73,8 +73,8 @@ class Helper
             // show histogram
             if ($settings['show_histogram']) {
                 echo "\n";
-                $histogram = stats::histogram($measurements, $settings['histogram_buckets']);
-                stats::histogram_draw($histogram, $settings['histogram_bar_width']);
+                $histogram = Stats::histogram($measurements, $settings['histogram_buckets']);
+                Stats::histogramDraw($histogram, $settings['histogram_bar_width']);
             }
 
             // output outliers
@@ -138,7 +138,7 @@ class Helper
                     echo str_pad($key, self::$pad1) . ' : ' . self::format_percentage($value1, false, self::$pad2) . self::format_percentage($value1, false, self::$pad2) . "\n";
                 } else {
                     try {
-                        $delta = stats::relative_difference($value1, $value2);
+                        $delta = Stats::relativeDifference($value1, $value2);
 
                         echo str_pad($key, self::$pad1) . ' : ' . self::format_number($value1, self::$pad2) . self::format_number($value2, self::$pad2) . self::format_percentage($delta, true, self::$pad2) . "\n";
                     } catch (DivisionByZeroError) {
@@ -200,16 +200,16 @@ class Helper
     /**
      * Format bytes
      *
-     * @param int $size
+     * @param float $size
      * @param int $precision
      *
      * @return string
      *
      * @note https://stackoverflow.com/a/2510540/10126479
      */
-    public static function format_bytes(int $size, int $precision = 2) : string
+    public static function formatBytes(float $size, int $precision = 2) : string
     {
-        $base = log($size, 1024);
+        $base = log($size, 1024.0);
         $suffixes = ['', 'K', 'M', 'G', 'T'];
 
         return round(1024 ** ($base - floor($base)), $precision) . ' ' . $suffixes[floor($base)];
@@ -246,7 +246,7 @@ class Helper
      */
     public static function outliers(array $cells) : string
     {
-        $outliers = stats::outliers($cells);
+        $outliers = Stats::outliers($cells);
 
         $str = "\n\n";
 

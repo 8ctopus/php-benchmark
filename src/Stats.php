@@ -46,7 +46,7 @@ class Stats
      *
      * @return float
      */
-    public static function standard_deviation(array $cells) : float
+    public static function standardDeviation(array $cells) : float
     {
         $variance = 0.0;
 
@@ -58,7 +58,7 @@ class Stats
             $variance += ($cell - $mean) ** 2;
         }
 
-        $count = count($cells) - 1;
+        $count = (float) (count($cells) - 1);
 
         return sqrt($variance) / sqrt($count);
     }
@@ -131,7 +131,7 @@ class Stats
      *
      * @return float range
      */
-    public static function interquartile_range(array $cells) : float
+    public static function interquartileRange(array $cells) : float
     {
         $quartiles = self::quartiles($cells);
 
@@ -152,7 +152,7 @@ class Stats
     public static function outliers(array $cells) : array
     {
         $quartiles = self::quartiles($cells);
-        $iqr = self::interquartile_range($cells);
+        $iqr = self::interquartileRange($cells);
 
         // calculate fences
         $fence_upper = $quartiles[1] + 1.5 * $iqr;
@@ -180,7 +180,7 @@ class Stats
      *
      * @note found here https://www.paulstephenborile.com/2018/03/code-benchmarks-can-measure-fast-software-make-faster/
      */
-    public static function test_normal(array $cells) : float
+    public static function testNormal(array $cells) : float
     {
         $mean = self::mean($cells);
         $median = self::median($cells);
@@ -243,11 +243,11 @@ class Stats
      * Draw histogram
      *
      * @param array $histogram
-     * @param int   $bar_max_length
+     * @param int   $barMaxLength
      *
      * @return void
      */
-    public static function histogram_draw(array $histogram, int $bar_max_length) : void
+    public static function histogramDraw(array $histogram, int $barMaxLength) : void
     {
         // get buckets count
         $buckets = count($histogram);
@@ -262,12 +262,12 @@ class Stats
         }
 
         // draw table border
-        $border = '+---------------------------' . str_repeat('-', $bar_max_length + 3) . "-+\n";
+        $border = '+---------------------------' . str_repeat('-', $barMaxLength + 3) . "-+\n";
 
         echo $border;
 
         // draw table header
-        $bar = str_pad('bar', $bar_max_length, ' ');
+        $bar = str_pad('bar', $barMaxLength, ' ');
 
         echo "| bucket | range end | count | {$bar} |\n";
 
@@ -280,7 +280,7 @@ class Stats
             echo '| ' . str_pad((string) $i, strlen('bucket'), ' ', STR_PAD_LEFT) . ' | ' .
                 str_pad((string) round($histogram[$i]['range_end'], 0), strlen('range end'), ' ', STR_PAD_LEFT) . ' | ' .
                 str_pad($count, strlen('count'), ' ', STR_PAD_LEFT) . ' | ' .
-                str_pad(str_repeat('|', (int) round($bar_max_length * $count / $max, 0)), $bar_max_length, ' ', STR_PAD_RIGHT) . " |\n"
+                str_pad(str_repeat('|', (int) round($barMaxLength * $count / $max, 0)), $barMaxLength, ' ', STR_PAD_RIGHT) . " |\n"
             ;
         }
 
@@ -297,7 +297,7 @@ class Stats
      *
      * @throws Division by zero
      */
-    public static function relative_difference(float $n1, float $n2) : float
+    public static function relativeDifference(float $n1, float $n2) : float
     {
         if (!$n1) {
             throw new DivisionByZeroError();

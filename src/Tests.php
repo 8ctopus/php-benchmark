@@ -30,16 +30,21 @@ class Tests
         $iterations = 0;
 
         $i = 0;
+        /** @disregard P1003 */
         $j = 0;
 
         while (microtime(true) < $time_limit) {
             if ($i % 2 === 0) {
+                /** @disregard P1003 */
                 $j = 1;
             } elseif ($i % 3 === 0) {
+                /** @disregard P1003 */
                 $j = 2;
             } elseif ($i % 5 === 0) {
+                /** @disregard P1003 */
                 $j = 3;
             } else {
+                /** @disregard P1003 */
                 $j = 4;
             }
 
@@ -260,15 +265,18 @@ class Tests
             $total_bytes += $bytes_to_write;
 
             // write bytes to file
+            /** @disregard P1003 */
             $result = fwrite($handle, Helper::not_random_bytes($bytes_to_write));
 
             // get file size
             $file_size = filesize($tmp_filename);
 
             // get file size alternate
+            /** @disregard P1003 */
             $stat = fstat($handle);
 
             // seek to random position
+            /** @disregard P1003 */
             $result = fseek($handle, rand(1, $bytes_to_write));
 
             // get current position
@@ -282,6 +290,7 @@ class Tests
             $total_bytes += $bytes_to_read;
 
             // read from file
+            /** @disregard P1003 */
             $result = fread($handle, $bytes_to_read);
 
             // close file
@@ -427,9 +436,9 @@ TAG;
 
                 ++$iterations;
             }
-        } catch (Exception $e) {
+        } catch (Exception $exception) {
             $exception = true;
-            //echo($e->getMessage() ."\n");
+            //echo($exception->getMessage() ."\n");
         } finally {
             // check for connection failure
             if (!$mysqli) {
