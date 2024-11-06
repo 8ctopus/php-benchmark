@@ -18,7 +18,7 @@ $settings = [
     'iterations' => 250,
     'time_per_iteration' => 50,
 
-    'filter_test' => '/^test/',
+    'test_filter' => '/^test/',
     'custom_tests' => false,
 
     'compare' => false,
@@ -56,7 +56,7 @@ for ($i = 1; $i < count($argv); ++$i) {
 
         case '--filter':
             $i++;
-            $settings['filter_test'] = $argv[$i];
+            $settings['test_filter'] = $argv[$i];
             break;
 
         case '--histogram':
@@ -124,16 +124,15 @@ $tests = get_class_methods($class);
 
 // filter tests
 foreach ($tests as $index => $test) {
-    if (preg_match($settings['filter_test'], $test) === 0) {
-        // remove test
+    if (preg_match($settings['test_filter'], $test) !== 1) {
+        // remove not matching test
         unset($tests[$index]);
     }
 }
 
-// cleanup array
+// reset array keys
 $tests = array_values($tests);
 
-// run tests
 $save = [];
 
 // run tests x times
@@ -141,10 +140,9 @@ for ($i = 0; $i < $settings['iterations']; ++$i) {
     // update test progress
     $progress = Helper::formatPercentage($i / $settings['iterations'], false, 3);
     $text = "Running tests {$progress}...";
-    $len = strlen($text);
+    $length = strlen($text);
 
-    echo $text;
-    echo "\033[{$len}D";
+    echo "{$text}\033[{$length}D";
 
     if (!($i % 2)) {
         // start from first test
@@ -203,9 +201,7 @@ if ($settings['custom_tests'] && count($tests) % 2 === 0) {
 
     Helper::showCompare($test1, $keys[0], $test2, $keys[1]);
 } elseif ($settings['compare']) {
-    // get compare data set
     $baseline = unserialize(file_get_contents($settings['compare']));
-
     Helper::showCompare($baseline, 'file', $save, 'test');
 } else {
     Helper::showBenchmark($save, $settings);
