@@ -23,7 +23,7 @@ class Tests
      *
      * @return int iterations done in allocated time
      */
-    public static function test_if_else(float $limit) : int
+    public static function testIfElse(float $limit) : int
     {
         $time_start = microtime(true);
         $time_limit = $time_start + $limit;
@@ -61,7 +61,7 @@ class Tests
      *
      * @return int iterations done in allocated time
      */
-    public static function test_loops(float $limit) : int
+    public static function testLoops(float $limit) : int
     {
         $time_start = microtime(true);
         $time_limit = $time_start + $limit;
@@ -87,7 +87,7 @@ class Tests
      *
      * @return int iterations done in allocated time
      */
-    public static function test_arrays(float $limit) : int
+    public static function testArrays(float $limit) : int
     {
         $time_start = microtime(true);
         $time_limit = $time_start + $limit;
@@ -115,7 +115,7 @@ class Tests
      *
      * @return int iterations done in allocated time
      */
-    public static function test_strings(float $limit) : int
+    public static function testStrings(float $limit) : int
     {
         $time_start = microtime(true);
         $time_limit = $time_start + $limit;
@@ -148,7 +148,7 @@ class Tests
      *
      * @return int iterations done in allocated time
      */
-    public static function test_math(float $limit) : int
+    public static function testMath(float $limit) : int
     {
         $time_start = microtime(true);
         $time_limit = $time_start + $limit;
@@ -197,7 +197,7 @@ class Tests
      *
      * @return int iterations done in allocated time
      */
-    public static function test_hashes(float $limit) : int
+    public static function testHashes(float $limit) : int
     {
         $time_start = microtime(true);
         $time_limit = $time_start + $limit;
@@ -224,7 +224,7 @@ class Tests
      *
      * @return int iterations done in allocated time or null on failure
      */
-    public static function test_files(float $limit) : ?int
+    public static function testFiles(float $limit) : ?int
     {
         $time_start = microtime(true);
         $time_limit = $time_start + $limit;
@@ -313,7 +313,7 @@ class Tests
      *
      * @return int iterations done in allocated time or null on failure
      */
-    public static function test_mysql(float $limit) : ?int
+    public static function testMySql(float $limit) : ?int
     {
         $time_start = microtime(true);
         $time_limit = $time_start + $limit;
@@ -343,13 +343,13 @@ class Tests
                 if (!$iterations) {
                     // check if database already exists
                     $query = <<<TAG
-                        SELECT
-                            SCHEMA_NAME
-                        FROM
-                            INFORMATION_SCHEMA.SCHEMATA
-                        WHERE
-                            SCHEMA_NAME = '{$db}'
-TAG;
+                    SELECT
+                        SCHEMA_NAME
+                    FROM
+                        INFORMATION_SCHEMA.SCHEMATA
+                    WHERE
+                        SCHEMA_NAME = '{$db}'
+                    TAG;
 
                     $result = mysqli_query($mysqli, $query);
 
@@ -365,8 +365,8 @@ TAG;
 
                     // create database
                     $query = <<<TAG
-                        CREATE DATABASE `{$db}`;
-TAG;
+                    CREATE DATABASE `{$db}`;
+                    TAG;
 
                     if (!mysqli_query($mysqli, $query)) {
                         throw new Exception('Create database - FAILED');
@@ -384,11 +384,11 @@ TAG;
                     // create table
                     $table = 'test';
                     $query = <<<TAG
-                        CREATE TABLE `{$table}` (
-                            `date` timestamp NOT NULL,
-                            `string` varchar(512) NOT NULL
-                        );
-TAG;
+                    CREATE TABLE `{$table}` (
+                        `date` timestamp NOT NULL,
+                        `string` varchar(512) NOT NULL
+                    );
+                    TAG;
 
                     if (!mysqli_query($mysqli, $query)) {
                         throw new Exception('Create table - FAILED');
@@ -399,11 +399,11 @@ TAG;
                 $str = bin2hex(Helper::notRandomBytes(rand(1, 256)));
 
                 $query = <<<TAG
-                    INSERT INTO
-                        `{$table}` (`date`, `string`)
-                    VALUES
-                        (CURRENT_TIMESTAMP, '{$str}');
-TAG;
+                INSERT INTO
+                    `{$table}` (`date`, `string`)
+                VALUES
+                    (CURRENT_TIMESTAMP, '{$str}');
+                TAG;
 
                 if (!mysqli_query($mysqli, $query)) {
                     throw new Exception('Insert into table - FAILED');
@@ -411,13 +411,13 @@ TAG;
 
                 // select from table
                 $query = <<<TAG
-                    SELECT
-                        *
-                    FROM
-                        `{$table}`
-                    WHERE
-                        1;
-TAG;
+                SELECT
+                    *
+                FROM
+                    `{$table}`
+                WHERE
+                    1;
+                TAG;
 
                 $result = mysqli_query($mysqli, $query);
 
@@ -453,8 +453,8 @@ TAG;
             if ($db_created) {
                 // drop database
                 $query = <<<TAG
-                    DROP DATABASE `{$db}`;
-TAG;
+                DROP DATABASE `{$db}`;
+                TAG;
 
                 mysqli_query($mysqli, $query);
             }

@@ -26,7 +26,7 @@ class TestsUser
      *
      * @return int iterations done in allocated time
      */
-    public static function baseline_1(float $limit) : int
+    public static function baseline1(float $limit) : int
     {
         $time_start = microtime(true);
         $time_limit = $time_start + $limit;
@@ -50,7 +50,7 @@ class TestsUser
      *
      * @return int iterations done in allocated time
      */
-    public static function baseline_2(float $limit) : int
+    public static function baseline2(float $limit) : int
     {
         $time_start = microtime(true);
         $time_limit = $time_start + $limit;
@@ -74,7 +74,7 @@ class TestsUser
      *
      * @return int iterations done in allocated time
      */
-    public static function equal_1(float $limit) : int
+    public static function equal1(float $limit) : int
     {
         $time_start = microtime(true);
         $time_limit = $time_start + $limit;
@@ -108,7 +108,7 @@ class TestsUser
      *
      * @return int iterations done in allocated time
      */
-    public static function equal_2(float $limit) : int
+    public static function equal2(float $limit) : int
     {
         $time_start = microtime(true);
         $time_limit = $time_start + $limit;
@@ -142,7 +142,7 @@ class TestsUser
      *
      * @return int iterations done in allocated time
      */
-    public static function regex_1(float $limit) : int
+    public static function regex1(float $limit) : int
     {
         $time_start = microtime(true);
         $time_limit = $time_start + $limit;
@@ -175,7 +175,7 @@ class TestsUser
      *
      * @return int iterations done in allocated time
      */
-    public static function regex_2(float $limit) : int
+    public static function regex2(float $limit) : int
     {
         $time_start = microtime(true);
         $time_limit = $time_start + $limit;
@@ -203,12 +203,12 @@ class TestsUser
         return $iterations;
     }
 
-    public static function str_br1(string $str) : string
+    public static function strBr1(string $str) : string
     {
         return $str . PHP_EOL;
     }
 
-    public static function str_br2(string &$str) : string
+    public static function strBr2(string &$str) : string
     {
         return $str . PHP_EOL;
     }
@@ -220,7 +220,7 @@ class TestsUser
      *
      * @return int iterations done in allocated time
      */
-    public static function fn_argument_1(float $limit) : int
+    public static function fnArgument1(float $limit) : int
     {
         $time_start = microtime(true);
         $time_limit = $time_start + $limit;
@@ -231,7 +231,7 @@ class TestsUser
         while (microtime(true) < $time_limit) {
             // test code starts here
 
-            $str = self::str_br2($str);
+            $str = self::strBr2($str);
 
             // test code ends here
             ++$iterations;
@@ -247,7 +247,7 @@ class TestsUser
      *
      * @return int iterations done in allocated time
      */
-    public static function fn_argument_2(float $limit) : int
+    public static function fnArgument2(float $limit) : int
     {
         $time_start = microtime(true);
         $time_limit = $time_start + $limit;
@@ -258,7 +258,7 @@ class TestsUser
         while (microtime(true) < $time_limit) {
             // test code starts here
 
-            $str = self::str_br1($str);
+            $str = self::strBr1($str);
 
             // test code ends here
             ++$iterations;
@@ -274,7 +274,7 @@ class TestsUser
      *
      * @return int iterations done in allocated time
      */
-    public static function logger_monolog(float $limit) : int
+    public static function loggerMonolog(float $limit) : int
     {
         $time_start = microtime(true);
         $time_limit = $time_start + $limit;
@@ -307,7 +307,7 @@ class TestsUser
      *
      * @return int iterations done in allocated time
      */
-    public static function logger_apix(float $limit) : int
+    public static function loggerApix(float $limit) : int
     {
         $time_start = microtime(true);
         $time_limit = $time_start + $limit;
