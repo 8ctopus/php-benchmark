@@ -12,11 +12,6 @@ require __DIR__ . '/../vendor/autoload.php';
 
 define('LOG_STDOUT', true);
 
-/**
- * Add your tests here
- *
- * @author 8ctopus <hello@octopuslabs.io>
- */
 class TestsUser
 {
     /**
