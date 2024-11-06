@@ -113,8 +113,10 @@ require_once __DIR__ . '/Helper.php';
 // include either standard or user tests
 if ($settings['custom_tests']) {
     require_once __DIR__ . '/TestsUser.php';
+    $class = TestsUser::class;
 } else {
     require_once __DIR__ . '/Tests.php';
+    $class = Tests::class;
 }
 
 $line = str_pad('', Helper::$pad1 + Helper::$pad2 + 3, '-');
@@ -132,7 +134,7 @@ echo 'PHP benchmark' . "\n\n" .
 ;
 
 // list tests
-$tests = get_class_methods('Tests');
+$tests = get_class_methods($class);
 
 // filter tests
 foreach ($tests as $key => $test) {
@@ -162,7 +164,7 @@ for ($i = 0; $i < $settings['iterations']; ++$i) {
         // start from first test
         for ($j = 0; $j < count($tests); ++$j) {
             $test = $tests[$j];
-            $measurement = tests::$test($settings['time_per_iteration'] / 1000);
+            $measurement = $class::$test($settings['time_per_iteration'] / 1000);
 
             if (!$i) {
                 $save[$test] = [$measurement];
@@ -179,7 +181,7 @@ for ($i = 0; $i < $settings['iterations']; ++$i) {
         // start from last test
         for ($j = count($tests) - 1; $j >= 0; --$j) {
             $test = $tests[$j];
-            $measurement = tests::$test($settings['time_per_iteration'] / 1000);
+            $measurement = $class::$test($settings['time_per_iteration'] / 1000);
 
             if (!$i) {
                 $save[$test] = [$measurement];
