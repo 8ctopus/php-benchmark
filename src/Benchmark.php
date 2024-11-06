@@ -110,13 +110,6 @@ for ($i = 1; $i < count($argv); ++$i) {
     }
 }
 
-// include either standard or user tests
-if ($settings['custom_tests']) {
-    $class = TestsUser::class;
-} else {
-    $class = Tests::class;
-}
-
 $line = str_pad('', Helper::$pad1 + Helper::$pad2 + 3, '-');
 
 echo 'PHP benchmark' . "\n\n" .
@@ -132,6 +125,8 @@ echo 'PHP benchmark' . "\n\n" .
 ;
 
 // list tests
+$class = $settings['custom_tests'] ? TestsUser::class : Tests::class;
+
 $tests = get_class_methods($class);
 
 // filter tests
@@ -212,13 +207,11 @@ if ($settings['custom_tests'] && count($tests) % 2 === 0) {
     $test1 = array_values(array_slice($save, 0, 1, false));
     $test2 = array_values(array_slice($save, 1, 1, false));
 
-    // compare custom tests
     Helper::showCompare($test1, $keys[0], $test2, $keys[1]);
 } elseif ($settings['compare']) {
     // get compare data set
     $baseline = unserialize(file_get_contents($settings['compare']));
 
-    // show comparison
     Helper::showCompare($baseline, 'file', $save, 'test');
 } else {
     Helper::showBenchmark($save, $settings);
