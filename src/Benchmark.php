@@ -216,13 +216,13 @@ if ($settings['custom_tests'] && count($tests) % 2 === 0) {
     $test2 = array_values(array_slice($save, 1, 1, false));
 
     // compare custom tests
-    Helper::show_compare($test1, $keys[0], $test2, $keys[1]);
+    Helper::showCompare($test1, $keys[0], $test2, $keys[1]);
 } elseif ($settings['compare']) {
     // get compare data set
     $baseline = unserialize(file_get_contents($settings['compare']));
 
     // show comparison
-    Helper::show_compare($baseline, 'file', $save, 'test');
+    Helper::showCompare($baseline, 'file', $save, 'test');
 } else {
-    Helper::show_benchmark($save, $settings);
+    Helper::showBenchmark($save, $settings);
 }

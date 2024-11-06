@@ -191,16 +191,16 @@ class Stats
     /**
      * Create histogram
      *
-     * @param array $data_points
+     * @param array $dataPoints
      * @param int   $buckets     number of buckets
      *
      * @return array histogram
      */
-    public static function histogram(array $data_points, int $buckets) : array
+    public static function histogram(array $dataPoints, int $buckets) : array
     {
         // get min and max
-        $max = max($data_points);
-        $min = min($data_points);
+        $max = max($dataPoints);
+        $min = min($dataPoints);
 
         // calculate range
         $range = $max - $min;
@@ -221,7 +221,7 @@ class Stats
         }
 
         // group data points into buckets
-        foreach ($data_points as $value) {
+        foreach ($dataPoints as $value) {
             // find value offset from min
             $offset = $value - $min;
 

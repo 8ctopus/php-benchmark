@@ -62,4 +62,4 @@ $data1 = unserialize(file_get_contents($file1));
 $data2 = unserialize(file_get_contents($file2));
 
 // show compare results
-Helper::show_compare($data1, 'file1', $data2, 'file2');
+Helper::showCompare($data1, 'file1', $data2, 'file2');

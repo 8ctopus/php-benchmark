@@ -5,8 +5,8 @@ declare(strict_types=1);
 class Helper
 {
     // paddings
-    public static $pad1 = 18;
-    public static $pad2 = 14;
+    public static int $pad1 = 18;
+    public static int $pad2 = 14;
 
     /**
      * Analyze test results
@@ -15,7 +15,7 @@ class Helper
      *
      * @return array of strings or null if any of the test iterations failed
      */
-    public static function analyze_test(array $measurements) : ?array
+    public static function analyzeTest(array $measurements) : ?array
     {
         // check if the test failed at least once
         if (in_array(false, $measurements, true)) {
@@ -44,13 +44,13 @@ class Helper
      *
      * @return void
      */
-    public static function show_benchmark(array $data, array $settings) : void
+    public static function showBenchmark(array $data, array $settings) : void
     {
         $line = str_pad('', self::$pad1 + self::$pad2 + 3, '-');
 
         // analyze test results
         foreach ($data as $test => $measurements) {
-            $result = self::analyze_test($measurements);
+            $result = self::analyzeTest($measurements);
 
             // check for error
             if ($result === null) {
@@ -86,7 +86,7 @@ class Helper
             // output all measurements
             if ($settings['show_all_measurements']) {
                 echo "\n";
-                echo str_pad('values', self::$pad1) . ' : ' . self::all_measurements($measurements) . "\n";
+                echo str_pad('values', self::$pad1) . ' : ' . self::allMeasurements($measurements) . "\n";
             }
 
             echo $line . "\n";
@@ -103,7 +103,7 @@ class Helper
      *
      * @return void
      */
-    public static function show_compare(array $baseline, string $btitle, array $latest, string $ltitle) : void
+    public static function showCompare(array $baseline, string $btitle, array $latest, string $ltitle) : void
     {
         // paddings
         $line = str_pad('', self::$pad1 + 3 * self::$pad2 + 3, '-');
@@ -116,8 +116,8 @@ class Helper
             $measurements2 = $latest[$test1];
 
             // analyze test results
-            $result1 = self::analyze_test($measurements1);
-            $result2 = self::analyze_test($measurements2);
+            $result1 = self::analyzeTest($measurements1);
+            $result2 = self::analyzeTest($measurements2);
 
             // check for error
             if ($result1 === null || $result2 === null) {
@@ -222,7 +222,7 @@ class Helper
      *
      * @return string
      */
-    public static function all_measurements(array $cells) : string
+    public static function allMeasurements(array $cells) : string
     {
         $str = "\n\n";
 
@@ -268,7 +268,7 @@ class Helper
      *
      * @return array only existing functions are returned
      */
-    public static function check_functions_exist(array $functions) : array
+    public static function checkFunctions(array $functions) : array
     {
         // remove functions that don't exist
         foreach ($functions as $key => $function) {
@@ -288,7 +288,7 @@ class Helper
      *
      * @return string
      */
-    public static function not_random_bytes(int $length) : string
+    public static function notRandomBytes(int $length) : string
     {
         $str = '';
 
