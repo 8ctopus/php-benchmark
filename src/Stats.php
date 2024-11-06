@@ -21,9 +21,9 @@ class Stats
      *
      * @param array $cells
      *
-     * @return float
+     * @return ?float
      */
-    public static function median(array $cells) : float
+    public static function median(array $cells) : ?float
     {
         // sort array values ascending
         sort($cells, SORT_NUMERIC);
