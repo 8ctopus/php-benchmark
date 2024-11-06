@@ -270,7 +270,7 @@ class Tests
             $result = fwrite($handle, Helper::notRandomBytes($bytesToWrite));
 
             // get file size
-            $file_size = filesize($tmpFilename);
+            $fileSize = filesize($tmpFilename);
 
             // get file size alternate
             /** @disregard P1003 */
@@ -283,7 +283,7 @@ class Tests
             // get current position
             $position = ftell($handle);
 
-            $maxBytesToRead = $file_size - $position;
+            $maxBytesToRead = $fileSize - $position;
 
             // calculate bytes to read
             $bytesToRead = rand(1, $maxBytesToRead);
