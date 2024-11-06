@@ -107,7 +107,7 @@ for ($i = 1; $i < count($argv); ++$i) {
 
 $line = str_pad('', Helper::$pad1 + Helper::$pad2 + 3, '-');
 
-echo 'PHP benchmark' . "\n\n" .
+echo "PHP benchmark\n\n" .
     "{$line}\n" .
     str_pad('platform', Helper::$pad1) . ' : ' . str_pad(PHP_OS . ' ' . ((PHP_INT_SIZE === 8) ? 'x64' : 'x32'), Helper::$pad2, ' ', STR_PAD_LEFT) . "\n" .
     str_pad('php version', Helper::$pad1) . ' : ' . str_pad(PHP_VERSION, Helper::$pad2, ' ', STR_PAD_LEFT) . "\n" .
@@ -116,19 +116,17 @@ echo 'PHP benchmark' . "\n\n" .
     str_pad('max execution', Helper::$pad1) . ' : ' . str_pad(ini_get('max_execution_time'), Helper::$pad2, ' ', STR_PAD_LEFT) . "\n" .
     str_pad('time per iteration', Helper::$pad1) . ' : ' . str_pad($settings['time_per_iteration'] . 'ms', Helper::$pad2, ' ', STR_PAD_LEFT) . "\n" .
     str_pad('iterations', Helper::$pad1) . ' : ' . str_pad((string) $settings['iterations'], Helper::$pad2, ' ', STR_PAD_LEFT) . "\n" .
-    "{$line}\n"
-;
+    "{$line}\n";
 
 // list tests
 $class = $settings['custom_tests'] ? TestsUser::class : Tests::class;
-
 $tests = get_class_methods($class);
 
 // filter tests
-foreach ($tests as $key => $test) {
+foreach ($tests as $index => $test) {
     if (preg_match($settings['filter_test'], $test) === 0) {
         // remove test
-        unset($tests[$key]);
+        unset($tests[$index]);
     }
 }
 
@@ -192,6 +190,7 @@ if ($settings['save']) {
     }
 
     file_put_contents($settings['save_filename'], serialize($save));
+
     echo "benchmark saved to {$settings['save_filename']}\n";
     echo "{$line}\n";
 }
