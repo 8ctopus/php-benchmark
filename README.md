@@ -1,11 +1,12 @@
 # PHP benchmark script
 
 Benchmark your php code.
+
 The project is built on top of the original work from Alessandro Torrisi [www.php-benchmark-script.com](http://www.php-benchmark-script.com)
 
 ## compatibility
 
-from php 5.6.40 (use the `php5.6-compatibility` tag) to 8.2.x
+from php 5.6.40 (use the `php5.6-compatibility` tag) to 8.3.x
 
 ## how to use
 
@@ -13,12 +14,12 @@ from php 5.6.40 (use the `php5.6-compatibility` tag) to 8.2.x
 
 ### run standard test
 
-    php src/benchmark.php
+    php src/Benchmark.php
 
 ### run custom test
 
 - `composer install`
-- `php src/benchmark.php --custom --filter ~equal~` where filter corresponds to a regular expression matching the functions that you want to test in `src/tests_user.php`
+- `php src/Benchmark.php --custom --filter ~equal~` where filter corresponds to a regular expression matching the functions that you want to test in `src/TestsUser.php`
 
 ## examples
 
@@ -27,13 +28,13 @@ from php 5.6.40 (use the `php5.6-compatibility` tag) to 8.2.x
 ANSWER: yes, from 2x to 7x depending on the test.
 
     # disable xdebug extension in php.ini
-    $ php src/benchmark.php --iterations 1000 --time-per-iteration 50 --save xdebug_off
+    $ php src/Benchmark.php --iterations 1000 --time-per-iteration 50 --save xdebug_off
 
     # enable xdebug extension
-    $ php src/benchmark.php --iterations 1000 --time-per-iteration 50 --save xdebug_on
+    $ php src/Benchmark.php --iterations 1000 --time-per-iteration 50 --save xdebug_on
 
     # compare
-    $ php src/compare.php --file1 benchmark_xdebug_off_20201127-0946.txt --file2 benchmark_xdebug_on_20201127-0939.txt
+    $ php src/Compare.php --file1 benchmark_xdebug_off_20201127-0946.txt --file2 benchmark_xdebug_on_20201127-0939.txt
     ------------------------------------------------
     test_math
     mean               :      3762      531   -85.9%
@@ -67,10 +68,9 @@ if ($a === $b)
 
 `===` is approximately 15% faster than `==`.
 
-
     $ docker run -it --volume "/$(pwd -W):/test/" php:7.4.12-cli-alpine sh
     $ cd test
-    $ php src/benchmark.php --custom --filter ~equal~
+    $ php src/Benchmark.php --custom --filter ~equal~
     PHP benchmark
 
     -------------------------------
@@ -123,7 +123,7 @@ Which code is faster?
 
 Well the answer is not as obvious as it seems as it depends on the frequency of lines with zip downloads in the Apache log. If every line is a zip download `regex_1` is faster, while if zip downloads are more scarce then `regex_2` becomes faster. Here are the results:
 
-    $ php src/benchmark.php --custom --filter ~regex~
+    $ php src/Benchmark.php --custom --filter ~regex~
 
     # comparison when every line is a zip file
     ---------------------------------------------------
@@ -161,13 +161,13 @@ ANSWER: it's way faster in tested loops (+73%) and math functions (+17%) and not
 
     $ docker run -it --volume "/$(pwd -W):/test/" php:7.4.12-cli-alpine sh
     $ cd test
-    $ php src/benchmark.php --iterations 1000 --time-per-iteration 50 --save php7.4
+    $ php src/Benchmark.php --iterations 1000 --time-per-iteration 50 --save php7.4
 
     $ docker run -it --volume "/$(pwd -W):/test/" php:8.0.0RC5-cli-alpine sh
     $ cd test
-    $ php src/benchmark.php --iterations 1000 --time-per-iteration 50 --save php8.0
+    $ php src/Benchmark.php --iterations 1000 --time-per-iteration 50 --save php8.0
 
-    $ php src/compare.php --file1 benchmark_php7.4_20201127-0625.txt --file2 benchmark_php8_20201127-0617.txt
+    $ php src/Compare.php --file1 benchmark_php7.4_20201127-0625.txt --file2 benchmark_php8_20201127-0617.txt
     ------------------------------------------------
     test_if_else
     mean               :    531059   520234    -2.0%
@@ -261,15 +261,15 @@ ANSWER: it's 3x - 5x faster accross all tests except hashes where there is a 12%
     # run test in php 5.6
     $ docker run -it --volume "/$(pwd -W):/test/" php:5.6.40-cli-alpine sh
     $ cd test
-    $ php src/benchmark.php --histogram --show-outliers --show-all --save php5.6_1
+    $ php src/Benchmark.php --histogram --show-outliers --show-all --save php5.6_1
 
     # run test in php 7.4
     $ docker run -it --volume "/$(pwd -W):/test/" php:7.4.12-cli-alpine sh
     $ cd test
-    $ php src/benchmark.php --histogram --show-outliers --show-all --save php7.4.12_1
+    $ php src/Benchmark.php --histogram --show-outliers --show-all --save php7.4.12_1
 
     # compare
-    $ php src/compare.php --file1 benchmark_php5.6_1_20201201-0441.txt --file2 benchmark_php7.4.12_1_20201201-0447.txt
+    $ php src/Compare.php --file1 benchmark_php5.6_1_20201201-0441.txt --file2 benchmark_php7.4.12_1_20201201-0447.txt
 
     ------------------------------------------------
     test_if_else
@@ -349,7 +349,7 @@ ANSWER: it's 3x - 5x faster accross all tests except hashes where there is a 12%
 QUESTION: Which logger is faster? Monolog or Apix?\
 ANSWER: It depends on how the log is setup but in most cases Apix is significantly faster
 
-    $ php src/benchmark.php --custom --filter ~logger~
+    $ php src/Benchmark.php --custom --filter ~logger~
     PHP benchmark
 
     -----------------------------------
@@ -379,7 +379,7 @@ ANSWER: It depends on how the log is setup but in most cases Apix is significant
 
 `tests_user.php` serves as a template to create your own tests. To run your tests.
 
-    $ php src/benchmark.php --custom
+    $ php src/Benchmark.php --custom
 
 ## definitions
 
