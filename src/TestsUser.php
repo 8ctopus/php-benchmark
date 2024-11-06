@@ -28,11 +28,11 @@ class TestsUser
      */
     public static function baseline1(float $limit) : int
     {
-        $time_start = microtime(true);
-        $time_limit = $time_start + $limit;
+        $timeStarted = microtime(true);
+        $timeLimit = $timeStarted + $limit;
         $iterations = 0;
 
-        while (microtime(true) < $time_limit) {
+        while (microtime(true) < $timeLimit) {
             // test code starts here
             pow(2, 10);
 
@@ -52,11 +52,11 @@ class TestsUser
      */
     public static function baseline2(float $limit) : int
     {
-        $time_start = microtime(true);
-        $time_limit = $time_start + $limit;
+        $timeStarted = microtime(true);
+        $timeLimit = $timeStarted + $limit;
         $iterations = 0;
 
-        while (microtime(true) < $time_limit) {
+        while (microtime(true) < $timeLimit) {
             // test code starts here
             2 ** 10;
 
@@ -76,11 +76,11 @@ class TestsUser
      */
     public static function equal1(float $limit) : int
     {
-        $time_start = microtime(true);
-        $time_limit = $time_start + $limit;
+        $timeStarted = microtime(true);
+        $timeLimit = $timeStarted + $limit;
         $iterations = 0;
 
-        while (microtime(true) < $time_limit) {
+        while (microtime(true) < $timeLimit) {
             // test code starts here
 
             $a = 1;
@@ -110,11 +110,11 @@ class TestsUser
      */
     public static function equal2(float $limit) : int
     {
-        $time_start = microtime(true);
-        $time_limit = $time_start + $limit;
+        $timeStarted = microtime(true);
+        $timeLimit = $timeStarted + $limit;
         $iterations = 0;
 
-        while (microtime(true) < $time_limit) {
+        while (microtime(true) < $timeLimit) {
             // test code starts here
 
             $a = 1;
@@ -144,11 +144,11 @@ class TestsUser
      */
     public static function regex1(float $limit) : int
     {
-        $time_start = microtime(true);
-        $time_limit = $time_start + $limit;
+        $timeStarted = microtime(true);
+        $timeLimit = $timeStarted + $limit;
         $iterations = 0;
 
-        while (microtime(true) < $time_limit) {
+        while (microtime(true) < $timeLimit) {
             // test code starts here
 
             // there's only one chance in 350 to see a zip string
@@ -177,11 +177,11 @@ class TestsUser
      */
     public static function regex2(float $limit) : int
     {
-        $time_start = microtime(true);
-        $time_limit = $time_start + $limit;
+        $timeStarted = microtime(true);
+        $timeLimit = $timeStarted + $limit;
         $iterations = 0;
 
-        while (microtime(true) < $time_limit) {
+        while (microtime(true) < $timeLimit) {
             // test code starts here
 
             // there's only one chance in 350 to see a zip string
@@ -222,13 +222,13 @@ class TestsUser
      */
     public static function fnArgument1(float $limit) : int
     {
-        $time_start = microtime(true);
-        $time_limit = $time_start + $limit;
+        $timeStarted = microtime(true);
+        $timeLimit = $timeStarted + $limit;
         $iterations = 0;
 
         $str = 'hello world how are you doing today?';
 
-        while (microtime(true) < $time_limit) {
+        while (microtime(true) < $timeLimit) {
             // test code starts here
 
             $str = self::strBr2($str);
@@ -249,13 +249,13 @@ class TestsUser
      */
     public static function fnArgument2(float $limit) : int
     {
-        $time_start = microtime(true);
-        $time_limit = $time_start + $limit;
+        $timeStarted = microtime(true);
+        $timeLimit = $timeStarted + $limit;
         $iterations = 0;
 
         $str = 'hello world how are you doing today?';
 
-        while (microtime(true) < $time_limit) {
+        while (microtime(true) < $timeLimit) {
             // test code starts here
 
             $str = self::strBr1($str);
@@ -276,8 +276,8 @@ class TestsUser
      */
     public static function loggerMonolog(float $limit) : int
     {
-        $time_start = microtime(true);
-        $time_limit = $time_start + $limit;
+        $timeStarted = microtime(true);
+        $timeLimit = $timeStarted + $limit;
         $iterations = 0;
 
         $log = new Logger('test');
@@ -288,7 +288,7 @@ class TestsUser
             $log->pushHandler(new StreamHandler('php://stdout', Level::Warning));
         }
 
-        while (microtime(true) < $time_limit) {
+        while (microtime(true) < $timeLimit) {
             // test code starts here
 
             $log->warning('test');
@@ -309,8 +309,8 @@ class TestsUser
      */
     public static function loggerApix(float $limit) : int
     {
-        $time_start = microtime(true);
-        $time_limit = $time_start + $limit;
+        $timeStarted = microtime(true);
+        $timeLimit = $timeStarted + $limit;
         $iterations = 0;
 
         $file = new File('log_apix.log');
@@ -339,7 +339,7 @@ class TestsUser
             $log->add($stdout);
         }
 
-        while (microtime(true) < $time_limit) {
+        while (microtime(true) < $timeLimit) {
             // test code starts here
 
             $log->warning('test');

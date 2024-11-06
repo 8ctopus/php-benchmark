@@ -24,15 +24,15 @@ class Tests
      */
     public static function testIfElse(float $limit) : int
     {
-        $time_start = microtime(true);
-        $time_limit = $time_start + $limit;
+        $timeStarted = microtime(true);
+        $timeLimit = $timeStarted + $limit;
         $iterations = 0;
 
         $i = 0;
         /** @disregard P1003 */
         $j = 0;
 
-        while (microtime(true) < $time_limit) {
+        while (microtime(true) < $timeLimit) {
             if ($i % 2 === 0) {
                 /** @disregard P1003 */
                 $j = 1;
@@ -62,11 +62,11 @@ class Tests
      */
     public static function testLoops(float $limit) : int
     {
-        $time_start = microtime(true);
-        $time_limit = $time_start + $limit;
+        $timeStarted = microtime(true);
+        $timeLimit = $timeStarted + $limit;
         $iterations = 0;
 
-        while (microtime(true) < $time_limit) {
+        while (microtime(true) < $timeLimit) {
             $j = 0;
 
             for ($i = 0; $i < 100; ++$i) {
@@ -88,13 +88,13 @@ class Tests
      */
     public static function testArrays(float $limit) : int
     {
-        $time_start = microtime(true);
-        $time_limit = $time_start + $limit;
+        $timeStarted = microtime(true);
+        $timeLimit = $timeStarted + $limit;
         $iterations = 0;
 
         $a = [];
 
-        while (microtime(true) < $time_limit) {
+        while (microtime(true) < $timeLimit) {
             $a[] = [
                 rand() => Helper::notRandomBytes(10),
             ];
@@ -116,8 +116,8 @@ class Tests
      */
     public static function testStrings(float $limit) : int
     {
-        $time_start = microtime(true);
-        $time_limit = $time_start + $limit;
+        $timeStarted = microtime(true);
+        $timeLimit = $timeStarted + $limit;
         $iterations = 0;
 
         $functions = ['addslashes', 'chunk_split', 'ltrim', 'metaphone', 'ord', 'str_shuffle',
@@ -129,7 +129,7 @@ class Tests
         $string = 'the quick brown fox jumps over the lazy dog';
 
         // run tests
-        while (microtime(true) < $time_limit) {
+        while (microtime(true) < $timeLimit) {
             foreach ($functions as $function) {
                 call_user_func_array($function, [$string]);
             }
@@ -149,8 +149,8 @@ class Tests
      */
     public static function testMath(float $limit) : int
     {
-        $time_start = microtime(true);
-        $time_limit = $time_start + $limit;
+        $timeStarted = microtime(true);
+        $timeLimit = $timeStarted + $limit;
         $iterations = 0;
 
         $functions = ['abs', 'acos', 'asin', 'atan', 'decbin', 'exp', 'floor', 'exp', 'is_finite',
@@ -160,7 +160,7 @@ class Tests
         $functions = Helper::checkFunctions($functions);
 
         // run tests
-        while (microtime(true) < $time_limit) {
+        while (microtime(true) < $timeLimit) {
             foreach ($functions as $function) {
                 // get function arguments count
                 $reflection = new ReflectionFunction($function);
@@ -198,14 +198,14 @@ class Tests
      */
     public static function testHashes(float $limit) : int
     {
-        $time_start = microtime(true);
-        $time_limit = $time_start + $limit;
+        $timeStarted = microtime(true);
+        $timeLimit = $timeStarted + $limit;
         $iterations = 0;
 
         $hashes = ['adler32', 'crc32', 'crc32b', 'md5', 'sha1', 'sha256', 'sha384', 'sha512'];
         $string = Helper::notRandomBytes(1024);
 
-        while (microtime(true) < $time_limit) {
+        while (microtime(true) < $timeLimit) {
             foreach ($hashes as $hash) {
                 hash($hash, $string, false);
             }
@@ -225,8 +225,8 @@ class Tests
      */
     public static function testFiles(float $limit) : ?int
     {
-        $time_start = microtime(true);
-        $time_limit = $time_start + $limit;
+        $timeStarted = microtime(true);
+        $timeLimit = $timeStarted + $limit;
         $iterations = 0;
 
         // max number of bytes to write
@@ -236,7 +236,7 @@ class Tests
         // get temporary directory
         $tmp_dir = sys_get_temp_dir() . DIRECTORY_SEPARATOR;
 
-        while (microtime(true) < $time_limit) {
+        while (microtime(true) < $timeLimit) {
             // scan temp dir
             $list = scandir($tmp_dir);
 
@@ -314,8 +314,8 @@ class Tests
      */
     public static function testMySql(float $limit) : ?int
     {
-        $time_start = microtime(true);
-        $time_limit = $time_start + $limit;
+        $timeStarted = microtime(true);
+        $timeLimit = $timeStarted + $limit;
         $iterations = 0;
 
         $host = 'localhost';
@@ -323,7 +323,7 @@ class Tests
         $pass = '123';
         $db = 'benchmark-test';
         $mysqli = null;
-        $db_created = false;
+        $dbCreated = false;
         $exception = false;
 
         if (!function_exists('mysqli_connect')) {
@@ -331,7 +331,7 @@ class Tests
         }
 
         try {
-            while (microtime(true) < $time_limit) {
+            while (microtime(true) < $timeLimit) {
                 // connect to database
                 $mysqli = mysqli_connect($host, $user, $pass);
 
@@ -371,7 +371,7 @@ class Tests
                         throw new Exception('Create database - FAILED');
                     }
 
-                    $db_created = true;
+                    $dbCreated = true;
                 }
 
                 // select database
@@ -449,7 +449,7 @@ class Tests
                 $mysqli = mysqli_connect($host, $user, $pass);
             }
 
-            if ($db_created) {
+            if ($dbCreated) {
                 // drop database
                 $query = <<<TAG
                 DROP DATABASE `{$db}`;
