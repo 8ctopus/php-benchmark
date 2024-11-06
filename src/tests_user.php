@@ -1,6 +1,11 @@
 <?php
 
 declare(strict_types=1);
+use Apix\Log\Logger\File;
+use Apix\Log\Logger\Stream;
+use Monolog\Handler\StreamHandler;
+use Monolog\Level;
+use Monolog\Logger;
 
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -148,7 +153,7 @@ class tests
                 $string = '8.8.8.8 - - [01/Dec/2020:06:56:08 +0100] "GET /css/someotherfile.css HTTP/2.0" 200 11853462 "';
             }
 
-            $result = preg_match('~GET /bin/(.*?)v\\d\\.\\d{3}\\.zip~', $string, $matches);
+            $result = preg_match('~GET /bin/(.*?)v\d\.\d{3}\.zip~', $string, $matches);
 
             // test code ends here
             ++$iterations;
@@ -181,7 +186,7 @@ class tests
             }
 
             if (strpos($string, '.zip') !== false) {
-                $result = preg_match('~GET /bin/(.*?)v\\d\\.\\d{3}\\.zip~', $string, $matches);
+                $result = preg_match('~GET /bin/(.*?)v\d\.\d{3}\.zip~', $string, $matches);
             }
 
             // test code ends here
@@ -268,12 +273,12 @@ class tests
         $time_limit = $time_start + $limit;
         $iterations = 0;
 
-        $log = new Monolog\Logger('test');
-        $log->pushHandler(new Monolog\Handler\StreamHandler('log_monolog.log', Monolog\Level::Warning));
+        $log = new Logger('test');
+        $log->pushHandler(new StreamHandler('log_monolog.log', Level::Warning));
 
         if (LOG_STDOUT) {
             // log to stdout
-            $log->pushHandler(new Monolog\Handler\StreamHandler('php://stdout', Monolog\Level::Warning));
+            $log->pushHandler(new StreamHandler('php://stdout', Level::Warning));
         }
 
         while (microtime(true) < $time_limit) {
@@ -301,7 +306,7 @@ class tests
         $time_limit = $time_start + $limit;
         $iterations = 0;
 
-        $file = new Apix\Log\Logger\File('log_apix.log');
+        $file = new File('log_apix.log');
         $file
             // intercept logs that are >= `warning`
             ->setMinLevel('warning')
@@ -315,7 +320,7 @@ class tests
         $log = new Apix\Log\Logger([$file]);
 
         if (LOG_STDOUT) {
-            $stdout = new Apix\Log\Logger\Stream('php://stdout', 'a');
+            $stdout = new Stream('php://stdout', 'a');
             $stdout
                 // intercept logs that are >= `warning`
                 ->setMinLevel('warning')
