@@ -38,9 +38,9 @@ class Stats
 
         if ($count % 2) {
             return $cells[$index];
-        } else {
-            return ($cells[$index - 1] + $cells[$index]) / 2;
         }
+
+        return ($cells[$index - 1] + $cells[$index]) / 2;
     }
 
     /**
@@ -115,14 +115,14 @@ class Stats
         sort($cells);
 
         // get half total cells adjusted for odd arrays
-        $count_half = (int) floor(count($cells) / 2);
+        $countHalf = (int) floor(count($cells) / 2);
 
         // 1st quartile
-        $cells1 = array_slice($cells, 0, $count_half);
+        $cells1 = array_slice($cells, 0, $countHalf);
         $quartile1 = self::median($cells1);
 
         // 3rd quartile
-        $cells3 = array_slice($cells, -$count_half, $count_half);
+        $cells3 = array_slice($cells, -$countHalf, $countHalf);
         $quartile3 = self::median($cells3);
 
         return [$quartile1, $quartile3];
@@ -159,15 +159,15 @@ class Stats
         $iqr = self::interquartileRange($cells);
 
         // calculate fences
-        $fence_upper = $quartiles[1] + 1.5 * $iqr;
-        $fence_lower = $quartiles[0] - 1.5 * $iqr;
+        $fenceUpper = $quartiles[1] + 1.5 * $iqr;
+        $fenceLower = $quartiles[0] - 1.5 * $iqr;
 
         sort($cells);
 
         $outliers = [];
 
         foreach ($cells as $cell) {
-            if ($cell < $fence_lower || $cell > $fence_upper) {
+            if ($cell < $fenceLower || $cell > $fenceUpper) {
                 $outliers[] = $cell;
             }
         }
@@ -297,7 +297,6 @@ class Stats
      *
      * @param float $n1
      * @param float $n2
-     * @param  float relative difference between n1 and n2, taking n1 as base
      *
      * @throws Division by zero
      */
@@ -307,8 +306,6 @@ class Stats
             throw new DivisionByZeroError();
         }
 
-        $absolute_difference = $n2 - $n1;
-
-        return $absolute_difference / $n1;
+        return ($n2 - $n1) / $n1;
     }
 }
