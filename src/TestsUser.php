@@ -16,7 +16,7 @@ define('LOG_STDOUT', true);
 class TestsUser
 {
     /**
-     * baseline 1
+     * Baseline 1 (same as Baseline 2, just to test equality)
      *
      * @param float $limit time limit in seconds
      *
@@ -40,7 +40,7 @@ class TestsUser
     }
 
     /**
-     * baseline 2 (same test as baseline 1, just to test engine)
+     * Baseline 2
      *
      * @param float $limit time limit in seconds
      *
