@@ -15,7 +15,7 @@ $settings = [
     'iterations' => 250,
     'time_per_iteration' => 50,
 
-    'filter_test' => '/^test_/',
+    'filter_test' => '/^test/',
     'custom_tests' => false,
 
     'compare' => false,
@@ -110,7 +110,7 @@ for ($i = 1; $i < count($argv); ++$i) {
 require_once __DIR__ . '/Stats.php';
 require_once __DIR__ . '/Helper.php';
 
-// include either user or standard tests
+// include either standard or user tests
 if ($settings['custom_tests']) {
     require_once __DIR__ . '/TestsUser.php';
 } else {
