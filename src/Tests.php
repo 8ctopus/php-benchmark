@@ -462,6 +462,6 @@ class Tests
             mysqli_close($mysqli);
         }
 
-        return !$exception ? $iterations : false;
+        return $exception ? null : $iterations;
     }
 }
