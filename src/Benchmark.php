@@ -141,7 +141,7 @@ $save = [];
 // run tests x times
 for ($i = 0; $i < $settings['iterations']; ++$i) {
     // update test progress
-    $progress = Helper::format_percentage($i / $settings['iterations'], false, 3);
+    $progress = Helper::formatPercentage($i / $settings['iterations'], false, 3);
     $text = "Running tests {$progress}...";
     $len = strlen($text);
 

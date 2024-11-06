@@ -68,9 +68,9 @@ class Helper
 
             foreach ($result as $key => $value) {
                 if ($key === 'normality') {
-                    echo str_pad($key, self::$pad1) . ' : ' . self::format_percentage($value, false, self::$pad2) . "\n";
+                    echo str_pad($key, self::$pad1) . ' : ' . self::formatPercentage($value, false, self::$pad2) . "\n";
                 } else {
-                    echo str_pad($key, self::$pad1) . ' : ' . self::format_number($value, self::$pad2) . "\n";
+                    echo str_pad($key, self::$pad1) . ' : ' . self::formatNumber($value, self::$pad2) . "\n";
                 }
             }
 
@@ -139,14 +139,14 @@ class Helper
                 $value2 = $result2[$key];
 
                 if ($key === 'normality') {
-                    echo str_pad($key, self::$pad1) . ' : ' . self::format_percentage($value1, false, self::$pad2) . self::format_percentage($value1, false, self::$pad2) . "\n";
+                    echo str_pad($key, self::$pad1) . ' : ' . self::formatPercentage($value1, false, self::$pad2) . self::formatPercentage($value1, false, self::$pad2) . "\n";
                 } else {
                     try {
                         $delta = Stats::relativeDifference($value1, $value2);
 
-                        echo str_pad($key, self::$pad1) . ' : ' . self::format_number($value1, self::$pad2) . self::format_number($value2, self::$pad2) . self::format_percentage($delta, true, self::$pad2) . "\n";
+                        echo str_pad($key, self::$pad1) . ' : ' . self::formatNumber($value1, self::$pad2) . self::formatNumber($value2, self::$pad2) . self::formatPercentage($delta, true, self::$pad2) . "\n";
                     } catch (DivisionByZeroError) {
-                        echo str_pad($key, self::$pad1) . ' : ' . self::format_number($value1, self::$pad2) . self::format_number($value2, self::$pad2) . str_pad('nan', self::$pad2, ' ', STR_PAD_LEFT) . "\n";
+                        echo str_pad($key, self::$pad1) . ' : ' . self::formatNumber($value1, self::$pad2) . self::formatNumber($value2, self::$pad2) . str_pad('nan', self::$pad2, ' ', STR_PAD_LEFT) . "\n";
                     }
                 }
             }
@@ -163,7 +163,7 @@ class Helper
      *
      * @return string
      */
-    public static function format_number(float $number, int $padding) : string
+    public static function formatNumber(float $number, int $padding) : string
     {
         return str_pad(number_format($number, 0, '.', ''), $padding, ' ', STR_PAD_LEFT);
     }
@@ -177,7 +177,7 @@ class Helper
      *
      * @return string
      */
-    public static function format_percentage(float $number, bool $sign, int $padding) : string
+    public static function formatPercentage(float $number, bool $sign, int $padding) : string
     {
         $str = '';
 
@@ -231,7 +231,7 @@ class Helper
         $str = "\n\n";
 
         foreach ($cells as $key => $value) {
-            $str .= self::format_number($value, 0) . ' ';
+            $str .= self::formatNumber($value, 0) . ' ';
 
             if (!(($key + 1) % 32)) {
                 $str .= "\n";
@@ -255,7 +255,7 @@ class Helper
         $str = "\n\n";
 
         foreach ($outliers as $key => $outlier) {
-            $str .= self::format_number($outlier, 0) . ' ';
+            $str .= self::formatNumber($outlier, 0) . ' ';
 
             if (!(($key + 1) % 32)) {
                 $str .= "\n";
@@ -266,13 +266,13 @@ class Helper
     }
 
     /**
-     * Check functions exist
+     * Clean not existing functions
      *
      * @param array $functions
      *
-     * @return array only existing functions are returned
+     * @return array
      */
-    public static function checkFunctions(array $functions) : array
+    public static function cleanFunctions(array $functions) : array
     {
         // remove functions that don't exist
         foreach ($functions as $key => $function) {

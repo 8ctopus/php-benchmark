@@ -125,7 +125,7 @@ class Tests
             'strip_tags', 'strlen', 'strtoupper', 'strtolower', 'strrev', 'soundex', 'trim', ];
 
         // remove functions that don't exist
-        $functions = Helper::checkFunctions($functions);
+        $functions = Helper::cleanFunctions($functions);
 
         $string = 'the quick brown fox jumps over the lazy dog';
 
@@ -158,7 +158,7 @@ class Tests
             'is_nan', 'log', 'log10', 'log1p', 'pi', 'pow', 'sin', 'sqrt', 'tan', ];
 
         // remove functions that don't exist
-        $functions = Helper::checkFunctions($functions);
+        $functions = Helper::cleanFunctions($functions);
 
         // run tests
         while (microtime(true) < $timeLimit) {
