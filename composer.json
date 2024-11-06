@@ -3,6 +3,7 @@
     "type": "project",
     "description": "Benchmark your php code",
     "keywords": ["speed", "benchmark"],
+    "homepage": "https://github.com/8ctopus/php-benchmark.git",
     "license": "MIT",
     "authors": [
         {

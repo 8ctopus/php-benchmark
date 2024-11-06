@@ -1,6 +1,6 @@
 # PHP benchmark script
 
-Benchmark your php code.\
+Benchmark your php code.
 The project is built on top of the original work from Alessandro Torrisi [www.php-benchmark-script.com](http://www.php-benchmark-script.com)
 
 ## compatibility
