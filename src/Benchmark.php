@@ -120,7 +120,10 @@ echo "PHP benchmark\n\n" .
 
 $class = $settings['custom_tests'] ? TestsUser::class : Tests::class;
 
-$tests = getTests($class, $settings['test_filter']);
+$testsAsc = getTests($class, $settings['test_filter']);
+
+$testsDesc = $testsAsc;
+krsort($testsDesc);
 
 $save = [];
 
@@ -128,39 +131,21 @@ $save = [];
 for ($i = 0; $i < $settings['iterations']; ++$i) {
     updateProgress($i / $settings['iterations']);
 
-    if (!($i % 2)) {
-        // start from first test
-        for ($j = 0; $j < count($tests); ++$j) {
-            $test = $tests[$j];
-            $measurement = $class::$test($settings['time_per_iteration'] / 1000);
+    // switch testing order
+    $tests = $i % 2 ? $testsDesc : $testsAsc;
 
-            if (!$i) {
-                $save[$test] = [$measurement];
-            } else {
-                $save[$test][] = $measurement;
-            }
+    foreach ($tests as $index => $test) {
+        $measurement = $class::$test($settings['time_per_iteration'] / 1000);
 
-            // remove test if it failed
-            if ($measurement === null) {
-                unset($tests[$j]);
-            }
+        if (!$i) {
+            $save[$test] = [$measurement];
+        } else {
+            $save[$test][] = $measurement;
         }
-    } else {
-        // start from last test
-        for ($j = count($tests) - 1; $j >= 0; --$j) {
-            $test = $tests[$j];
-            $measurement = $class::$test($settings['time_per_iteration'] / 1000);
 
-            if (!$i) {
-                $save[$test] = [$measurement];
-            } else {
-                $save[$test][] = $measurement;
-            }
-
-            // remove test if it failed
-            if ($measurement === null) {
-                unset($tests[$j]);
-            }
+        // remove test if it failed
+        if ($measurement === null) {
+            unset($tests[$index]);
         }
     }
 }
