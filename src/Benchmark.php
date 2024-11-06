@@ -135,7 +135,7 @@ echo 'PHP benchmark' . "\n\n" .
 ;
 
 // list tests
-$tests = get_class_methods('tests');
+$tests = get_class_methods('Tests');
 
 // filter tests
 foreach ($tests as $key => $test) {
