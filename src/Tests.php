@@ -232,45 +232,45 @@ class Tests
         $iterations = 0;
 
         // max number of bytes to write
-        $bytes_to_write_max = 0.5 * 1024 * 1024;
-        $total_bytes = 0;
+        $bytesToWriteMax = 0.5 * 1024 * 1024;
+        $totalBytes = 0;
 
         // get temporary directory
-        $tmp_dir = sys_get_temp_dir() . DIRECTORY_SEPARATOR;
+        $tmpDir = sys_get_temp_dir() . DIRECTORY_SEPARATOR;
 
         while (microtime(true) < $timeLimit) {
             // scan temp dir
-            $list = scandir($tmp_dir);
+            $list = scandir($tmpDir);
 
             if (!$list) {
                 return null;
             }
 
             // get temporary file name in temporary dir
-            $tmp_filename = tempnam($tmp_dir, '');
+            $tmpFilename = tempnam($tmpDir, '');
 
-            if (!$tmp_filename) {
+            if (!$tmpFilename) {
                 return null;
             }
 
             // open temp file
-            $handle = fopen($tmp_filename, 'r+');
+            $handle = fopen($tmpFilename, 'r+');
 
             if (!$handle) {
                 return null;
             }
 
             // get bytes count to write to file
-            $bytes_to_write = rand(1, (int) $bytes_to_write_max);
+            $bytesToWrite = rand(1, (int) $bytesToWriteMax);
 
-            $total_bytes += $bytes_to_write;
+            $totalBytes += $bytesToWrite;
 
             // write bytes to file
             /** @disregard P1003 */
-            $result = fwrite($handle, Helper::notRandomBytes($bytes_to_write));
+            $result = fwrite($handle, Helper::notRandomBytes($bytesToWrite));
 
             // get file size
-            $file_size = filesize($tmp_filename);
+            $file_size = filesize($tmpFilename);
 
             // get file size alternate
             /** @disregard P1003 */
@@ -278,27 +278,27 @@ class Tests
 
             // seek to random position
             /** @disregard P1003 */
-            $result = fseek($handle, rand(1, $bytes_to_write));
+            $result = fseek($handle, rand(1, $bytesToWrite));
 
             // get current position
             $position = ftell($handle);
 
-            $max_bytes_to_read = $file_size - $position;
+            $maxBytesToRead = $file_size - $position;
 
             // calculate bytes to read
-            $bytes_to_read = rand(1, $max_bytes_to_read);
+            $bytesToRead = rand(1, $maxBytesToRead);
 
-            $total_bytes += $bytes_to_read;
+            $totalBytes += $bytesToRead;
 
             // read from file
             /** @disregard P1003 */
-            $result = fread($handle, $bytes_to_read);
+            $result = fread($handle, $bytesToRead);
 
             // close file
             fclose($handle);
 
             // delete file
-            unlink($tmp_filename);
+            unlink($tmpFilename);
 
             ++$iterations;
         }
@@ -306,5 +306,4 @@ class Tests
         //echo('total bytes : '. format_bytes($total_bytes, 2) ."\n");
         return $iterations;
     }
-
 }
