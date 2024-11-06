@@ -19,7 +19,7 @@ for ($i = 1; $i < count($argv); ++$i) {
     $argument = $argv[$i];
 
     if (strpos($argument, '--') !== 0) {
-        throw new Exception("unknown argument {$argument}");
+        throw new Exception("unknown argument - {$argument}");
     }
 
     switch ($argument) {
@@ -34,21 +34,18 @@ for ($i = 1; $i < count($argv); ++$i) {
             break;
 
         default:
-            throw new Exception("unknown argument {$argument}");
+            throw new Exception("unknown argument - {$argument}");
     }
 }
 
-// check for required variables
 if (!isset($file1) || !isset($file2)) {
     throw new Exception('file1 and file2 required');
 }
 
-// check files exist
 if (!file_exists($file1) || !file_exists($file2)) {
     throw new Exception('valid file1 and file2 required');
 }
 
-// get data sets
 $data1 = unserialize(file_get_contents($file1));
 $data2 = unserialize(file_get_contents($file2));
 

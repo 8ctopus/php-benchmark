@@ -6,7 +6,7 @@ namespace Oct8pus\Benchmark;
 
 use Exception;
 
-error_reporting(E_ERROR /*| E_WARNING */ | E_PARSE);
+error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -41,7 +41,7 @@ for ($i = 1; $i < count($argv); ++$i) {
     $argument = $argv[$i];
 
     if (strpos($argument, '--') !== 0) {
-        throw new Exception("unknown argument {$argument}");
+        throw new Exception("unknown argument - {$argument}");
     }
 
     switch ($argument) {
@@ -101,7 +101,7 @@ for ($i = 1; $i < count($argv); ++$i) {
             break;
 
         default:
-            throw new Exception("unknown argument {$argument}");
+            throw new Exception("unknown argument - {$argument}");
     }
 }
 
