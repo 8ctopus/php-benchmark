@@ -14,7 +14,6 @@ if (PHP_SAPI !== 'cli') {
     throw new Exception('run from cli');
 }
 
-// get command line arguments
 for ($i = 1; $i < count($argv); ++$i) {
     $argument = $argv[$i];
 
@@ -38,12 +37,8 @@ for ($i = 1; $i < count($argv); ++$i) {
     }
 }
 
-if (!isset($file1) || !isset($file2)) {
-    throw new Exception('file1 and file2 required');
-}
-
-if (!file_exists($file1) || !file_exists($file2)) {
-    throw new Exception('valid file1 and file2 required');
+if (!isset($file1) || !isset($file2) || !file_exists($file1) || !file_exists($file2)) {
+    throw new Exception('both files must exist');
 }
 
 $data1 = unserialize(file_get_contents($file1));
