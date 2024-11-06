@@ -11,6 +11,7 @@ from php 5.6.40 (use the `php5.6-compatibility` tag) to 8.3.x
 ## how to use
 
 - git clone the project
+- `composer install`
 
 ### run standard test
 
@@ -18,8 +19,7 @@ from php 5.6.40 (use the `php5.6-compatibility` tag) to 8.3.x
 
 ### run custom test
 
-- `composer install`
-- `php src/Benchmark.php --custom --filter ~equal~` where filter corresponds to a regular expression matching the functions that you want to test in `src/TestsUser.php`
+- `php src/Benchmark.php --custom --filter ~equal~` where filter corresponds to a regular expression matching the methods that you want to test in `src/TestsUser.php`
 
 ## examples
 
