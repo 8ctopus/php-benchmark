@@ -2,18 +2,19 @@
 
 declare(strict_types=1);
 
+namespace Oct8pus\Benchmark;
+
+use Exception;
+
 // add assertions support
 ini_set('zend.assertions', true);
 ini_set('assert.exception', true);
 //assert(false, __METHOD__ .'() unhandled situation');
 
-// set error reporting
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
-require_once __DIR__ . '/Stats.php';
-require_once __DIR__ . '/Helper.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
-// check if running from cli
 if (PHP_SAPI !== 'cli') {
     throw new Exception('run from cli');
 }

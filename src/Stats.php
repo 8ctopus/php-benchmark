@@ -2,6 +2,10 @@
 
 declare(strict_types=1);
 
+namespace Oct8pus\Benchmark;
+
+use DivisionByZeroError;
+
 class Stats
 {
     /**

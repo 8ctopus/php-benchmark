@@ -2,11 +2,14 @@
 
 declare(strict_types=1);
 
+namespace Oct8pus\Benchmark;
+
 use Apix\Log\Logger\File;
+use Apix\Log\Logger;
 use Apix\Log\Logger\Stream;
 use Monolog\Handler\StreamHandler;
 use Monolog\Level;
-use Monolog\Logger;
+use Monolog\Logger as MLogger;
 
 define('LOG_STDOUT', true);
 
@@ -273,7 +276,7 @@ class TestsUser
         $timeLimit = $timeStarted + $limit;
         $iterations = 0;
 
-        $log = new Logger('test');
+        $log = new MLogger('test');
         $log->pushHandler(new StreamHandler('log_monolog.log', Level::Warning));
 
         if (LOG_STDOUT) {
@@ -317,7 +320,7 @@ class TestsUser
             // automatically flush when >= 200 logs
             ->setDeferredTrigger(200);
 
-        $log = new Apix\Log\Logger([$file]);
+        $log = new Logger([$file]);
 
         if (LOG_STDOUT) {
             $stdout = new Stream('php://stdout', 'a');

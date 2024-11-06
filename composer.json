@@ -20,6 +20,11 @@
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "Oct8pus\\Benchmark\\": "src"
+        }
+    },
     "repositories": [{
         "url": "https://github.com/8ctopus/log",
         "type": "git"
@@ -28,5 +33,4 @@
         "fix": "php-cs-fixer fix --verbose",
         "fix-risky": "php-cs-fixer fix --allow-risky=yes --verbose"
     }
-
 }

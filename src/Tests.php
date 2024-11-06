@@ -10,6 +10,10 @@
 
 declare(strict_types=1);
 
+namespace Oct8pus\Benchmark;
+
+use ReflectionFunction;
+
 class Tests
 {
     /**
@@ -161,6 +165,7 @@ class Tests
             foreach ($functions as $function) {
                 // get function arguments count
                 $reflection = new ReflectionFunction($function);
+
                 $count = $reflection->getNumberOfParameters();
 
                 switch ($count) {

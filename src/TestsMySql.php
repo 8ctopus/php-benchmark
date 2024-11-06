@@ -2,6 +2,10 @@
 
 declare(strict_types=1);
 
+namespace Oct8pus\Benchmark;
+
+use Exception;
+
 class TestsMySql
 {
     /**
@@ -35,7 +39,7 @@ class TestsMySql
                 $mysqli = mysqli_connect($host, $user, $pass);
 
                 if (!$mysqli) {
-                    throw new Exception('Connect to database - FAILED');
+                    throw new Exception('Connect to database');
                 }
 
                 if (!$iterations) {
@@ -52,7 +56,7 @@ class TestsMySql
                     $result = mysqli_query($mysqli, $query);
 
                     if (!$result) {
-                        throw new Exception('Check if database exists - FAILED');
+                        throw new Exception('Check if database exists');
                     }
 
                     $array = mysqli_fetch_array($result);
@@ -67,7 +71,7 @@ class TestsMySql
                     TAG;
 
                     if (!mysqli_query($mysqli, $query)) {
-                        throw new Exception('Create database - FAILED');
+                        throw new Exception('Create database');
                     }
 
                     $dbCreated = true;
@@ -75,7 +79,7 @@ class TestsMySql
 
                 // select database
                 if (!mysqli_select_db($mysqli, $db)) {
-                    throw new Exception('Select database - FAILED');
+                    throw new Exception('Select database');
                 }
 
                 if (!$iterations) {
@@ -89,7 +93,7 @@ class TestsMySql
                     TAG;
 
                     if (!mysqli_query($mysqli, $query)) {
-                        throw new Exception('Create table - FAILED');
+                        throw new Exception('Create table');
                     }
                 }
 
@@ -104,7 +108,7 @@ class TestsMySql
                 TAG;
 
                 if (!mysqli_query($mysqli, $query)) {
-                    throw new Exception('Insert into table - FAILED');
+                    throw new Exception('Insert into table');
                 }
 
                 // select from table
@@ -120,13 +124,13 @@ class TestsMySql
                 $result = mysqli_query($mysqli, $query);
 
                 if (!$result) {
-                    throw new Exception('Select from table - FAILED');
+                    throw new Exception('Select from table');
                 }
 
                 $array = mysqli_fetch_array($result);
 
                 if (!$array) {
-                    throw new Exception('Select from table - FAILED');
+                    throw new Exception('Select from table');
                 }
 
                 // disconnect from database

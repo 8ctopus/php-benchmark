@@ -2,15 +2,22 @@
 
 declare(strict_types=1);
 
+namespace Oct8pus\Benchmark;
+
+use Exception;
+
 // add assertions support
 ini_set('zend.assertions', true);
 ini_set('assert.exception', true);
 //assert(false, __METHOD__ .'() unhandled situation');
 
-// set error reporting
 error_reporting(E_ERROR /*| E_WARNING */ | E_PARSE);
 
-require __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
+
+if (PHP_SAPI !== 'cli') {
+    throw new Exception('Please run the script from cli');
+}
 
 // settings
 $settings = [
@@ -34,11 +41,6 @@ $settings = [
     'save_filename_base' => 'benchmark_',
     'save_filename_ext' => date('Ymd-Hi') . '.txt',
 ];
-
-// check if running from cli
-if (PHP_SAPI !== 'cli') {
-    throw new Exception('Please run the script from cli');
-}
 
 // get command line arguments
 for ($i = 1; $i < count($argv); ++$i) {
