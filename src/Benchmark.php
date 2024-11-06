@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/**
- * PHP benchmark script
- *
- * @author 8ctopus <hello@octopuslabs.io>
- */
-
 // add assertions support
 ini_set('zend.assertions', true);
 ini_set('assert.exception', true);
@@ -126,17 +120,17 @@ if ($settings['custom_tests']) {
     require_once 'tests.php';
 }
 
-$line = str_pad('', helper::$pad1 + helper::$pad2 + 3, '-');
+$line = str_pad('', Helper::$pad1 + Helper::$pad2 + 3, '-');
 
 echo 'PHP benchmark' . "\n\n" .
     "{$line}\n" .
-    str_pad('platform', helper::$pad1) . ' : ' . str_pad(PHP_OS . ' ' . ((PHP_INT_SIZE === 8) ? 'x64' : 'x32'), helper::$pad2, ' ', STR_PAD_LEFT) . "\n" .
-    str_pad('php version', helper::$pad1) . ' : ' . str_pad(PHP_VERSION, helper::$pad2, ' ', STR_PAD_LEFT) . "\n" .
-    str_pad('xdebug', helper::$pad1) . ' : ' . str_pad(extension_loaded('xdebug') ? 'on' : 'off', helper::$pad2, ' ', STR_PAD_LEFT) . "\n" .
-    str_pad('memory limit', helper::$pad1) . ' : ' . str_pad(ini_get('memory_limit'), helper::$pad2, ' ', STR_PAD_LEFT) . "\n" .
-    str_pad('max execution', helper::$pad1) . ' : ' . str_pad(ini_get('max_execution_time'), helper::$pad2, ' ', STR_PAD_LEFT) . "\n" .
-    str_pad('time per iteration', helper::$pad1) . ' : ' . str_pad($settings['time_per_iteration'] . 'ms', helper::$pad2, ' ', STR_PAD_LEFT) . "\n" .
-    str_pad('iterations', helper::$pad1) . ' : ' . str_pad((string) $settings['iterations'], helper::$pad2, ' ', STR_PAD_LEFT) . "\n" .
+    str_pad('platform', Helper::$pad1) . ' : ' . str_pad(PHP_OS . ' ' . ((PHP_INT_SIZE === 8) ? 'x64' : 'x32'), Helper::$pad2, ' ', STR_PAD_LEFT) . "\n" .
+    str_pad('php version', Helper::$pad1) . ' : ' . str_pad(PHP_VERSION, Helper::$pad2, ' ', STR_PAD_LEFT) . "\n" .
+    str_pad('xdebug', Helper::$pad1) . ' : ' . str_pad(extension_loaded('xdebug') ? 'on' : 'off', Helper::$pad2, ' ', STR_PAD_LEFT) . "\n" .
+    str_pad('memory limit', Helper::$pad1) . ' : ' . str_pad(ini_get('memory_limit'), Helper::$pad2, ' ', STR_PAD_LEFT) . "\n" .
+    str_pad('max execution', Helper::$pad1) . ' : ' . str_pad(ini_get('max_execution_time'), Helper::$pad2, ' ', STR_PAD_LEFT) . "\n" .
+    str_pad('time per iteration', Helper::$pad1) . ' : ' . str_pad($settings['time_per_iteration'] . 'ms', Helper::$pad2, ' ', STR_PAD_LEFT) . "\n" .
+    str_pad('iterations', Helper::$pad1) . ' : ' . str_pad((string) $settings['iterations'], Helper::$pad2, ' ', STR_PAD_LEFT) . "\n" .
     "{$line}\n"
 ;
 
@@ -160,7 +154,7 @@ $save = [];
 // run tests x times
 for ($i = 0; $i < $settings['iterations']; ++$i) {
     // update test progress
-    $progress = helper::format_percentage($i / $settings['iterations'], false, 3);
+    $progress = Helper::format_percentage($i / $settings['iterations'], false, 3);
     $text = "Running tests {$progress}...";
     $len = strlen($text);
 
@@ -222,13 +216,13 @@ if ($settings['custom_tests'] && count($tests) % 2 === 0) {
     $test2 = array_values(array_slice($save, 1, 1, false));
 
     // compare custom tests
-    helper::show_compare($test1, $keys[0], $test2, $keys[1]);
+    Helper::show_compare($test1, $keys[0], $test2, $keys[1]);
 } elseif ($settings['compare']) {
     // get compare data set
     $baseline = unserialize(file_get_contents($settings['compare']));
 
     // show comparison
-    helper::show_compare($baseline, 'file', $save, 'test');
+    Helper::show_compare($baseline, 'file', $save, 'test');
 } else {
-    helper::show_benchmark($save, $settings);
+    Helper::show_benchmark($save, $settings);
 }

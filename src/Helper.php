@@ -2,12 +2,7 @@
 
 declare(strict_types=1);
 
-/**
- * Helper class
- *
- * @author 8ctopus <hello@octopuslabs.io>
- */
-class helper
+class Helper
 {
     // paddings
     public static $pad1 = 18;

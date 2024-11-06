@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 use Apix\Log\Logger\File;
 use Apix\Log\Logger\Stream;
 use Monolog\Handler\StreamHandler;
@@ -16,7 +17,7 @@ define('LOG_STDOUT', true);
  *
  * @author 8ctopus <hello@octopuslabs.io>
  */
-class tests
+class TestsUser
 {
     /**
      * baseline 1

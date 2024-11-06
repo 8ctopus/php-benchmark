@@ -1,18 +1,20 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * Tests
- * original author
  *
  * @author Alessandro Torrisi
+ *
  * The original tests are available at http://www.php-benchmark-script.com
  *
  * modified version author
+ *
  * @author 8ctopus <hello@octopuslabs.io>
  */
-class tests
+
+declare(strict_types=1);
+
+class Tests
 {
     /**
      * Test if else
@@ -90,10 +92,10 @@ class tests
 
         while (microtime(true) < $time_limit) {
             $a[] = [
-                rand() => helper::not_random_bytes(10),
+                rand() => Helper::not_random_bytes(10),
             ];
 
-            array_search(helper::not_random_bytes(10), $a, true);
+            array_search(Helper::not_random_bytes(10), $a, true);
 
             ++$iterations;
         }
@@ -118,7 +120,7 @@ class tests
             'strip_tags', 'strlen', 'strtoupper', 'strtolower', 'strrev', 'soundex', 'trim', ];
 
         // remove functions that don't exist
-        $functions = helper::check_functions_exist($functions);
+        $functions = Helper::check_functions_exist($functions);
 
         $string = 'the quick brown fox jumps over the lazy dog';
 
@@ -151,7 +153,7 @@ class tests
             'is_nan', 'log', 'log10', 'log1p', 'pi', 'pow', 'sin', 'sqrt', 'tan', ];
 
         // remove functions that don't exist
-        $functions = helper::check_functions_exist($functions);
+        $functions = Helper::check_functions_exist($functions);
 
         // run tests
         while (microtime(true) < $time_limit) {
@@ -197,7 +199,7 @@ class tests
         $iterations = 0;
 
         $hashes = ['adler32', 'crc32', 'crc32b', 'md5', 'sha1', 'sha256', 'sha384', 'sha512'];
-        $string = helper::not_random_bytes(1024);
+        $string = Helper::not_random_bytes(1024);
 
         while (microtime(true) < $time_limit) {
             foreach ($hashes as $hash) {
@@ -258,7 +260,7 @@ class tests
             $total_bytes += $bytes_to_write;
 
             // write bytes to file
-            $result = fwrite($handle, helper::not_random_bytes($bytes_to_write));
+            $result = fwrite($handle, Helper::not_random_bytes($bytes_to_write));
 
             // get file size
             $file_size = filesize($tmp_filename);
@@ -385,7 +387,7 @@ TAG;
                 }
 
                 // insert into table
-                $str = bin2hex(helper::not_random_bytes(rand(1, 256)));
+                $str = bin2hex(Helper::not_random_bytes(rand(1, 256)));
 
                 $query = <<<TAG
                     INSERT INTO

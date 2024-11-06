@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/**
- * Compare results
- *
- * @author 8ctopus <hello@octopuslabs.io>
- */
-
 // add assertions support
 ini_set('zend.assertions', true);
 ini_set('assert.exception', true);
@@ -68,4 +62,4 @@ $data1 = unserialize(file_get_contents($file1));
 $data2 = unserialize(file_get_contents($file2));
 
 // show compare results
-helper::show_compare($data1, 'file1', $data2, 'file2');
+Helper::show_compare($data1, 'file1', $data2, 'file2');

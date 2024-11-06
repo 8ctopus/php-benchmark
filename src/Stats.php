@@ -2,12 +2,7 @@
 
 declare(strict_types=1);
 
-/**
- * Stats class
- *
- * @author 8ctopus <hello@octopuslabs.io>
- */
-class stats
+class Stats
 {
     /**
      * Calculate array mean
