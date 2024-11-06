@@ -1,4 +1,4 @@
-# PHP benchmark script
+# PHP benchmark
 
 Benchmark your php code.
 
@@ -53,20 +53,22 @@ ANSWER: yes, from 2x to 7x depending on the test.
 ### is === faster than ==?
 
 ```php
-// equal_1
 ...
-if ($a == $b)
-    $c = 1;
+if ($a == $b) {
+    ...
+}
 ...
 
-// equal_2
+vs.
+
 ...
-if ($a === $b)
-    $c = 1;
+if ($a === $b) {
+    ...
+}
 ...
 ```
 
-`===` is approximately 15% faster than `==`.
+ANSWER: `===` is approximately 15% faster than `==`.
 
     $ docker run -it --volume "/$(pwd -W):/test/" php:7.4.12-cli-alpine sh
     $ cd test
@@ -103,6 +105,8 @@ Consider the real life example of parsing an Apache access log for zip file down
     8.8.8.8 - - [01/Dec/2020:06:56:08 +0100] "GET /bin/filev1.048.zip HTTP/2.0" 200 11853462 "
     8.8.8.8 - - [01/Dec/2020:06:56:08 +0100] "GET /css/someotherfile.css HTTP/2.0" 200 11853462 "
 
+Which code is faster?
+
 ```php
 // regex_1
 foreach ($apachelog as $line) {
@@ -119,9 +123,7 @@ foreach ($apachelog as $line) {
 }
 ```
 
-Which code is faster?
-
-Well the answer is not as obvious as it seems as it depends on the frequency of lines with zip downloads in the Apache log. If every line is a zip download `regex_1` is faster, while if zip downloads are more scarce then `regex_2` becomes faster. Here are the results:
+ANSWER: Well the answer is not as obvious as it seems as it depends on the frequency of lines with zip downloads in the Apache log. If every line is a zip download `regex_1` is faster, while if zip downloads are more scarce then `regex_2` becomes faster. Here are the results:
 
     $ php src/Benchmark.php --custom --filter ~regex~
 
@@ -344,10 +346,9 @@ ANSWER: it's 3x - 5x faster accross all tests except hashes where there is a 12%
     std deviation      :       109      116     6.7%
     normality          :      5.2%     5.2%
 
-### compare loggers
+### Which logger is faster? Monolog or Apix?
 
-QUESTION: Which logger is faster? Monolog or Apix?\
-ANSWER: It depends on how the log is setup but in most cases Apix is significantly faster
+ANSWER: It depends on how the logger is setup but in most cases Apix is significantly faster
 
     $ php src/Benchmark.php --custom --filter ~logger~
     PHP benchmark
