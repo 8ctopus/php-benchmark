@@ -120,35 +120,9 @@ echo "PHP benchmark\n\n" .
 
 $class = $settings['custom_tests'] ? TestsUser::class : Tests::class;
 
-$testsAsc = getTests($class, $settings['test_filter']);
+$tests = getTests($class, $settings['test_filter']);
 
-$testsDesc = $testsAsc;
-krsort($testsDesc);
-
-$save = [];
-
-// run tests x times
-for ($i = 0; $i < $settings['iterations']; ++$i) {
-    updateProgress($i / $settings['iterations']);
-
-    // switch testing order
-    $tests = $i % 2 ? $testsDesc : $testsAsc;
-
-    foreach ($tests as $index => $test) {
-        $measurement = $class::$test($settings['time_per_iteration'] / 1000);
-
-        if (!$i) {
-            $save[$test] = [$measurement];
-        } else {
-            $save[$test][] = $measurement;
-        }
-
-        // remove test if it failed
-        if ($measurement === null) {
-            unset($tests[$index]);
-        }
-    }
-}
+$save = runTests($class, $tests, $settings['iterations'], $settings['time_per_iteration']);
 
 // save results to file
 if ($settings['save']) {
@@ -174,6 +148,39 @@ if ($settings['custom_tests'] && count($tests) % 2 === 0) {
     Helper::showCompare($baseline, 'file', $save, 'test');
 } else {
     Helper::showBenchmark($save, $settings);
+}
+
+function runTests(string $class, array $testsAsc, int $iterations, int $timePerIteration) : array
+{
+    $testsDesc = $testsAsc;
+    krsort($testsDesc);
+
+    $save = [];
+
+    // run tests x times
+    for ($i = 0; $i < $iterations; ++$i) {
+        updateProgress($i / $iterations);
+
+        // switch testing order
+        $tests = $i % 2 ? $testsDesc : $testsAsc;
+
+        foreach ($tests as $index => $test) {
+            $measurement = $class::$test($timePerIteration / 1000);
+
+            if (!$i) {
+                $save[$test] = [$measurement];
+            } else {
+                $save[$test][] = $measurement;
+            }
+
+            // remove test if it failed
+            if ($measurement === null) {
+                unset($tests[$index]);
+            }
+        }
+    }
+
+    return $save;
 }
 
 function getTests(string $class, string $filter) : array
