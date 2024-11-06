@@ -15,8 +15,7 @@ require_once __DIR__ . '/Helper.php';
 
 // check if running from cli
 if (PHP_SAPI !== 'cli') {
-    echo 'cli required';
-    exit;
+    throw new Exception('run from cli');
 }
 
 // get command line arguments
@@ -24,8 +23,7 @@ for ($i = 1; $i < count($argv); ++$i) {
     $argument = $argv[$i];
 
     if (strpos($argument, '--') !== 0) {
-        echo "unknown argument {$argument}";
-        exit;
+        throw new Exception("unknown argument {$argument}");
     }
 
     switch ($argument) {
@@ -40,26 +38,22 @@ for ($i = 1; $i < count($argv); ++$i) {
             break;
 
         default:
-            echo "unknown argument {$argument}";
-            exit;
+            throw new Exception("unknown argument {$argument}");
     }
 }
 
 // check for required variables
 if (!isset($file1) || !isset($file2)) {
-    echo "file1 and file2 required\n";
-    exit;
+    throw new Exception("file1 and file2 required");
 }
 
 // check files exist
 if (!file_exists($file1) || !file_exists($file2)) {
-    echo "valid file1 and file2 required\n";
-    exit;
+    throw new Exception("valid file1 and file2 required");
 }
 
 // get data sets
 $data1 = unserialize(file_get_contents($file1));
 $data2 = unserialize(file_get_contents($file2));
 
-// show compare results
 Helper::showCompare($data1, 'file1', $data2, 'file2');

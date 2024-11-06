@@ -35,8 +35,7 @@ $settings = [
 
 // check if running from cli
 if (PHP_SAPI !== 'cli') {
-    echo 'Please run the script from cli';
-    exit;
+    throw new Exception('Please run the script from cli');
 }
 
 // get command line arguments
@@ -44,8 +43,7 @@ for ($i = 1; $i < count($argv); ++$i) {
     $argument = $argv[$i];
 
     if (strpos($argument, '--') !== 0) {
-        echo "unknown argument {$argument}";
-        exit;
+        throw new Exception("unknown argument {$argument}");
     }
 
     switch ($argument) {
@@ -105,8 +103,7 @@ for ($i = 1; $i < count($argv); ++$i) {
             break;
 
         default:
-            echo "unknown argument {$argument}";
-            exit;
+            throw new Exception("unknown argument {$argument}");
     }
 }
 
