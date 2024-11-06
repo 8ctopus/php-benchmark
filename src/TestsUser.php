@@ -8,8 +8,6 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Level;
 use Monolog\Logger;
 
-require __DIR__ . '/../vendor/autoload.php';
-
 define('LOG_STDOUT', true);
 
 class TestsUser

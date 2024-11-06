@@ -10,6 +10,8 @@ ini_set('assert.exception', true);
 // set error reporting
 error_reporting(E_ERROR /*| E_WARNING */ | E_PARSE);
 
+require __DIR__ . '/../vendor/autoload.php';
+
 // settings
 $settings = [
     'iterations' => 250,
