@@ -122,7 +122,7 @@ $class = $settings['custom_tests'] ? TestsUser::class : Tests::class;
 
 $tests = getTests($class, $settings['test_filter']);
 
-$save = runTests($class, $tests, $settings['iterations'], $settings['time_per_iteration']);
+$save = runTests($class, $tests, $settings['iterations'], $settings['time_per_iteration'] / 1000);
 
 // save results to file
 if ($settings['save']) {
@@ -150,14 +150,13 @@ if ($settings['custom_tests'] && count($tests) % 2 === 0) {
     Helper::showBenchmark($save, $settings);
 }
 
-function runTests(string $class, array $testsAsc, int $iterations, int $timePerIteration) : array
+function runTests(string $class, array $testsAsc, int $iterations, float $timePerIteration) : array
 {
     $testsDesc = $testsAsc;
     krsort($testsDesc);
 
     $save = [];
 
-    // run tests x times
     for ($i = 0; $i < $iterations; ++$i) {
         updateProgress($i / $iterations);
 
@@ -165,7 +164,7 @@ function runTests(string $class, array $testsAsc, int $iterations, int $timePerI
         $tests = $i % 2 ? $testsDesc : $testsAsc;
 
         foreach ($tests as $index => $test) {
-            $measurement = $class::$test($timePerIteration / 1000);
+            $measurement = runTest($class, $test, $timePerIteration);
 
             if (!$i) {
                 $save[$test] = [$measurement];
@@ -181,6 +180,11 @@ function runTests(string $class, array $testsAsc, int $iterations, int $timePerI
     }
 
     return $save;
+}
+
+function runTest(string $class, string $test, float $timePerIteration) : int
+{
+    return $class::$test($timePerIteration);
 }
 
 function getTests(string $class, string $filter) : array
