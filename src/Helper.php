@@ -201,7 +201,7 @@ class Helper
      * Format bytes
      *
      * @param float $size
-     * @param int $precision
+     * @param int   $precision
      *
      * @return string
      *

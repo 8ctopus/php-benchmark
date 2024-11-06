@@ -192,7 +192,7 @@ class Stats
      * Create histogram
      *
      * @param array $dataPoints
-     * @param int   $buckets     number of buckets
+     * @param int   $buckets    number of buckets
      *
      * @return array histogram
      */

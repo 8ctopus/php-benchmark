@@ -8,7 +8,6 @@
  * The original tests are available at http://www.php-benchmark-script.com
  *
  * modified version author
- *
  * @author 8ctopus <hello@octopuslabs.io>
  */
 
