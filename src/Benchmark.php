@@ -115,9 +115,9 @@ require_once __DIR__ . '/Helper.php';
 
 // include either user or standard tests
 if ($settings['custom_tests']) {
-    require_once __DIR__ . 'TestsUser.php';
+    require_once __DIR__ . '/TestsUser.php';
 } else {
-    require_once __DIR__ . 'Tests.php';
+    require_once __DIR__ . '/Tests.php';
 }
 
 $line = str_pad('', Helper::$pad1 + Helper::$pad2 + 3, '-');
