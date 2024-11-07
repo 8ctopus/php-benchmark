@@ -226,15 +226,15 @@ class Stats
         foreach ($data as $value) {
             $offset = $value - $min;
 
-            $bucket = (int) ceil($offset / $width) - 1;
+            $bucket = (int) ceil($offset / $width);
 
             // move min value to first bucket
-            if ($bucket === -1) {
-                $bucket = 0;
+            if ($bucket === 0) {
+                $bucket = 1;
             }
 
             // increment bucket count
-            ++$histogram[$bucket]['count'];
+            ++$histogram[$bucket - 1]['count'];
         }
 
         return $histogram;
