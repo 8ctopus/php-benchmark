@@ -145,7 +145,7 @@ class Helper
                         $delta = Stats::relativeDifference($value1, $value2);
 
                         echo str_pad($key, self::$pad1) . ' : ' . self::formatNumber($value1, self::$pad2) . self::formatNumber($value2, self::$pad2) . self::formatPercentage($delta, true, self::$pad2) . "\n";
-                    } catch (DivisionByZeroError) {
+                    } catch (DivisionByZeroError $exception) {
                         echo str_pad($key, self::$pad1) . ' : ' . self::formatNumber($value1, self::$pad2) . self::formatNumber($value2, self::$pad2) . str_pad('nan', self::$pad2, ' ', STR_PAD_LEFT) . "\n";
                     }
                 }
