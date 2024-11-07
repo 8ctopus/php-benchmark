@@ -114,6 +114,7 @@ echo "PHP benchmark\n\n" .
     str_pad('platform', Helper::$pad1) . ' : ' . str_pad(PHP_OS . ' ' . ((PHP_INT_SIZE === 8) ? 'x64' : 'x32'), Helper::$pad2, ' ', STR_PAD_LEFT) . "\n" .
     str_pad('php version', Helper::$pad1) . ' : ' . str_pad(PHP_VERSION, Helper::$pad2, ' ', STR_PAD_LEFT) . "\n" .
     str_pad('xdebug', Helper::$pad1) . ' : ' . str_pad(extension_loaded('xdebug') ? 'on' : 'off', Helper::$pad2, ' ', STR_PAD_LEFT) . "\n" .
+    str_pad('opcache', Helper::$pad1) . ' : ' . str_pad(extension_loaded('Zend OPcache') ? 'on' : 'off', Helper::$pad2, ' ', STR_PAD_LEFT) . "\n" .
     str_pad('memory limit', Helper::$pad1) . ' : ' . str_pad(ini_get('memory_limit'), Helper::$pad2, ' ', STR_PAD_LEFT) . "\n" .
     str_pad('max execution', Helper::$pad1) . ' : ' . str_pad(ini_get('max_execution_time'), Helper::$pad2, ' ', STR_PAD_LEFT) . "\n" .
     str_pad('iterations', Helper::$pad1) . ' : ' . str_pad((string) $settings['iterations'], Helper::$pad2, ' ', STR_PAD_LEFT) . "\n" .
@@ -186,8 +187,8 @@ function runTests(string $class, array $testsAsc, int $iterations, float $timePe
 
 function runTest(string $class, string $test, float $timePerIteration) : int
 {
-    $timeLimit = hrtime(true) + $timePerIteration * 1000000;
     $iterations = 0;
+    $timeLimit = hrtime(true) + $timePerIteration * 1000000;
 
     while (hrtime(true) < $timeLimit) {
         $class::$test();
