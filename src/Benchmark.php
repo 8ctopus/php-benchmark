@@ -138,25 +138,26 @@ if ($settings['save']) {
 }
 
 if ($settings['custom_tests'] && count($tests) % 2 === 0) {
-    $keys = array_keys($reports);
+    $baseline = (new Reports())
+        ->addReport($reports[0]);
 
-    $test1 = array_values(array_slice($reports, 0, 1, false));
-    $test2 = array_values(array_slice($reports, 1, 1, false));
+    $update = (new Reports())
+        ->addReport($reports[1]);
 
-    Helper::showCompare($test1, $keys[0], $test2, $keys[1]);
+    Helper::showCompare($baseline, $update);
 } elseif ($settings['compare']) {
     $baseline = unserialize(file_get_contents($settings['compare']));
-    Helper::showCompare($baseline, 'file', $reports, 'test');
+    Helper::showCompare($baseline, $reports);
 } else {
     Helper::showBenchmark($reports, $settings);
 }
 
-function runTests(string $class, array $testsAsc, int $iterations, float $timePerIteration) : array
+function runTests(string $class, array $testsAsc, int $iterations, float $timePerIteration) : Reports
 {
     $testsDesc = $testsAsc;
     krsort($testsDesc);
 
-    $reports = [];
+    $reports = new Reports();
 
     for ($i = 0; $i < $iterations; ++$i) {
         updateProgress($i / $iterations);
@@ -167,11 +168,7 @@ function runTests(string $class, array $testsAsc, int $iterations, float $timePe
         foreach ($tests as $test) {
             $measurement = runTest($class, $test, $timePerIteration);
 
-            if ($i === 0) {
-                $reports[$test] = [];
-            }
-
-            $reports[$test][] = $measurement;
+            $reports->add($test, $measurement);
         }
     }
 

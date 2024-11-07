@@ -15,16 +15,20 @@ class Helper
     /**
      * Analyze test results
      *
-     * @param array $measurements
+     * @param Report $measurements
      *
      * @return array of strings or null if any of the test iterations failed
      */
-    public static function analyzeTest(array $measurements) : ?array
+    public static function analyzeTest(Report $measurements) : ?array
     {
+        $measurements = $measurements->data();
+
+        /* REM
         // check if the test failed at least once
-        if (in_array(false, $measurements, true)) {
+        if (in_array(false, $measurements->data(), true)) {
             return null;
         }
+        */
 
         return [
             'mean' => Stats::mean($measurements),
@@ -43,28 +47,28 @@ class Helper
     /**
      * Show benchmark results
      *
-     * @param array $data
+     * @param Reports $reports
      * @param array $settings
      *
      * @return void
      */
-    public static function showBenchmark(array $data, array $settings) : void
+    public static function showBenchmark(Reports $data, array $settings) : void
     {
         $line = str_pad('', self::$pad1 + self::$pad2 + 3, '-');
 
         // analyze test results
-        foreach ($data as $test => $measurements) {
-            $result = self::analyzeTest($measurements);
+        foreach ($data as $report) {
+            $result = self::analyzeTest($report);
 
             // check for error
             if ($result === null) {
-                echo str_pad($test, self::$pad1) . ' : ' . str_pad('FAILED', self::$pad2, ' ', STR_PAD_LEFT) . "\n";
+                echo str_pad($report->name(), self::$pad1) . ' : ' . str_pad('FAILED', self::$pad2, ' ', STR_PAD_LEFT) . "\n";
                 echo $line . "\n";
                 continue;
             }
 
             // show test results
-            echo str_pad($test, self::$pad1) . ' : ' . str_pad('iterations', self::$pad2, ' ', STR_PAD_LEFT) . "\n";
+            echo str_pad($report->name(), self::$pad1) . ' : ' . str_pad('iterations', self::$pad2, ' ', STR_PAD_LEFT) . "\n";
 
             foreach ($result as $key => $value) {
                 if ($key === 'normality') {
@@ -77,20 +81,20 @@ class Helper
             // show histogram
             if ($settings['show_histogram']) {
                 echo "\n";
-                $histogram = Stats::histogram($measurements, $settings['histogram_buckets']);
+                $histogram = Stats::histogram($report->data(), $settings['histogram_buckets']);
                 Stats::drawHistogram($histogram, $settings['histogram_bar_width']);
             }
 
             // output outliers
             if ($settings['show_outliers']) {
                 echo "\n";
-                echo str_pad('outliers', self::$pad1) . ' : ' . self::outliers($measurements) . "\n";
+                echo str_pad('outliers', self::$pad1) . ' : ' . self::outliers($report->data()) . "\n";
             }
 
             // output all measurements
             if ($settings['show_all_measurements']) {
                 echo "\n";
-                echo str_pad('values', self::$pad1) . ' : ' . self::allMeasurements($measurements) . "\n";
+                echo str_pad('values', self::$pad1) . ' : ' . self::allMeasurements($report->data()) . "\n";
             }
 
             echo $line . "\n";
@@ -100,14 +104,12 @@ class Helper
     /**
      * Show comparison
      *
-     * @param array  $baseline
-     * @param string $btitle
-     * @param array  $latest
-     * @param string $title
+     * @param Reports $baseline
+     * @param Reports $latest
      *
      * @return void
      */
-    public static function showCompare(array $baseline, string $btitle, array $latest, string $ltitle) : void
+    public static function showCompare(Reports $baseline, Reports $latest) : void
     {
         // paddings
         $line = str_pad('', self::$pad1 + 3 * self::$pad2 + 3, '-');
@@ -115,23 +117,23 @@ class Helper
         echo $line . "\n";
 
         // compare tests
-        foreach ($baseline as $test1 => $measurements1) {
+        foreach ($baseline as $i => $report) {
             // get latest measurements
-            $measurements2 = $latest[$test1];
+            $measurements2 = $latest[$i];
 
             // analyze test results
-            $result1 = self::analyzeTest($measurements1);
+            $result1 = self::analyzeTest($report);
             $result2 = self::analyzeTest($measurements2);
 
             // check for error
             if ($result1 === null || $result2 === null) {
-                echo str_pad($test1, self::$pad1) . ' : ' . str_pad('FAILED', self::$pad2, ' ', STR_PAD_LEFT) . "\n";
+                echo str_pad($report->name(), self::$pad1) . ' : ' . str_pad('FAILED', self::$pad2, ' ', STR_PAD_LEFT) . "\n";
                 echo $line . "\n";
                 continue;
             }
 
             // show test results
-            echo str_pad((string) $test1, self::$pad1) . ' : ' . str_pad($btitle, self::$pad2, ' ', STR_PAD_LEFT) . str_pad($ltitle, self::$pad2, ' ', STR_PAD_LEFT) . "\n";
+            echo str_pad((string) $i, self::$pad1) . ' : ' . str_pad($report->name(), self::$pad2, ' ', STR_PAD_LEFT) . str_pad($measurements2->name(), self::$pad2, ' ', STR_PAD_LEFT) . "\n";
 
             // show test results
             foreach ($result1 as $key => $value1) {
