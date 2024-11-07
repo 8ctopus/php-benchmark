@@ -116,7 +116,7 @@ class Tests
     public static function testFiles() : void
     {
         // max number of bytes to write
-        $bytesToWriteMax = 0.5 * 1024 * 1024;
+        $bytesToWriteMax = 1 * 1024;
         $totalBytes = 0;
 
         // get temporary directory
@@ -174,8 +174,10 @@ class Tests
         $totalBytes += $bytesToRead;
 
         // read from file
-        /** @disregard P1003 */
-        $result = fread($handle, $bytesToRead);
+        if ($bytesToRead > 0) {
+            /** @disregard P1003 */
+            $result = fread($handle, $bytesToRead);
+        }
 
         // close file
         fclose($handle);
