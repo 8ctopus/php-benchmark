@@ -32,6 +32,7 @@ class TestsUser
     {
         $a = 1;
         $b = "1";
+        /** @disregard P1003 */
         $c = 0;
 
         if ($a == $b) {
@@ -47,6 +48,7 @@ class TestsUser
     {
         $a = 1;
         $b = "1";
+        /** @disregard P1003 */
         $c = 0;
 
         if ($a === $b) {
