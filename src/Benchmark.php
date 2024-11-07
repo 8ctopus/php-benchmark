@@ -6,8 +6,6 @@ namespace Oct8pus\Benchmark;
 
 use Exception;
 
-error_reporting(E_ERROR | E_WARNING | E_PARSE);
-
 require_once __DIR__ . '/../vendor/autoload.php';
 
 if (PHP_SAPI !== 'cli') {
