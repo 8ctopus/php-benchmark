@@ -12,11 +12,11 @@
         }
     ],
     "require": {
-        "8ctopus/apix-log": "^3.0",
-        "monolog/monolog": "^3.2"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.8"
+        "friendsofphp/php-cs-fixer": "^3.8",
+        "8ctopus/apix-log": "^3.0",
+        "monolog/monolog": "^3.2"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
