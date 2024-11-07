@@ -17,298 +17,111 @@ class TestsUser
 {
     /**
      * Baseline 1 (same as Baseline 2, just to test equality)
-     *
-     * @param float $limit time limit in seconds
-     *
-     * @return int iterations done in allocated time
      */
-    public static function baseline1(float $limit) : int
+    public static function baseline1() : void
     {
-        $timeStarted = microtime(true);
-        $timeLimit = $timeStarted + $limit;
-        $iterations = 0;
-
-        while (microtime(true) < $timeLimit) {
-            // test code starts here
-            pow(2, 10);
-
-            // test code ends here
-            ++$iterations;
-        }
-
-        return $iterations;
+        pow(2, 10);
     }
 
-    /**
-     * Baseline 2
-     *
-     * @param float $limit time limit in seconds
-     *
-     * @return int iterations done in allocated time
-     */
-    public static function baseline2(float $limit) : int
+    public static function baseline2() : void
     {
-        $timeStarted = microtime(true);
-        $timeLimit = $timeStarted + $limit;
-        $iterations = 0;
-
-        while (microtime(true) < $timeLimit) {
-            // test code starts here
-            pow(2, 10);
-
-            // test code ends here
-            ++$iterations;
-        }
-
-        return $iterations;
+        pow(2, 10);
     }
 
-    /**
-     * Equality variant 1
-     *
-     * @param float $limit time limit in seconds
-     *
-     * @return int iterations done in allocated time
-     */
-    public static function equal1(float $limit) : int
+    public static function equal1() : void
     {
-        $timeStarted = microtime(true);
-        $timeLimit = $timeStarted + $limit;
-        $iterations = 0;
+        $a = 1;
+        $b = true;
 
-        while (microtime(true) < $timeLimit) {
-            // test code starts here
-
-            $a = 1;
-            $b = true;
-
-            if ($a == $b) {
-                /** @disregard P1003 */
-                $c = 1;
-            } else {
-                /** @disregard P1003 */
-                $c = 0;
-            }
-
-            // test code ends here
-            ++$iterations;
+        if ($a == $b) {
+            /** @disregard P1003 */
+            $c = 1;
+        } else {
+            /** @disregard P1003 */
+            $c = 0;
         }
-
-        return $iterations;
     }
 
-    /**
-     * Equality variant 1
-     *
-     * @param float $limit time limit in seconds
-     *
-     * @return int iterations done in allocated time
-     */
-    public static function equal2(float $limit) : int
+    public static function equal2() : void
     {
-        $timeStarted = microtime(true);
-        $timeLimit = $timeStarted + $limit;
-        $iterations = 0;
+        $a = 1;
+        $b = true;
 
-        while (microtime(true) < $timeLimit) {
-            // test code starts here
-
-            $a = 1;
-            $b = true;
-
-            if ($a === $b) {
-                /** @disregard P1003 */
-                $c = 1;
-            } else {
-                /** @disregard P1003 */
-                $c = 0;
-            }
-
-            // test code ends here
-            ++$iterations;
+        if ($a === $b) {
+            /** @disregard P1003 */
+            $c = 1;
+        } else {
+            /** @disregard P1003 */
+            $c = 0;
         }
-
-        return $iterations;
     }
 
-    /**
-     * Regex variant 1
-     *
-     * @param float $limit time limit in seconds
-     *
-     * @return int iterations done in allocated time
-     */
-    public static function regex1(float $limit) : int
+    public static function regex1() : void
     {
-        $timeStarted = microtime(true);
-        $timeLimit = $timeStarted + $limit;
-        $iterations = 0;
+        // there's only one chance in 350 to see a zip string
+        if (mt_rand(1, 350) === 1) {
+            $string = '8.8.8.8 - - [01/Dec/2020:06:56:08 +0100] "GET /bin/filev1.048.zip HTTP/2.0" 200 11853462 "';
+        } else {
+            $string = '8.8.8.8 - - [01/Dec/2020:06:56:08 +0100] "GET /css/someotherfile.css HTTP/2.0" 200 11853462 "';
+        }
 
-        while (microtime(true) < $timeLimit) {
-            // test code starts here
+        /** @disregard P1003 */
+        $result = preg_match('~GET /bin/(.*?)v\d\.\d{3}\.zip~', $string, $matches);
+    }
 
-            // there's only one chance in 350 to see a zip string
-            if (mt_rand(1, 350) === 1) {
-                $string = '8.8.8.8 - - [01/Dec/2020:06:56:08 +0100] "GET /bin/filev1.048.zip HTTP/2.0" 200 11853462 "';
-            } else {
-                $string = '8.8.8.8 - - [01/Dec/2020:06:56:08 +0100] "GET /css/someotherfile.css HTTP/2.0" 200 11853462 "';
-            }
+    public static function regex2() : void
+    {
+        // there's only one chance in 350 to see a zip string
+        if (mt_rand(1, 350) === 1) {
+            $string = '8.8.8.8 - - [01/Dec/2020:06:56:08 +0100] "GET /bin/filev1.048.zip HTTP/2.0" 200 11853462 "';
+        } else {
+            $string = '8.8.8.8 - - [01/Dec/2020:06:56:08 +0100] "GET /css/someotherfile.css HTTP/2.0" 200 11853462 "';
+        }
 
+        if (strpos($string, '.zip') !== false) {
             /** @disregard P1003 */
             $result = preg_match('~GET /bin/(.*?)v\d\.\d{3}\.zip~', $string, $matches);
-
-            // test code ends here
-            ++$iterations;
         }
-
-        return $iterations;
     }
 
-    /**
-     * Regex variant 2
-     *
-     * @param float $limit time limit in seconds
-     *
-     * @return int iterations done in allocated time
-     */
-    public static function regex2(float $limit) : int
-    {
-        $timeStarted = microtime(true);
-        $timeLimit = $timeStarted + $limit;
-        $iterations = 0;
-
-        while (microtime(true) < $timeLimit) {
-            // test code starts here
-
-            // there's only one chance in 350 to see a zip string
-            if (mt_rand(1, 350) === 1) {
-                $string = '8.8.8.8 - - [01/Dec/2020:06:56:08 +0100] "GET /bin/filev1.048.zip HTTP/2.0" 200 11853462 "';
-            } else {
-                $string = '8.8.8.8 - - [01/Dec/2020:06:56:08 +0100] "GET /css/someotherfile.css HTTP/2.0" 200 11853462 "';
-            }
-
-            if (strpos($string, '.zip') !== false) {
-                /** @disregard P1003 */
-                $result = preg_match('~GET /bin/(.*?)v\d\.\d{3}\.zip~', $string, $matches);
-            }
-
-            // test code ends here
-            ++$iterations;
-        }
-
-        return $iterations;
-    }
-
-    public static function strBr1(string $str) : string
+    private static function strBr1(string $str) : string
     {
         return $str . PHP_EOL;
     }
 
-    public static function strBr2(string &$str) : string
+    private static function strBr2(string &$str) : string
     {
         return $str . PHP_EOL;
     }
 
-    /**
-     * Pass function argument variant 1
-     *
-     * @param float $limit time limit in seconds
-     *
-     * @return int iterations done in allocated time
-     */
-    public static function fnArgument1(float $limit) : int
+    public static function fnArgument1() : void
     {
-        $timeStarted = microtime(true);
-        $timeLimit = $timeStarted + $limit;
-        $iterations = 0;
-
         $str = 'hello world how are you doing today?';
 
-        while (microtime(true) < $timeLimit) {
-            // test code starts here
-
-            $str = self::strBr2($str);
-
-            // test code ends here
-            ++$iterations;
-        }
-
-        return $iterations;
+        $str = self::strBr2($str);
     }
 
-    /**
-     * Pass function argument variant 2
-     *
-     * @param float $limit time limit in seconds
-     *
-     * @return int iterations done in allocated time
-     */
-    public static function fnArgument2(float $limit) : int
+    public static function fnArgument2() : void
     {
-        $timeStarted = microtime(true);
-        $timeLimit = $timeStarted + $limit;
-        $iterations = 0;
-
         $str = 'hello world how are you doing today?';
 
-        while (microtime(true) < $timeLimit) {
-            // test code starts here
-
-            $str = self::strBr1($str);
-
-            // test code ends here
-            ++$iterations;
-        }
-
-        return $iterations;
+        $str = self::strBr1($str);
     }
 
-    /**
-     * Test monolog logger
-     *
-     * @param float $limit time limit in seconds
-     *
-     * @return int iterations done in allocated time
-     */
-    public static function loggerMonolog(float $limit) : int
+    public static function loggerMonolog() : void
     {
-        $timeStarted = microtime(true);
-        $timeLimit = $timeStarted + $limit;
-        $iterations = 0;
-
         $log = new MLogger('test');
         $log->pushHandler(new StreamHandler('log_monolog.log', Level::Warning));
 
         if (LOG_STDOUT) {
-            // log to stdout
             $log->pushHandler(new StreamHandler('php://stdout', Level::Warning));
         }
 
-        while (microtime(true) < $timeLimit) {
-            // test code starts here
-
-            $log->warning('test');
-
-            // test code ends here
-            ++$iterations;
-        }
-
-        return $iterations;
+        $log->warning('test');
     }
 
-    /**
-     * Test apix logger
-     *
-     * @param float $limit time limit in seconds
-     *
-     * @return int iterations done in allocated time
-     */
-    public static function loggerApix(float $limit) : int
+    public static function loggerApix() : void
     {
-        $timeStarted = microtime(true);
-        $timeLimit = $timeStarted + $limit;
-        $iterations = 0;
-
         $file = new File('log_apix.log');
         $file
             // intercept logs that are >= `warning`
@@ -335,15 +148,6 @@ class TestsUser
             $log->add($stdout);
         }
 
-        while (microtime(true) < $timeLimit) {
-            // test code starts here
-
-            $log->warning('test');
-
-            // test code ends here
-            ++$iterations;
-        }
-
-        return $iterations;
+        $log->warning('test');
     }
 }

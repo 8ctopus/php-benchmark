@@ -183,7 +183,16 @@ function runTests(string $class, array $testsAsc, int $iterations, float $timePe
 
 function runTest(string $class, string $test, float $timePerIteration) : int
 {
-    return $class::$test($timePerIteration);
+    $timeStarted = microtime(true);
+    $timeLimit = $timeStarted + $timePerIteration;
+    $iterations = 0;
+
+    while (microtime(true) < $timeLimit) {
+        $class::$test();
+        ++$iterations;
+    }
+
+    return $iterations;
 }
 
 function getTests(string $class, string $filter) : array
