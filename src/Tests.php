@@ -122,7 +122,7 @@ class Tests
         // get temporary directory
         $tmpDir = sys_get_temp_dir() . DIRECTORY_SEPARATOR;
 
-        // scan temp dir
+        // list temp dir
         $list = scandir($tmpDir);
 
         if (!$list) {

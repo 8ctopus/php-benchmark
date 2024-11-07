@@ -107,6 +107,8 @@ for ($i = 1; $i < count($argv); ++$i) {
 
 $line = str_pad('', Helper::$pad1 + Helper::$pad2 + 3, '-');
 
+$totalTime = $settings['iterations'] * $settings['time_per_iteration'] / 1000;
+
 echo "PHP benchmark\n\n" .
     "{$line}\n" .
     str_pad('platform', Helper::$pad1) . ' : ' . str_pad(PHP_OS . ' ' . ((PHP_INT_SIZE === 8) ? 'x64' : 'x32'), Helper::$pad2, ' ', STR_PAD_LEFT) . "\n" .
@@ -116,6 +118,7 @@ echo "PHP benchmark\n\n" .
     str_pad('max execution', Helper::$pad1) . ' : ' . str_pad(ini_get('max_execution_time'), Helper::$pad2, ' ', STR_PAD_LEFT) . "\n" .
     str_pad('iterations', Helper::$pad1) . ' : ' . str_pad((string) $settings['iterations'], Helper::$pad2, ' ', STR_PAD_LEFT) . "\n" .
     str_pad('time per iteration', Helper::$pad1) . ' : ' . str_pad($settings['time_per_iteration'] . 'ms', Helper::$pad2, ' ', STR_PAD_LEFT) . "\n" .
+    str_pad('total time per test', Helper::$pad1) . ' : ' . str_pad($totalTime . 's', Helper::$pad2, ' ', STR_PAD_LEFT) . "\n" .
     "{$line}\n";
 
 $class = $settings['custom_tests'] ? TestsUser::class : Tests::class;
@@ -183,11 +186,11 @@ function runTests(string $class, array $testsAsc, int $iterations, float $timePe
 
 function runTest(string $class, string $test, float $timePerIteration) : int
 {
-    $timeStarted = microtime(true);
-    $timeLimit = $timeStarted + $timePerIteration;
+    $timeStarted = hrtime(true);
+    $timeLimit = $timeStarted + $timePerIteration * 1000000;
     $iterations = 0;
 
-    while (microtime(true) < $timeLimit) {
+    while (hrtime(true) < $timeLimit) {
         $class::$test();
         ++$iterations;
     }
