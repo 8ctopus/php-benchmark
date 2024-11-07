@@ -78,7 +78,7 @@ class Helper
             if ($settings['show_histogram']) {
                 echo "\n";
                 $histogram = Stats::histogram($measurements, $settings['histogram_buckets']);
-                Stats::histogramDraw($histogram, $settings['histogram_bar_width']);
+                Stats::drawHistogram($histogram, $settings['histogram_bar_width']);
             }
 
             // output outliers
