@@ -21,7 +21,7 @@ $settings = [
 
     'compare' => false,
 
-    'show_histogram' => true,
+    'show_histogram' => false,
     'histogram_buckets' => 16,
     'histogram_bar_width' => 50,
 
