@@ -156,7 +156,7 @@ function runTests(string $class, array $testsAsc, int $iterations, float $timePe
     $testsDesc = $testsAsc;
     krsort($testsDesc);
 
-    $save = [];
+    $reports = [];
 
     for ($i = 0; $i < $iterations; ++$i) {
         updateProgress($i / $iterations);
@@ -168,14 +168,14 @@ function runTests(string $class, array $testsAsc, int $iterations, float $timePe
             $measurement = runTest($class, $test, $timePerIteration);
 
             if ($i === 0) {
-                $save[$test] = [];
+                $reports[$test] = [];
             }
 
-            $save[$test][] = $measurement;
+            $reports[$test][] = $measurement;
         }
     }
 
-    return $save;
+    return $reports;
 }
 
 function runTest(string $class, string $test, float $timePerIteration) : int
