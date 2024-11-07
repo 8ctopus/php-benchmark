@@ -13,8 +13,8 @@ if (PHP_SAPI !== 'cli') {
 }
 
 $settings = [
-    'iterations' => 250,
-    'time_per_iteration' => 50,
+    'iterations' => 500,
+    'time_per_iteration' => 20,
 
     'test_filter' => '/^test/',
     'custom_tests' => false,
