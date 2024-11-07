@@ -9,7 +9,7 @@ use DivisionByZeroError;
 class Helper
 {
     // paddings
-    public static int $pad1 = 18;
+    public static int $pad1 = 19;
     public static int $pad2 = 14;
 
     /**
