@@ -187,6 +187,9 @@ function runTests(string $class, array $testsAsc, int $iterations, float $timePe
 
 function runTest(string $class, string $test, float $timePerIteration) : int
 {
+    // burn the first test
+    $class::$test();
+
     $iterations = 0;
     $timeLimit = hrtime(true) + $timePerIteration * 1000000;
 
