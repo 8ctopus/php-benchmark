@@ -167,11 +167,11 @@ function runTests(string $class, array $testsAsc, int $iterations, float $timePe
         foreach ($tests as $test) {
             $measurement = runTest($class, $test, $timePerIteration);
 
-            if (!$i) {
-                $save[$test] = [$measurement];
-            } else {
-                $save[$test][] = $measurement;
+            if ($i === 0) {
+                $save[$test] = [];
             }
+
+            $save[$test][] = $measurement;
         }
     }
 
