@@ -202,8 +202,10 @@ class Stats
      */
     public static function histogram(array $data, int $buckets) : array
     {
-        $max = max($data);
+        sort($data);
+
         $min = min($data);
+        $max = max($data);
 
         $range = $max - $min;
 
@@ -216,25 +218,25 @@ class Stats
         for ($i = 0; $i < $buckets; ++$i) {
             $histogram[$i] = [
                 'bucket' => $i,
+                // [start , end[
                 'range_start' => $min + $i * $width,
                 'range_end' => $min + ($i + 1) * $width,
                 'count' => 0,
             ];
         }
 
+        $histogram[$buckets - 1]['range_end'] += 0.00001;
+
         // group data points into buckets
+        $i = 0;
+        $end = $histogram[$i]['range_end'];
+
         foreach ($data as $value) {
-            $offset = $value - $min;
-
-            $bucket = (int) ceil($offset / $width);
-
-            // move min value to first bucket
-            if ($bucket === 0) {
-                $bucket = 1;
+            while ($value >= $end) {
+                $end = $histogram[++$i]['range_end'];
             }
 
-            // increment bucket count
-            ++$histogram[$bucket - 1]['count'];
+            ++$histogram[$i]['count'];
         }
 
         return $histogram;
