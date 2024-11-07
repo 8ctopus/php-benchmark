@@ -31,28 +31,30 @@ class TestsUser
     public static function equal1() : void
     {
         $a = 1;
-        $b = true;
+        $b = "1";
+        $c = 0;
 
         if ($a == $b) {
             /** @disregard P1003 */
             $c = 1;
         } else {
             /** @disregard P1003 */
-            $c = 0;
+            $c = 2;
         }
     }
 
     public static function equal2() : void
     {
         $a = 1;
-        $b = true;
+        $b = "1";
+        $c = 0;
 
         if ($a === $b) {
             /** @disregard P1003 */
             $c = 1;
         } else {
             /** @disregard P1003 */
-            $c = 0;
+            $c = 2;
         }
     }
 
