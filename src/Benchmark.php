@@ -125,7 +125,7 @@ $class = $settings['custom_tests'] ? TestsUser::class : Tests::class;
 
 $tests = getTests($class, $settings['test_filter']);
 
-$save = runTests($class, $tests, $settings['iterations'], $settings['time_per_iteration'] / 1000);
+$save = runTests($class, $tests, $settings['iterations'], (float) $settings['time_per_iteration']);
 
 if ($settings['save']) {
     if (empty($settings['save_filename'])) {
@@ -186,8 +186,7 @@ function runTests(string $class, array $testsAsc, int $iterations, float $timePe
 
 function runTest(string $class, string $test, float $timePerIteration) : int
 {
-    $timeStarted = hrtime(true);
-    $timeLimit = $timeStarted + $timePerIteration * 1000000;
+    $timeLimit = hrtime(true) + $timePerIteration * 1000000;
     $iterations = 0;
 
     while (hrtime(true) < $timeLimit) {
