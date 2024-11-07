@@ -124,7 +124,6 @@ $tests = getTests($class, $settings['test_filter']);
 
 $save = runTests($class, $tests, $settings['iterations'], $settings['time_per_iteration'] / 1000);
 
-// save results to file
 if ($settings['save']) {
     if (empty($settings['save_filename'])) {
         $settings['save_filename'] = $settings['save_filename_base'] . $settings['save_filename_ext'];
