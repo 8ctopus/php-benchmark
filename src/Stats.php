@@ -202,19 +202,17 @@ class Stats
      */
     public static function histogram(array $dataPoints, int $buckets) : array
     {
-        // get min and max
         $max = max($dataPoints);
         $min = min($dataPoints);
 
-        // calculate range
         $range = $max - $min;
 
-        // calculate bucket width
+        // calculate single bucket width
         $width = $range / $buckets;
 
         $histogram = [];
 
-        // initialize histogram buckets
+        // create buckets
         for ($i = 0; $i < $buckets; ++$i) {
             $histogram[$i] = [
                 'bucket' => $i,
@@ -229,7 +227,7 @@ class Stats
             // find value offset from min
             $offset = $value - $min;
 
-            $bucket = ceil($offset / $width) - 1;
+            $bucket = (int) ceil($offset / $width) - 1;
 
             // move min value to first bucket
             if ($bucket === -1) {
@@ -283,7 +281,7 @@ class Stats
 
             echo '| ' . str_pad((string) $i, strlen('bucket'), ' ', STR_PAD_LEFT) . ' | ' .
                 str_pad((string) round($histogram[$i]['range_end'], 0), strlen('range end'), ' ', STR_PAD_LEFT) . ' | ' .
-                str_pad($count, strlen('count'), ' ', STR_PAD_LEFT) . ' | ' .
+                str_pad((string) $count, strlen('count'), ' ', STR_PAD_LEFT) . ' | ' .
                 str_pad(str_repeat('|', (int) round($barMaxLength * $count / $max, 0)), $barMaxLength, ' ', STR_PAD_RIGHT) . " |\n"
             ;
         }
