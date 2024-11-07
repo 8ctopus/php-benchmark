@@ -124,31 +124,31 @@ $class = $settings['custom_tests'] ? TestsUser::class : Tests::class;
 
 $tests = getTests($class, $settings['test_filter']);
 
-$save = runTests($class, $tests, $settings['iterations'], (float) $settings['time_per_iteration']);
+$reports = runTests($class, $tests, $settings['iterations'], (float) $settings['time_per_iteration']);
 
 if ($settings['save']) {
     if (empty($settings['save_filename'])) {
         $settings['save_filename'] = $settings['save_filename_base'] . $settings['save_filename_ext'];
     }
 
-    file_put_contents($settings['save_filename'], serialize($save));
+    file_put_contents($settings['save_filename'], serialize($reports));
 
     echo "benchmark saved to {$settings['save_filename']}\n";
     echo "{$line}\n";
 }
 
 if ($settings['custom_tests'] && count($tests) % 2 === 0) {
-    $keys = array_keys($save);
+    $keys = array_keys($reports);
 
-    $test1 = array_values(array_slice($save, 0, 1, false));
-    $test2 = array_values(array_slice($save, 1, 1, false));
+    $test1 = array_values(array_slice($reports, 0, 1, false));
+    $test2 = array_values(array_slice($reports, 1, 1, false));
 
     Helper::showCompare($test1, $keys[0], $test2, $keys[1]);
 } elseif ($settings['compare']) {
     $baseline = unserialize(file_get_contents($settings['compare']));
-    Helper::showCompare($baseline, 'file', $save, 'test');
+    Helper::showCompare($baseline, 'file', $reports, 'test');
 } else {
-    Helper::showBenchmark($save, $settings);
+    Helper::showBenchmark($reports, $settings);
 }
 
 function runTests(string $class, array $testsAsc, int $iterations, float $timePerIteration) : array
