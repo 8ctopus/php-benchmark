@@ -164,18 +164,13 @@ function runTests(string $class, array $testsAsc, int $iterations, float $timePe
         // switch testing order
         $tests = $i % 2 ? $testsDesc : $testsAsc;
 
-        foreach ($tests as $index => $test) {
+        foreach ($tests as $test) {
             $measurement = runTest($class, $test, $timePerIteration);
 
             if (!$i) {
                 $save[$test] = [$measurement];
             } else {
                 $save[$test][] = $measurement;
-            }
-
-            // remove test if it failed
-            if ($measurement === null) {
-                unset($tests[$index]);
             }
         }
     }
