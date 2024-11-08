@@ -17,6 +17,7 @@ class Benchmark
     private string $testFilter = '/^test/';
     private bool $customTests = false;
 
+    /** @var string|false */
     private $compare = false;
 
     private bool $save = false;
