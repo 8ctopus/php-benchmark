@@ -6,7 +6,7 @@ namespace Oct8pus\Benchmark;
 
 use Exception;
 
-require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/vendor/autoload.php';
 
 if (PHP_SAPI !== 'cli') {
     throw new Exception('run from cli');
