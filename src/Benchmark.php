@@ -31,13 +31,13 @@ class Benchmark
     private bool $showOutliers = false;
     private bool $showAllMeasurements = false;
 
-    private static int $pad1 = 19;
-    private static int $pad2 = 14;
+    private int $pad1 = 19;
+    private int $pad2 = 14;
 
     public function __construct(array $argv)
     {
         $this->argv = $argv;
-        $this->line = str_pad('', self::$pad1 + self::$pad2 + 3, '-');
+        $this->line = str_pad('', $this->pad1 + $this->pad2 + 3, '-');
     }
 
     public function run() : void
@@ -225,39 +225,39 @@ class Benchmark
 
         echo "PHP benchmark\n\n" .
             "{$this->line}\n" .
-            str_pad('platform', self::$pad1) . ' : ' . str_pad(PHP_OS . ' ' . ((PHP_INT_SIZE === 8) ? 'x64' : 'x32'), self::$pad2, ' ', STR_PAD_LEFT) . "\n" .
-            str_pad('php version', self::$pad1) . ' : ' . str_pad(PHP_VERSION, self::$pad2, ' ', STR_PAD_LEFT) . "\n" .
-            str_pad('xdebug', self::$pad1) . ' : ' . str_pad(extension_loaded('xdebug') ? 'on' : 'off', self::$pad2, ' ', STR_PAD_LEFT) . "\n" .
-            str_pad('opcache', self::$pad1) . ' : ' . str_pad((extension_loaded('Zend OPcache') && ini_get('opcache.enable_cli')) ? 'on' : 'off', self::$pad2, ' ', STR_PAD_LEFT) . "\n" .
-            str_pad('memory limit', self::$pad1) . ' : ' . str_pad(ini_get('memory_limit'), self::$pad2, ' ', STR_PAD_LEFT) . "\n" .
-            str_pad('max execution', self::$pad1) . ' : ' . str_pad(ini_get('max_execution_time'), self::$pad2, ' ', STR_PAD_LEFT) . "\n" .
-            str_pad('iterations', self::$pad1) . ' : ' . str_pad((string) $this->iterations, self::$pad2, ' ', STR_PAD_LEFT) . "\n" .
-            str_pad('time per iteration', self::$pad1) . ' : ' . str_pad($this->timePerIteration . 'ms', self::$pad2, ' ', STR_PAD_LEFT) . "\n" .
-            str_pad('total time per test', self::$pad1) . ' : ' . str_pad($totalTime . 's', self::$pad2, ' ', STR_PAD_LEFT) . "\n" .
+            str_pad('platform', $this->pad1) . ' : ' . str_pad(PHP_OS . ' ' . ((PHP_INT_SIZE === 8) ? 'x64' : 'x32'), $this->pad2, ' ', STR_PAD_LEFT) . "\n" .
+            str_pad('php version', $this->pad1) . ' : ' . str_pad(PHP_VERSION, $this->pad2, ' ', STR_PAD_LEFT) . "\n" .
+            str_pad('xdebug', $this->pad1) . ' : ' . str_pad(extension_loaded('xdebug') ? 'on' : 'off', $this->pad2, ' ', STR_PAD_LEFT) . "\n" .
+            str_pad('opcache', $this->pad1) . ' : ' . str_pad((extension_loaded('Zend OPcache') && ini_get('opcache.enable_cli')) ? 'on' : 'off', $this->pad2, ' ', STR_PAD_LEFT) . "\n" .
+            str_pad('memory limit', $this->pad1) . ' : ' . str_pad(ini_get('memory_limit'), $this->pad2, ' ', STR_PAD_LEFT) . "\n" .
+            str_pad('max execution', $this->pad1) . ' : ' . str_pad(ini_get('max_execution_time'), $this->pad2, ' ', STR_PAD_LEFT) . "\n" .
+            str_pad('iterations', $this->pad1) . ' : ' . str_pad((string) $this->iterations, $this->pad2, ' ', STR_PAD_LEFT) . "\n" .
+            str_pad('time per iteration', $this->pad1) . ' : ' . str_pad($this->timePerIteration . 'ms', $this->pad2, ' ', STR_PAD_LEFT) . "\n" .
+            str_pad('total time per test', $this->pad1) . ' : ' . str_pad($totalTime . 's', $this->pad2, ' ', STR_PAD_LEFT) . "\n" .
             "{$this->line}\n";
     }
 
     public function showBenchmark(Reports $data) : void
     {
-        $line = str_pad('', self::$pad1 + self::$pad2 + 3, '-');
+        $line = str_pad('', $this->pad1 + $this->pad2 + 3, '-');
 
         // analyze test results
         foreach ($data as $report) {
             $result = Helper::analyzeTest($report);
 
             if ($result === null) {
-                echo str_pad($report->name(), self::$pad1) . ' : ' . str_pad('FAILED', self::$pad2, ' ', STR_PAD_LEFT) . "\n";
+                echo str_pad($report->name(), $this->pad1) . ' : ' . str_pad('FAILED', $this->pad2, ' ', STR_PAD_LEFT) . "\n";
                 echo "{$line}\n";
                 continue;
             }
 
-            echo str_pad($report->name(), self::$pad1) . ' : ' . str_pad('iterations', self::$pad2, ' ', STR_PAD_LEFT) . "\n";
+            echo str_pad($report->name(), $this->pad1) . ' : ' . str_pad('iterations', $this->pad2, ' ', STR_PAD_LEFT) . "\n";
 
             foreach ($result as $key => $value) {
                 if ($key === 'normality') {
-                    echo str_pad($key, self::$pad1) . ' : ' . Helper::formatPercentage($value, false, self::$pad2) . "\n";
+                    echo str_pad($key, $this->pad1) . ' : ' . Helper::formatPercentage($value, false, $this->pad2) . "\n";
                 } else {
-                    echo str_pad($key, self::$pad1) . ' : ' . Helper::formatNumber($value, self::$pad2) . "\n";
+                    echo str_pad($key, $this->pad1) . ' : ' . Helper::formatNumber($value, $this->pad2) . "\n";
                 }
             }
 
@@ -269,12 +269,12 @@ class Benchmark
 
             if ($this->showOutliers) {
                 echo "\n";
-                echo str_pad('outliers', self::$pad1) . ' : ' . Helper::outliers($report->data()) . "\n";
+                echo str_pad('outliers', $this->pad1) . ' : ' . Helper::outliers($report->data()) . "\n";
             }
 
             if ($this->showAllMeasurements) {
                 echo "\n";
-                echo str_pad('values', self::$pad1) . ' : ' . Helper::allMeasurements($report->data()) . "\n";
+                echo str_pad('values', $this->pad1) . ' : ' . Helper::allMeasurements($report->data()) . "\n";
             }
 
             echo "{$line}\n";
