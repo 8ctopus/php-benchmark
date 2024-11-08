@@ -153,10 +153,6 @@ class Benchmark
         for ($i = 1; $i < count($argv); ++$i) {
             $argument = $argv[$i];
 
-            if (strpos($argument, '--') !== 0) {
-                throw new Exception("unknown argument - {$argument}");
-            }
-
             switch ($argument) {
                 case '--compare':
                     $i++;
@@ -223,12 +219,15 @@ class Benchmark
     {
         $totalTime = $this->iterations * $this->timePerIteration / 1000;
 
+        $xdebug = extension_loaded('xdebug') && ini_get('xdebug.mode') !== '';
+        $opcache = extension_loaded('Zend OPcache') && ini_get('opcache.enable_cli');
+
         echo "PHP benchmark\n\n" .
             "{$this->line}\n" .
             str_pad('platform', $this->pad1) . ' : ' . str_pad(PHP_OS . ' ' . ((PHP_INT_SIZE === 8) ? 'x64' : 'x32'), $this->pad2, ' ', STR_PAD_LEFT) . "\n" .
             str_pad('php version', $this->pad1) . ' : ' . str_pad(PHP_VERSION, $this->pad2, ' ', STR_PAD_LEFT) . "\n" .
-            str_pad('xdebug', $this->pad1) . ' : ' . str_pad(extension_loaded('xdebug') ? 'on' : 'off', $this->pad2, ' ', STR_PAD_LEFT) . "\n" .
-            str_pad('opcache', $this->pad1) . ' : ' . str_pad((extension_loaded('Zend OPcache') && ini_get('opcache.enable_cli')) ? 'on' : 'off', $this->pad2, ' ', STR_PAD_LEFT) . "\n" .
+            str_pad('xdebug', $this->pad1) . ' : ' . str_pad($xdebug ? 'on' : 'off', $this->pad2, ' ', STR_PAD_LEFT) . "\n" .
+            str_pad('opcache', $this->pad1) . ' : ' . str_pad($opcache ? 'on' : 'off', $this->pad2, ' ', STR_PAD_LEFT) . "\n" .
             str_pad('memory limit', $this->pad1) . ' : ' . str_pad(ini_get('memory_limit'), $this->pad2, ' ', STR_PAD_LEFT) . "\n" .
             str_pad('max execution', $this->pad1) . ' : ' . str_pad(ini_get('max_execution_time'), $this->pad2, ' ', STR_PAD_LEFT) . "\n" .
             str_pad('iterations', $this->pad1) . ' : ' . str_pad((string) $this->iterations, $this->pad2, ' ', STR_PAD_LEFT) . "\n" .
@@ -237,7 +236,7 @@ class Benchmark
             "{$this->line}\n";
     }
 
-    public function showBenchmark(Reports $reports) : void
+    private function showBenchmark(Reports $reports) : void
     {
         $line = str_pad('', $this->pad1 + $this->pad2 + 3, '-');
 
