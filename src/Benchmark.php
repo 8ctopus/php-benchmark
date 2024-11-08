@@ -12,7 +12,7 @@ class Benchmark
     private readonly string $line;
 
     private int $iterations = 500;
-    private int $timePerIteration = 20;
+    private float $timePerIteration = 20;
 
     private string $testFilter = '/^test/';
     private bool $customTests = false;
@@ -50,7 +50,7 @@ class Benchmark
 
         $tests = $this->getTests($class, $this->testFilter);
 
-        $reports = $this->runTests($class, $tests, $this->iterations, (float) $this->timePerIteration);
+        $reports = $this->runTests($class, $tests);
 
         if ($this->save) {
             $this->saveReports($reports);
@@ -72,21 +72,21 @@ class Benchmark
         }
     }
 
-    private function runTests(string $class, array $testsAsc, int $iterations, float $timePerIteration) : Reports
+    private function runTests(string $class, array $testsAsc) : Reports
     {
         $testsDesc = $testsAsc;
         krsort($testsDesc);
 
         $reports = new Reports();
 
-        for ($i = 0; $i < $iterations; ++$i) {
-            $this->updateProgress($i / $iterations);
+        for ($i = 0; $i < $this->iterations; ++$i) {
+            $this->updateProgress($i / $this->iterations);
 
             // switch testing order
             $tests = $i % 2 ? $testsDesc : $testsAsc;
 
             foreach ($tests as $test) {
-                $measurement = $this->runTest($class, $test, $timePerIteration);
+                $measurement = $this->runTest($class, $test);
 
                 $reports->add($test, $measurement);
             }
@@ -95,13 +95,13 @@ class Benchmark
         return $reports;
     }
 
-    private function runTest(string $class, string $test, float $timePerIteration) : int
+    private function runTest(string $class, string $test) : int
     {
-        // burn the first test
+        // burn the first test (for op cache)
         $class::$test();
 
         $iterations = 0;
-        $timeLimit = hrtime(true) + $timePerIteration * 1000000;
+        $timeLimit = hrtime(true) + $this->timePerIteration * 1000000;
 
         while (hrtime(true) < $timeLimit) {
             $class::$test();
@@ -237,13 +237,6 @@ class Benchmark
             "{$this->line}\n";
     }
 
-    /**
-     * Show benchmark results
-     *
-     * @param Reports $reports
-     *
-     * @return void
-     */
     public function showBenchmark(Reports $data) : void
     {
         $line = str_pad('', self::$pad1 + self::$pad2 + 3, '-');
@@ -252,14 +245,12 @@ class Benchmark
         foreach ($data as $report) {
             $result = Helper::analyzeTest($report);
 
-            // check for error
             if ($result === null) {
                 echo str_pad($report->name(), self::$pad1) . ' : ' . str_pad('FAILED', self::$pad2, ' ', STR_PAD_LEFT) . "\n";
-                echo $line . "\n";
+                echo "{$line}\n";
                 continue;
             }
 
-            // show test results
             echo str_pad($report->name(), self::$pad1) . ' : ' . str_pad('iterations', self::$pad2, ' ', STR_PAD_LEFT) . "\n";
 
             foreach ($result as $key => $value) {
@@ -286,7 +277,7 @@ class Benchmark
                 echo str_pad('values', self::$pad1) . ' : ' . Helper::allMeasurements($report->data()) . "\n";
             }
 
-            echo $line . "\n";
+            echo "{$line}\n";
         }
     }
 }
