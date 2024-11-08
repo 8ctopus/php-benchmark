@@ -34,7 +34,7 @@ ANSWER: yes, from 2x to 7x depending on the test.
     $ php benchmark.php --iterations 1000 --time-per-iteration 50 --save xdebug_on
 
     # compare
-    $ php src/Compare.php --file1 benchmark_xdebug_off_20201127-0946.txt --file2 benchmark_xdebug_on_20201127-0939.txt
+    $ php compare.php --file1 benchmark_xdebug_off_20201127-0946.txt --file2 benchmark_xdebug_on_20201127-0939.txt
     ------------------------------------------------
     test_math
     mean               :      3762      531   -85.9%
@@ -169,7 +169,7 @@ ANSWER: it's way faster in tested loops (+73%) and math functions (+17%) and not
     $ cd test
     $ php benchmark.php --iterations 1000 --time-per-iteration 50 --save php8.0
 
-    $ php src/Compare.php --file1 benchmark_php7.4_20201127-0625.txt --file2 benchmark_php8_20201127-0617.txt
+    $ php compare.php --file1 benchmark_php7.4_20201127-0625.txt --file2 benchmark_php8_20201127-0617.txt
     ------------------------------------------------
     test_if_else
     mean               :    531059   520234    -2.0%
@@ -271,7 +271,7 @@ ANSWER: it's 3x - 5x faster accross all tests except hashes where there is a 12%
     $ php benchmark.php --histogram --show-outliers --show-all --save php7.4.12_1
 
     # compare
-    $ php src/Compare.php --file1 benchmark_php5.6_1_20201201-0441.txt --file2 benchmark_php7.4.12_1_20201201-0447.txt
+    $ php compare.php --file1 benchmark_php5.6_1_20201201-0441.txt --file2 benchmark_php7.4.12_1_20201201-0447.txt
 
     ------------------------------------------------
     test_if_else
