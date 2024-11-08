@@ -195,7 +195,7 @@ class Benchmark
                     $this->save = true;
                     if (!empty($argv[$i + 1]) && strpos($argv[$i + 1], '--') === false) {
                         ++$i;
-                        $this->saveFile = $this->saveFilePrefix . $argv[$i] . '_' . $this->saveFileExt;
+                        $this->saveFile = $this->saveFilePrefix . $argv[$i] . $this->saveFileExt;
                     }
 
                     break;

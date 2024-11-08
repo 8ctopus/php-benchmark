@@ -28,13 +28,13 @@ from php 5.6.40 (use the `php5.6-compatibility` tag) to 8.3.x
 ANSWER: yes, from 2x to 7x depending on the test.
 
     # disable xdebug extension in php.ini
-    $ php benchmark.php --iterations 1000 --time-per-iteration 50 --save xdebug_off
+    $ php benchmark.php --save xdebug_off
 
     # enable xdebug extension
-    $ php benchmark.php --iterations 1000 --time-per-iteration 50 --save xdebug_on
+    $ php benchmark.php --save xdebug_on
 
     # compare
-    $ php compare.php --file1 benchmark_xdebug_off_20201127-0946.txt --file2 benchmark_xdebug_on_20201127-0939.txt
+    $ php compare.php --file1 benchmark_xdebug_off_.txt --file2 benchmark_xdebug_on_.txt
     ------------------------------------------------
     test_math
     mean               :      3762      531   -85.9%
