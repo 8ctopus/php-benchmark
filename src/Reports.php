@@ -44,7 +44,7 @@ class Reports implements ArrayAccess, Iterator
         return $this->reports;
     }
 
-    public function offsetExists(mixed $offset) : bool
+    public function offsetExists($offset) : bool
     {
         if (is_integer($offset)) {
             return $offset < count($this->reports);
@@ -53,7 +53,7 @@ class Reports implements ArrayAccess, Iterator
         return array_key_exists($offset, $this->reports);
     }
 
-    public function offsetGet(mixed $offset) : Report
+    public function offsetGet($offset) : Report
     {
         if (is_integer($offset)) {
             return array_values($this->reports)[$offset];
@@ -62,12 +62,12 @@ class Reports implements ArrayAccess, Iterator
         return $this->reports[$offset];
     }
 
-    public function offsetSet(mixed $offset, mixed $value) : void
+    public function offsetSet($offset, $value) : void
     {
         throw new Exception('not implemented');
     }
 
-    public function offsetUnset(mixed $offset) : void
+    public function offsetUnset($offset) : void
     {
         throw new Exception('not implemented');
     }

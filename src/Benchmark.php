@@ -9,7 +9,7 @@ use Exception;
 class Benchmark
 {
     private array $argv;
-    private readonly string $line;
+    private string $line;
 
     private int $iterations = 500;
     private float $timePerIteration = 20;
@@ -17,7 +17,7 @@ class Benchmark
     private string $testFilter = '/^test/';
     private bool $customTests = false;
 
-    private bool|string $compare = false;
+    private $compare = false;
 
     private bool $save = false;
     private string $saveFile = '';

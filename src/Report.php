@@ -6,7 +6,7 @@ namespace Oct8pus\Benchmark;
 
 class Report
 {
-    private readonly string $name;
+    private string $name;
     private array $data;
 
     public function __construct(string $name)
