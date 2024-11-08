@@ -23,7 +23,7 @@ Standard tests include a bunch of different tests such as `if` / `else`, `loops`
 
 Custom tests are user fined tests in the `TestsUser` class.
 
-- `php benchmark.php --custom --filter ~baseline~` where filter corresponds to a regular expression matching the methods that you want to test. If there are exactly two tests, then the test results will be compared.
+- `php benchmark.php --custom TestsUser --filter ~baseline~` where filter corresponds to a regular expression matching the methods that you want to test. If there are exactly two tests, then the test results will be compared.
 
 ## examples
 
@@ -80,7 +80,7 @@ ANSWER: `===` is approximately 15% faster than `==`.
 
     $ docker run -it --volume "/$(pwd -W):/test/" php:7.4.12-cli-alpine sh
     $ cd test
-    $ php benchmark.php --custom --filter ~equal~
+    $ php benchmark.php --custom TestsUser --filter ~equal~
     PHP benchmark
 
     -------------------------------
@@ -133,7 +133,7 @@ foreach ($apachelog as $line) {
 
 ANSWER: Well the answer is not as obvious as it seems as it depends on the frequency of lines with zip downloads in the Apache log. If every line is a zip download `regex_1` is faster, while if zip downloads are more scarce then `regex_2` becomes faster. Here are the results:
 
-    $ php benchmark.php --custom --filter ~regex~
+    $ php benchmark.php --custom TestsUser --filter ~regex~
 
     # comparison when every line is a zip file
     ---------------------------------------------------
@@ -359,7 +359,7 @@ ANSWER: it's 3x - 5x faster accross all tests except hashes where there is a 12%
 
 ANSWER: It depends on how the logger is setup but in most cases Apix is significantly faster
 
-    $ php benchmark.php --custom --filter ~logger~
+    $ php benchmark.php --custom TestsUser --filter ~logger~
     PHP benchmark
 
     -----------------------------------
@@ -387,9 +387,9 @@ ANSWER: It depends on how the logger is setup but in most cases Apix is signific
 
 ## run your own tests
 
-`TestsUser.php` serves as a template to create your own tests. To run your tests.
+The `TestsUser` class serves as a template to create your own tests. To run your tests:
 
-    $ php benchmark.php --custom
+    $ php benchmark.php --custom TestsUser
 
 ## definitions
 

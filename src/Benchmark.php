@@ -15,7 +15,9 @@ class Benchmark
     private float $timePerIteration = 20;
 
     private string $testFilter = '/^test/';
-    private bool $customTests = false;
+
+    /** @var string|false */
+    private $customTests = false;
 
     /** @var string|false */
     private $compare = false;
@@ -47,7 +49,7 @@ class Benchmark
 
         $this->showTitle();
 
-        $class = $this->customTests ? TestsUser::class : Tests::class;
+        $class = $this->customTests === false ? Tests::class : "Oct8pus\\Benchmark\\{$this->customTests}";
 
         $tests = $this->getTests($class, $this->testFilter);
 
@@ -161,7 +163,8 @@ class Benchmark
                     break;
 
                 case '--custom':
-                    $this->customTests = true;
+                    $i++;
+                    $this->customTests = $argv[$i];
                     break;
 
                 case '--filter':
