@@ -153,9 +153,6 @@ class Benchmark
 
     private function readCommandLine(array $argv) : void
     {
-        $settings = $this->settings;
-
-        // get command line arguments
         for ($i = 1; $i < count($argv); ++$i) {
             $argument = $argv[$i];
 
@@ -166,57 +163,57 @@ class Benchmark
             switch ($argument) {
                 case '--compare':
                     $i++;
-                    $settings['compare'] = $argv[$i];
+                    $this->settings['compare'] = $argv[$i];
                     break;
 
                 case '--custom':
-                    $settings['custom_tests'] = true;
+                    $this->settings['custom_tests'] = true;
                     break;
 
                 case '--filter':
                     $i++;
-                    $settings['test_filter'] = $argv[$i];
+                    $this->settings['test_filter'] = $argv[$i];
                     break;
 
                 case '--histogram':
-                    $settings['show_histogram'] = true;
+                    $this->settings['show_histogram'] = true;
                     break;
 
                 case '--histogram-buckets':
                     $i++;
-                    $settings['histogram_buckets'] = $argv[$i];
+                    $this->settings['histogram_buckets'] = $argv[$i];
                     break;
 
                 case '--histogram-width':
                     $i++;
-                    $settings['histogram_bar_width'] = $argv[$i];
+                    $this->settings['histogram_bar_width'] = $argv[$i];
                     break;
 
                 case '--iterations':
                     $i++;
-                    $settings['iterations'] = $argv[$i];
+                    $this->settings['iterations'] = $argv[$i];
                     break;
 
                 case '--save':
-                    $settings['save'] = true;
+                    $this->settings['save'] = true;
                     if (!empty($argv[$i + 1]) && strpos($argv[$i + 1], '--') === false) {
                         ++$i;
-                        $settings['save_filename'] = $settings['save_filename_base'] . $argv[$i] . '_' . $settings['save_filename_ext'];
+                        $this->settings['save_filename'] = $this->settings['save_filename_base'] . $argv[$i] . '_' . $this->settings['save_filename_ext'];
                     }
 
                     break;
 
                 case '--show-all':
-                    $settings['show_all_measurements'] = true;
+                    $this->settings['show_all_measurements'] = true;
                     break;
 
                 case '--show-outliers':
-                    $settings['show_outliers'] = true;
+                    $this->settings['show_outliers'] = true;
                     break;
 
                 case '--time-per-iteration':
                     $i++;
-                    $settings['time_per_iteration'] = $argv[$i];
+                    $this->settings['time_per_iteration'] = $argv[$i];
                     break;
 
                 default:
@@ -227,9 +224,7 @@ class Benchmark
 
     private function showTitle() : void
     {
-        $settings = $this->settings;
-
-        $totalTime = $settings['iterations'] * $settings['time_per_iteration'] / 1000;
+        $totalTime = $this->settings['iterations'] * $this->settings['time_per_iteration'] / 1000;
 
         echo "PHP benchmark\n\n" .
             "{$this->line}\n" .
@@ -239,8 +234,8 @@ class Benchmark
             str_pad('opcache', Helper::$pad1) . ' : ' . str_pad((extension_loaded('Zend OPcache') && ini_get('opcache.enable_cli')) ? 'on' : 'off', Helper::$pad2, ' ', STR_PAD_LEFT) . "\n" .
             str_pad('memory limit', Helper::$pad1) . ' : ' . str_pad(ini_get('memory_limit'), Helper::$pad2, ' ', STR_PAD_LEFT) . "\n" .
             str_pad('max execution', Helper::$pad1) . ' : ' . str_pad(ini_get('max_execution_time'), Helper::$pad2, ' ', STR_PAD_LEFT) . "\n" .
-            str_pad('iterations', Helper::$pad1) . ' : ' . str_pad((string) $settings['iterations'], Helper::$pad2, ' ', STR_PAD_LEFT) . "\n" .
-            str_pad('time per iteration', Helper::$pad1) . ' : ' . str_pad($settings['time_per_iteration'] . 'ms', Helper::$pad2, ' ', STR_PAD_LEFT) . "\n" .
+            str_pad('iterations', Helper::$pad1) . ' : ' . str_pad((string) $this->settings['iterations'], Helper::$pad2, ' ', STR_PAD_LEFT) . "\n" .
+            str_pad('time per iteration', Helper::$pad1) . ' : ' . str_pad($this->settings['time_per_iteration'] . 'ms', Helper::$pad2, ' ', STR_PAD_LEFT) . "\n" .
             str_pad('total time per test', Helper::$pad1) . ' : ' . str_pad($totalTime . 's', Helper::$pad2, ' ', STR_PAD_LEFT) . "\n" .
             "{$this->line}\n";
     }
