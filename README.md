@@ -13,13 +13,17 @@ from php 5.6.40 (use the `php5.6-compatibility` tag) to 8.3.x
 - git clone the project
 - `composer install`
 
-### run standard test
+### run standard tests
+
+Standard tests include a bunch of different tests such as `if` / `else`, `loops`, `array` operations, `math` functions, `hashes` and `files`.
 
     php benchmark.php
 
 ### run custom test
 
-- `php benchmark.php --custom --filter ~baseline~` where filter corresponds to a regular expression matching the methods that you want to test in `src/TestsUser.php`
+Custom tests are user fined tests in the `TestsUser` class.
+
+- `php benchmark.php --custom --filter ~baseline~` where filter corresponds to a regular expression matching the methods that you want to test. If there are exactly two tests, then the test results will be compared.
 
 ## examples
 
