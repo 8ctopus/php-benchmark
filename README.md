@@ -17,13 +17,13 @@ from php 5.6.40 (use the `php5.6-compatibility` tag) to 8.3.x
 
 Standard tests include a bunch of different tests such as `if` / `else`, `loops`, `array` operations, `math` functions, `hashes` and `files`.
 
-    php benchmark.php
+    php -d xdebug.mode=off benchmark.php
 
 ### run custom test
 
 Custom tests are user fined tests in the `TestsUser` class.
 
-- `php benchmark.php --custom TestsUser --filter ~baseline~` where filter corresponds to a regular expression matching the methods that you want to test. If there are exactly two tests, then the test results will be compared.
+- `php -d xdebug.mode=off benchmark.php --custom TestsUser --filter ~baseline~` where filter corresponds to a regular expression matching the methods that you want to test. If there are exactly two tests, then the test results will be compared.
 
 ## examples
 
@@ -31,14 +31,12 @@ Custom tests are user fined tests in the `TestsUser` class.
 
 ANSWER: yes, from 2x to 7x depending on the test.
 
-    # disable xdebug extension in php.ini
-    $ php benchmark.php --save xdebug_off
+    $ php -d xdebug.mode=off benchmark.php --save xdebug_off
 
-    # enable xdebug extension
     $ php benchmark.php --save xdebug_on
 
     # compare
-    $ php compare.php --file1 benchmark_xdebug_off_.txt --file2 benchmark_xdebug_on_.txt
+    $ php compare.php --file1 benchmark_xdebug_off.txt --file2 benchmark_xdebug_on.txt
     ------------------------------------------------
     test_math
     mean               :      3762      531   -85.9%
@@ -133,7 +131,7 @@ foreach ($apachelog as $line) {
 
 ANSWER: Well the answer is not as obvious as it seems as it depends on the frequency of lines with zip downloads in the Apache log. If every line is a zip download `regex_1` is faster, while if zip downloads are more scarce then `regex_2` becomes faster. Here are the results:
 
-    $ php benchmark.php --custom TestsUser --filter ~regex~
+    $ php -d xdebug.mode=off benchmark.php --custom TestsUser --filter ~regex~
 
     # comparison when every line is a zip file
     ---------------------------------------------------
@@ -359,7 +357,7 @@ ANSWER: it's 3x - 5x faster accross all tests except hashes where there is a 12%
 
 ANSWER: It depends on how the logger is setup but in most cases Apix is significantly faster
 
-    $ php benchmark.php --custom TestsUser --filter ~logger~
+    $ php -d xdebug.mode=off benchmark.php --custom TestsUser --filter ~logger~
     PHP benchmark
 
     -----------------------------------
@@ -389,7 +387,7 @@ ANSWER: It depends on how the logger is setup but in most cases Apix is signific
 
 The `TestsUser` class serves as a template to create your own tests. To run your tests:
 
-    $ php benchmark.php --custom TestsUser
+    $ php -d xdebug.mode=off benchmark.php --custom TestsUser
 
 ## definitions
 
