@@ -178,17 +178,17 @@ class Benchmark
 
                 case '--histogram-buckets':
                     $i++;
-                    $this->histogramBuckets = $argv[$i];
+                    $this->histogramBuckets = (int) $argv[$i];
                     break;
 
                 case '--histogram-width':
                     $i++;
-                    $this->histogramBarWidth = $argv[$i];
+                    $this->histogramBarWidth = (int) $argv[$i];
                     break;
 
                 case '--iterations':
                     $i++;
-                    $this->iterations = $argv[$i];
+                    $this->iterations = (int) $argv[$i];
                     break;
 
                 case '--save':
@@ -210,7 +210,7 @@ class Benchmark
 
                 case '--time-per-iteration':
                     $i++;
-                    $this->timePerIteration = $argv[$i];
+                    $this->timePerIteration = (float) $argv[$i];
                     break;
 
                 default:
