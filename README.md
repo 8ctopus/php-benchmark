@@ -15,11 +15,11 @@ from php 5.6.40 (use the `php5.6-compatibility` tag) to 8.3.x
 
 ### run standard test
 
-    php src/Benchmark.php
+    php benchmark.php
 
 ### run custom test
 
-- `php src/Benchmark.php --custom --filter ~equal~` where filter corresponds to a regular expression matching the methods that you want to test in `src/TestsUser.php`
+- `php benchmark.php --custom --filter ~equal~` where filter corresponds to a regular expression matching the methods that you want to test in `src/TestsUser.php`
 
 ## examples
 
@@ -28,10 +28,10 @@ from php 5.6.40 (use the `php5.6-compatibility` tag) to 8.3.x
 ANSWER: yes, from 2x to 7x depending on the test.
 
     # disable xdebug extension in php.ini
-    $ php src/Benchmark.php --iterations 1000 --time-per-iteration 50 --save xdebug_off
+    $ php benchmark.php --iterations 1000 --time-per-iteration 50 --save xdebug_off
 
     # enable xdebug extension
-    $ php src/Benchmark.php --iterations 1000 --time-per-iteration 50 --save xdebug_on
+    $ php benchmark.php --iterations 1000 --time-per-iteration 50 --save xdebug_on
 
     # compare
     $ php src/Compare.php --file1 benchmark_xdebug_off_20201127-0946.txt --file2 benchmark_xdebug_on_20201127-0939.txt
@@ -72,7 +72,7 @@ ANSWER: `===` is approximately 15% faster than `==`.
 
     $ docker run -it --volume "/$(pwd -W):/test/" php:7.4.12-cli-alpine sh
     $ cd test
-    $ php src/Benchmark.php --custom --filter ~equal~
+    $ php benchmark.php --custom --filter ~equal~
     PHP benchmark
 
     -------------------------------
@@ -125,7 +125,7 @@ foreach ($apachelog as $line) {
 
 ANSWER: Well the answer is not as obvious as it seems as it depends on the frequency of lines with zip downloads in the Apache log. If every line is a zip download `regex_1` is faster, while if zip downloads are more scarce then `regex_2` becomes faster. Here are the results:
 
-    $ php src/Benchmark.php --custom --filter ~regex~
+    $ php benchmark.php --custom --filter ~regex~
 
     # comparison when every line is a zip file
     ---------------------------------------------------
@@ -163,11 +163,11 @@ ANSWER: it's way faster in tested loops (+73%) and math functions (+17%) and not
 
     $ docker run -it --volume "/$(pwd -W):/test/" php:7.4.12-cli-alpine sh
     $ cd test
-    $ php src/Benchmark.php --iterations 1000 --time-per-iteration 50 --save php7.4
+    $ php benchmark.php --iterations 1000 --time-per-iteration 50 --save php7.4
 
     $ docker run -it --volume "/$(pwd -W):/test/" php:8.0.0RC5-cli-alpine sh
     $ cd test
-    $ php src/Benchmark.php --iterations 1000 --time-per-iteration 50 --save php8.0
+    $ php benchmark.php --iterations 1000 --time-per-iteration 50 --save php8.0
 
     $ php src/Compare.php --file1 benchmark_php7.4_20201127-0625.txt --file2 benchmark_php8_20201127-0617.txt
     ------------------------------------------------
@@ -263,12 +263,12 @@ ANSWER: it's 3x - 5x faster accross all tests except hashes where there is a 12%
     # run test in php 5.6
     $ docker run -it --volume "/$(pwd -W):/test/" php:5.6.40-cli-alpine sh
     $ cd test
-    $ php src/Benchmark.php --histogram --show-outliers --show-all --save php5.6_1
+    $ php benchmark.php --histogram --show-outliers --show-all --save php5.6_1
 
     # run test in php 7.4
     $ docker run -it --volume "/$(pwd -W):/test/" php:7.4.12-cli-alpine sh
     $ cd test
-    $ php src/Benchmark.php --histogram --show-outliers --show-all --save php7.4.12_1
+    $ php benchmark.php --histogram --show-outliers --show-all --save php7.4.12_1
 
     # compare
     $ php src/Compare.php --file1 benchmark_php5.6_1_20201201-0441.txt --file2 benchmark_php7.4.12_1_20201201-0447.txt
@@ -350,7 +350,7 @@ ANSWER: it's 3x - 5x faster accross all tests except hashes where there is a 12%
 
 ANSWER: It depends on how the logger is setup but in most cases Apix is significantly faster
 
-    $ php src/Benchmark.php --custom --filter ~logger~
+    $ php benchmark.php --custom --filter ~logger~
     PHP benchmark
 
     -----------------------------------
@@ -380,7 +380,7 @@ ANSWER: It depends on how the logger is setup but in most cases Apix is signific
 
 `TestsUser.php` serves as a template to create your own tests. To run your tests.
 
-    $ php src/Benchmark.php --custom
+    $ php benchmark.php --custom
 
 ## definitions
 
