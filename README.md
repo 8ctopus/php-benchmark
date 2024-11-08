@@ -54,6 +54,10 @@ ANSWER: yes, from 2x to 7x depending on the test.
     ------------------------------------------------
     [CROPPED]
 
+*NOTE* Since xdebug significantly pejorates the results, it's better to turn it off either in `php.ini` or directly when running the command.
+
+    php -d xdebug.mode=off benchmark.php
+
 ### is === faster than ==?
 
 ```php
