@@ -53,10 +53,9 @@ class Helper
      */
     public static function showCompare(Reports $baseline, Reports $latest) : void
     {
-        // paddings
         $line = str_pad('', self::$pad1 + 3 * self::$pad2 + 3, '-');
 
-        echo $line . "\n";
+        echo "{$line}\n";
 
         // compare tests
         foreach ($baseline as $i => $report) {
@@ -70,7 +69,7 @@ class Helper
             // check for error
             if ($result1 === null || $result2 === null) {
                 echo str_pad($report->name(), self::$pad1) . ' : ' . str_pad('FAILED', self::$pad2, ' ', STR_PAD_LEFT) . "\n";
-                echo $line . "\n";
+                echo "{$line}\n";
                 continue;
             }
 
@@ -95,7 +94,7 @@ class Helper
                 }
             }
 
-            echo $line . "\n";
+            echo "{$line}\n";
         }
     }
 
@@ -182,7 +181,7 @@ class Helper
             }
         }
 
-        return $str . "\n";
+        return "{$str}\n";
     }
 
     /**
@@ -206,7 +205,7 @@ class Helper
             }
         }
 
-        return $str . "\n";
+        return "{$str}\n";
     }
 
     /**
