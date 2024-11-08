@@ -19,7 +19,7 @@ from php 5.6.40 (use the `php5.6-compatibility` tag) to 8.3.x
 
 ### run custom test
 
-- `php benchmark.php --custom --filter ~equal~` where filter corresponds to a regular expression matching the methods that you want to test in `src/TestsUser.php`
+- `php benchmark.php --custom --filter ~baseline~` where filter corresponds to a regular expression matching the methods that you want to test in `src/TestsUser.php`
 
 ## examples
 
