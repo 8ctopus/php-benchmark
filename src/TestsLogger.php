@@ -15,7 +15,7 @@ define('LOG_STDOUT', true);
 
 class TestsLogger
 {
-    public static function loggerMonolog() : void
+    public static function testMonolog() : void
     {
         $log = new MLogger('test');
         $log->pushHandler(new StreamHandler('log_monolog.log', Level::Warning));
@@ -27,7 +27,7 @@ class TestsLogger
         $log->warning('test');
     }
 
-    public static function loggerApix() : void
+    public static function testApix() : void
     {
         $file = new File('log_apix.log');
         $file

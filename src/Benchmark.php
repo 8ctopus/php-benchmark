@@ -59,7 +59,7 @@ class Benchmark
             $this->saveReports($reports);
         }
 
-        if ($this->customTests && count($tests) % 2 === 0) {
+        if ($this->customTests && count($tests) && count($tests) % 2 === 0) {
             $baseline = (new Reports())
                 ->addReport($reports[0]);
 
