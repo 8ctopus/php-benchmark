@@ -127,14 +127,7 @@ $tests = getTests($class, $settings['test_filter']);
 $reports = runTests($class, $tests, $settings['iterations'], (float) $settings['time_per_iteration']);
 
 if ($settings['save']) {
-    if (empty($settings['save_filename'])) {
-        $settings['save_filename'] = $settings['save_filename_base'] . $settings['save_filename_ext'];
-    }
-
-    file_put_contents($settings['save_filename'], serialize($reports));
-
-    echo "benchmark saved to {$settings['save_filename']}\n";
-    echo "{$line}\n";
+    saveReports($reports);
 }
 
 if ($settings['custom_tests'] && count($tests) % 2 === 0) {
@@ -214,4 +207,18 @@ function updateProgress(float $percentage) : void
     $length = strlen($text);
 
     echo "{$text}\033[{$length}D";
+}
+
+function saveReports(Reports $reports) : void
+{
+    global $settings, $line;
+
+    if (empty($settings['save_filename'])) {
+        $settings['save_filename'] = $settings['save_filename_base'] . $settings['save_filename_ext'];
+    }
+
+    file_put_contents($settings['save_filename'], serialize($reports));
+
+    echo "benchmark saved to {$settings['save_filename']}\n";
+    echo "{$line}\n";
 }
