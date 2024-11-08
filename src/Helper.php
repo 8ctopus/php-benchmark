@@ -14,13 +14,13 @@ class Helper
     /**
      * Analyze test results
      *
-     * @param Report $measurements
+     * @param Report $report
      *
-     * @return array of strings or null if any of the test iterations failed
+     * @return ?array
      */
-    public static function analyzeTest(Report $measurements) : ?array
+    public static function analyzeTest(Report $report) : ?array
     {
-        $measurements = $measurements->data();
+        $data = $report->data();
 
         /* REM
         // check if the test failed at least once
@@ -30,66 +30,61 @@ class Helper
         */
 
         return [
-            'mean' => Stats::mean($measurements),
-            'median' => Stats::median($measurements),
-            'mode' => Stats::mode($measurements),
-            'minimum' => min($measurements),
-            'maximum' => max($measurements),
-            'quartile 1' => Stats::quartiles($measurements)[0],
-            'quartile 3' => Stats::quartiles($measurements)[1],
-            'IQ range' => Stats::interquartileRange($measurements),
-            'std deviation' => Stats::standardDeviation($measurements),
-            'normality' => Stats::testNormal($measurements),
+            'mean' => Stats::mean($data),
+            'median' => Stats::median($data),
+            'mode' => Stats::mode($data),
+            'minimum' => min($data),
+            'maximum' => max($data),
+            'quartile 1' => Stats::quartiles($data)[0],
+            'quartile 3' => Stats::quartiles($data)[1],
+            'IQ range' => Stats::interquartileRange($data),
+            'std deviation' => Stats::standardDeviation($data),
+            'normality' => Stats::testNormal($data),
         ];
     }
 
     /**
      * Show comparison
      *
-     * @param Reports $baseline
-     * @param Reports $latest
+     * @param Reports $bReports
+     * @param Reports $uReports
      *
      * @return void
      */
-    public static function showCompare(Reports $baseline, Reports $latest) : void
+    public static function showCompare(Reports $bReports, Reports $uReports) : void
     {
         $line = str_pad('', self::$pad1 + 3 * self::$pad2 + 3, '-');
 
         echo "{$line}\n";
 
         // compare tests
-        foreach ($baseline as $i => $report) {
-            // get latest measurements
-            $measurements2 = $latest[$i];
+        foreach ($bReports as $i => $bReport) {
+            $uReport = $uReports[$i];
 
-            // analyze test results
-            $result1 = self::analyzeTest($report);
-            $result2 = self::analyzeTest($measurements2);
+            $bResult = self::analyzeTest($bReport);
+            $uResult = self::analyzeTest($uReport);
 
-            // check for error
-            if ($result1 === null || $result2 === null) {
-                echo str_pad($report->name(), self::$pad1) . ' : ' . str_pad('FAILED', self::$pad2, ' ', STR_PAD_LEFT) . "\n";
+            if ($bResult === null || $uResult === null) {
+                echo str_pad($bReport->name(), self::$pad1) . ' : ' . str_pad('FAILED', self::$pad2, ' ', STR_PAD_LEFT) . "\n";
                 echo "{$line}\n";
                 continue;
             }
 
             // show test results
-            echo str_pad((string) $i, self::$pad1) . ' : ' . str_pad($report->name(), self::$pad2, ' ', STR_PAD_LEFT) . str_pad($measurements2->name(), self::$pad2, ' ', STR_PAD_LEFT) . "\n";
+            echo str_pad((string) $i, self::$pad1) . ' : ' . str_pad($bReport->name(), self::$pad2, ' ', STR_PAD_LEFT) . str_pad($uReport->name(), self::$pad2, ' ', STR_PAD_LEFT) . "\n";
 
-            // show test results
-            foreach ($result1 as $key => $value1) {
-                // get latest result for key
-                $value2 = $result2[$key];
+            foreach ($bResult as $key => $bValue) {
+                $uValue = $uResult[$key];
 
                 if ($key === 'normality') {
-                    echo str_pad($key, self::$pad1) . ' : ' . self::formatPercentage($value1, false, self::$pad2) . self::formatPercentage($value1, false, self::$pad2) . "\n";
+                    echo str_pad($key, self::$pad1) . ' : ' . self::formatPercentage($bValue, false, self::$pad2) . self::formatPercentage($bValue, false, self::$pad2) . "\n";
                 } else {
                     try {
-                        $delta = Stats::relativeDifference($value1, $value2);
+                        $delta = Stats::relativeDifference($bValue, $uValue);
 
-                        echo str_pad($key, self::$pad1) . ' : ' . self::formatNumber($value1, self::$pad2) . self::formatNumber($value2, self::$pad2) . self::formatPercentage($delta, true, self::$pad2) . "\n";
+                        echo str_pad($key, self::$pad1) . ' : ' . self::formatNumber($bValue, self::$pad2) . self::formatNumber($uValue, self::$pad2) . self::formatPercentage($delta, true, self::$pad2) . "\n";
                     } catch (DivisionByZeroError $exception) {
-                        echo str_pad($key, self::$pad1) . ' : ' . self::formatNumber($value1, self::$pad2) . self::formatNumber($value2, self::$pad2) . str_pad('nan', self::$pad2, ' ', STR_PAD_LEFT) . "\n";
+                        echo str_pad($key, self::$pad1) . ' : ' . self::formatNumber($bValue, self::$pad2) . self::formatNumber($uValue, self::$pad2) . str_pad('nan', self::$pad2, ' ', STR_PAD_LEFT) . "\n";
                     }
                 }
             }
