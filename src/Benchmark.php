@@ -237,12 +237,11 @@ class Benchmark
             "{$this->line}\n";
     }
 
-    public function showBenchmark(Reports $data) : void
+    public function showBenchmark(Reports $reports) : void
     {
         $line = str_pad('', $this->pad1 + $this->pad2 + 3, '-');
 
-        // analyze test results
-        foreach ($data as $report) {
+        foreach ($reports as $report) {
             $result = Helper::analyzeTest($report);
 
             if ($result === null) {
