@@ -163,17 +163,18 @@ ANSWER: Well the answer is not as obvious as it seems as it depends on the frequ
 
 ### is php 8.0 faster than 7.4?
 
-ANSWER: it's way faster in tested loops (+73%) and math functions (+17%) and not significant differences in the rest of tests.
+ANSWER: php 8.0 is way faster in tested loops (+73%) and math functions (+17%) and no significant differences in the rest of tests.
+_NOTE_: I can no longer reproduce the speed gain for loops as of updating the README.
 
     $ docker run -it --volume "/$(pwd -W):/test/" php:7.4.12-cli-alpine sh
     $ cd test
-    $ php benchmark.php --iterations 1000 --time-per-iteration 50 --save php7.4
+    $ php benchmark.php --iterations 700 --time-per-iteration 30 --save php7.4
 
     $ docker run -it --volume "/$(pwd -W):/test/" php:8.0.0RC5-cli-alpine sh
     $ cd test
-    $ php benchmark.php --iterations 1000 --time-per-iteration 50 --save php8.0
+    $ php benchmark.php --iterations 700 --time-per-iteration 30 --save php8.0
 
-    $ php compare.php --file1 benchmark_php7.4_20201127-0625.txt --file2 benchmark_php8_20201127-0617.txt
+    $ php compare.php --file1 benchmark_php7.4.txt --file2 benchmark_php8.0.txt
     ------------------------------------------------
     test_if_else
     mean               :    531059   520234    -2.0%
