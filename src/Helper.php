@@ -8,7 +8,6 @@ use DivisionByZeroError;
 
 class Helper
 {
-    // paddings
     public static int $pad1 = 19;
     public static int $pad2 = 14;
 
@@ -42,63 +41,6 @@ class Helper
             'std deviation' => Stats::standardDeviation($measurements),
             'normality' => Stats::testNormal($measurements),
         ];
-    }
-
-    /**
-     * Show benchmark results
-     *
-     * @param Reports $reports
-     * @param array $settings
-     *
-     * @return void
-     */
-    public static function showBenchmark(Reports $data, array $settings) : void
-    {
-        $line = str_pad('', self::$pad1 + self::$pad2 + 3, '-');
-
-        // analyze test results
-        foreach ($data as $report) {
-            $result = self::analyzeTest($report);
-
-            // check for error
-            if ($result === null) {
-                echo str_pad($report->name(), self::$pad1) . ' : ' . str_pad('FAILED', self::$pad2, ' ', STR_PAD_LEFT) . "\n";
-                echo $line . "\n";
-                continue;
-            }
-
-            // show test results
-            echo str_pad($report->name(), self::$pad1) . ' : ' . str_pad('iterations', self::$pad2, ' ', STR_PAD_LEFT) . "\n";
-
-            foreach ($result as $key => $value) {
-                if ($key === 'normality') {
-                    echo str_pad($key, self::$pad1) . ' : ' . self::formatPercentage($value, false, self::$pad2) . "\n";
-                } else {
-                    echo str_pad($key, self::$pad1) . ' : ' . self::formatNumber($value, self::$pad2) . "\n";
-                }
-            }
-
-            // show histogram
-            if ($settings['show_histogram']) {
-                echo "\n";
-                $histogram = Stats::histogram($report->data(), $settings['histogram_buckets']);
-                Stats::drawHistogram($histogram, $settings['histogram_bar_width']);
-            }
-
-            // output outliers
-            if ($settings['show_outliers']) {
-                echo "\n";
-                echo str_pad('outliers', self::$pad1) . ' : ' . self::outliers($report->data()) . "\n";
-            }
-
-            // output all measurements
-            if ($settings['show_all_measurements']) {
-                echo "\n";
-                echo str_pad('values', self::$pad1) . ' : ' . self::allMeasurements($report->data()) . "\n";
-            }
-
-            echo $line . "\n";
-        }
     }
 
     /**

@@ -9,57 +9,54 @@ use Exception;
 class Benchmark
 {
     private array $argv;
-    private array $settings;
     private readonly string $line;
+
+    private int $iterations = 500;
+    private int $timePerIteration = 20;
+
+    private string $testFilter = '/^test/';
+    private bool $customTests = false;
+
+    private bool|string $compare = false;
+
+    private bool $save = false;
+    private string $saveFile = '';
+    private string $saveFilePrefix = 'benchmark_';
+    private string $saveFileExt = '.txt';
+
+    private bool $showHistogram = false;
+    private int $histogramBuckets = 16;
+    private int $histogramBarWidth = 50;
+
+    private bool $showOutliers = false;
+    private bool $showAllMeasurements = false;
+
+    private static int $pad1 = 19;
+    private static int $pad2 = 14;
 
     public function __construct(array $argv)
     {
         $this->argv = $argv;
-
-        $this->settings = [
-            'iterations' => 500,
-            'time_per_iteration' => 20,
-
-            'test_filter' => '/^test/',
-            'custom_tests' => false,
-
-            'compare' => false,
-
-            'show_histogram' => false,
-            'histogram_buckets' => 16,
-            'histogram_bar_width' => 50,
-
-            'show_outliers' => false,
-            'show_all_measurements' => false,
-
-            'save' => false,
-            'save_filename' => '',
-            'save_filename_base' => 'benchmark_',
-            'save_filename_ext' => date('Ymd-Hi') . '.txt',
-        ];
-
-        $this->line = str_pad('', Helper::$pad1 + Helper::$pad2 + 3, '-');
+        $this->line = str_pad('', self::$pad1 + self::$pad2 + 3, '-');
     }
 
     public function run() : void
     {
         $this->readCommandLine($this->argv);
 
-        $settings = $this->settings;
-
         $this->showTitle();
 
-        $class = $settings['custom_tests'] ? TestsUser::class : Tests::class;
+        $class = $this->customTests ? TestsUser::class : Tests::class;
 
-        $tests = $this->getTests($class, $settings['test_filter']);
+        $tests = $this->getTests($class, $this->testFilter);
 
-        $reports = $this->runTests($class, $tests, $settings['iterations'], (float) $settings['time_per_iteration']);
+        $reports = $this->runTests($class, $tests, $this->iterations, (float) $this->timePerIteration);
 
-        if ($settings['save']) {
+        if ($this->save) {
             $this->saveReports($reports);
         }
 
-        if ($settings['custom_tests'] && count($tests) % 2 === 0) {
+        if ($this->customTests && count($tests) % 2 === 0) {
             $baseline = (new Reports())
                 ->addReport($reports[0]);
 
@@ -67,11 +64,11 @@ class Benchmark
                 ->addReport($reports[1]);
 
             Helper::showCompare($baseline, $update);
-        } elseif ($settings['compare']) {
-            $baseline = unserialize(file_get_contents($settings['compare']));
+        } elseif ($this->compare !== false) {
+            $baseline = unserialize(file_get_contents($this->compare));
             Helper::showCompare($baseline, $reports);
         } else {
-            Helper::showBenchmark($reports, $settings);
+            $this->showBenchmark($reports);
         }
     }
 
@@ -141,13 +138,13 @@ class Benchmark
 
     private function saveReports(Reports $reports) : void
     {
-        if (empty($this->settings['save_filename'])) {
-            $this->settings['save_filename'] = $this->settings['save_filename_base'] . $this->settings['save_filename_ext'];
+        if (empty($this->saveFile)) {
+            $this->saveFile = $this->saveFilePrefix . $this->saveFileExt;
         }
 
-        file_put_contents($this->settings['save_filename'], serialize($reports));
+        file_put_contents($this->saveFile, serialize($reports));
 
-        echo "benchmark saved to {$this->settings['save_filename']}\n";
+        echo "benchmark saved to {$this->saveFile}\n";
         echo "{$this->line}\n";
     }
 
@@ -163,57 +160,57 @@ class Benchmark
             switch ($argument) {
                 case '--compare':
                     $i++;
-                    $this->settings['compare'] = $argv[$i];
+                    $this->compare = $argv[$i];
                     break;
 
                 case '--custom':
-                    $this->settings['custom_tests'] = true;
+                    $this->customTests = true;
                     break;
 
                 case '--filter':
                     $i++;
-                    $this->settings['test_filter'] = $argv[$i];
+                    $this->testFilter = $argv[$i];
                     break;
 
                 case '--histogram':
-                    $this->settings['show_histogram'] = true;
+                    $this->showHistogram = true;
                     break;
 
                 case '--histogram-buckets':
                     $i++;
-                    $this->settings['histogram_buckets'] = $argv[$i];
+                    $this->histogramBuckets = $argv[$i];
                     break;
 
                 case '--histogram-width':
                     $i++;
-                    $this->settings['histogram_bar_width'] = $argv[$i];
+                    $this->histogramBarWidth = $argv[$i];
                     break;
 
                 case '--iterations':
                     $i++;
-                    $this->settings['iterations'] = $argv[$i];
+                    $this->iterations = $argv[$i];
                     break;
 
                 case '--save':
-                    $this->settings['save'] = true;
+                    $this->save = true;
                     if (!empty($argv[$i + 1]) && strpos($argv[$i + 1], '--') === false) {
                         ++$i;
-                        $this->settings['save_filename'] = $this->settings['save_filename_base'] . $argv[$i] . '_' . $this->settings['save_filename_ext'];
+                        $this->saveFile = $this->saveFilePrefix . $argv[$i] . '_' . $this->saveFileExt;
                     }
 
                     break;
 
                 case '--show-all':
-                    $this->settings['show_all_measurements'] = true;
+                    $this->showAllMeasurements = true;
                     break;
 
                 case '--show-outliers':
-                    $this->settings['show_outliers'] = true;
+                    $this->showOutliers = true;
                     break;
 
                 case '--time-per-iteration':
                     $i++;
-                    $this->settings['time_per_iteration'] = $argv[$i];
+                    $this->timePerIteration = $argv[$i];
                     break;
 
                 default:
@@ -224,19 +221,72 @@ class Benchmark
 
     private function showTitle() : void
     {
-        $totalTime = $this->settings['iterations'] * $this->settings['time_per_iteration'] / 1000;
+        $totalTime = $this->iterations * $this->timePerIteration / 1000;
 
         echo "PHP benchmark\n\n" .
             "{$this->line}\n" .
-            str_pad('platform', Helper::$pad1) . ' : ' . str_pad(PHP_OS . ' ' . ((PHP_INT_SIZE === 8) ? 'x64' : 'x32'), Helper::$pad2, ' ', STR_PAD_LEFT) . "\n" .
-            str_pad('php version', Helper::$pad1) . ' : ' . str_pad(PHP_VERSION, Helper::$pad2, ' ', STR_PAD_LEFT) . "\n" .
-            str_pad('xdebug', Helper::$pad1) . ' : ' . str_pad(extension_loaded('xdebug') ? 'on' : 'off', Helper::$pad2, ' ', STR_PAD_LEFT) . "\n" .
-            str_pad('opcache', Helper::$pad1) . ' : ' . str_pad((extension_loaded('Zend OPcache') && ini_get('opcache.enable_cli')) ? 'on' : 'off', Helper::$pad2, ' ', STR_PAD_LEFT) . "\n" .
-            str_pad('memory limit', Helper::$pad1) . ' : ' . str_pad(ini_get('memory_limit'), Helper::$pad2, ' ', STR_PAD_LEFT) . "\n" .
-            str_pad('max execution', Helper::$pad1) . ' : ' . str_pad(ini_get('max_execution_time'), Helper::$pad2, ' ', STR_PAD_LEFT) . "\n" .
-            str_pad('iterations', Helper::$pad1) . ' : ' . str_pad((string) $this->settings['iterations'], Helper::$pad2, ' ', STR_PAD_LEFT) . "\n" .
-            str_pad('time per iteration', Helper::$pad1) . ' : ' . str_pad($this->settings['time_per_iteration'] . 'ms', Helper::$pad2, ' ', STR_PAD_LEFT) . "\n" .
-            str_pad('total time per test', Helper::$pad1) . ' : ' . str_pad($totalTime . 's', Helper::$pad2, ' ', STR_PAD_LEFT) . "\n" .
+            str_pad('platform', self::$pad1) . ' : ' . str_pad(PHP_OS . ' ' . ((PHP_INT_SIZE === 8) ? 'x64' : 'x32'), self::$pad2, ' ', STR_PAD_LEFT) . "\n" .
+            str_pad('php version', self::$pad1) . ' : ' . str_pad(PHP_VERSION, self::$pad2, ' ', STR_PAD_LEFT) . "\n" .
+            str_pad('xdebug', self::$pad1) . ' : ' . str_pad(extension_loaded('xdebug') ? 'on' : 'off', self::$pad2, ' ', STR_PAD_LEFT) . "\n" .
+            str_pad('opcache', self::$pad1) . ' : ' . str_pad((extension_loaded('Zend OPcache') && ini_get('opcache.enable_cli')) ? 'on' : 'off', self::$pad2, ' ', STR_PAD_LEFT) . "\n" .
+            str_pad('memory limit', self::$pad1) . ' : ' . str_pad(ini_get('memory_limit'), self::$pad2, ' ', STR_PAD_LEFT) . "\n" .
+            str_pad('max execution', self::$pad1) . ' : ' . str_pad(ini_get('max_execution_time'), self::$pad2, ' ', STR_PAD_LEFT) . "\n" .
+            str_pad('iterations', self::$pad1) . ' : ' . str_pad((string) $this->iterations, self::$pad2, ' ', STR_PAD_LEFT) . "\n" .
+            str_pad('time per iteration', self::$pad1) . ' : ' . str_pad($this->timePerIteration . 'ms', self::$pad2, ' ', STR_PAD_LEFT) . "\n" .
+            str_pad('total time per test', self::$pad1) . ' : ' . str_pad($totalTime . 's', self::$pad2, ' ', STR_PAD_LEFT) . "\n" .
             "{$this->line}\n";
+    }
+
+    /**
+     * Show benchmark results
+     *
+     * @param Reports $reports
+     *
+     * @return void
+     */
+    public function showBenchmark(Reports $data) : void
+    {
+        $line = str_pad('', self::$pad1 + self::$pad2 + 3, '-');
+
+        // analyze test results
+        foreach ($data as $report) {
+            $result = Helper::analyzeTest($report);
+
+            // check for error
+            if ($result === null) {
+                echo str_pad($report->name(), self::$pad1) . ' : ' . str_pad('FAILED', self::$pad2, ' ', STR_PAD_LEFT) . "\n";
+                echo $line . "\n";
+                continue;
+            }
+
+            // show test results
+            echo str_pad($report->name(), self::$pad1) . ' : ' . str_pad('iterations', self::$pad2, ' ', STR_PAD_LEFT) . "\n";
+
+            foreach ($result as $key => $value) {
+                if ($key === 'normality') {
+                    echo str_pad($key, self::$pad1) . ' : ' . Helper::formatPercentage($value, false, self::$pad2) . "\n";
+                } else {
+                    echo str_pad($key, self::$pad1) . ' : ' . Helper::formatNumber($value, self::$pad2) . "\n";
+                }
+            }
+
+            if ($this->showHistogram) {
+                echo "\n";
+                $histogram = Stats::histogram($report->data(), $this->histogramBuckets);
+                Stats::drawHistogram($histogram, $this->histogramBarWidth);
+            }
+
+            if ($this->showOutliers) {
+                echo "\n";
+                echo str_pad('outliers', self::$pad1) . ' : ' . Helper::outliers($report->data()) . "\n";
+            }
+
+            if ($this->showAllMeasurements) {
+                echo "\n";
+                echo str_pad('values', self::$pad1) . ' : ' . Helper::allMeasurements($report->data()) . "\n";
+            }
+
+            echo $line . "\n";
+        }
     }
 }
