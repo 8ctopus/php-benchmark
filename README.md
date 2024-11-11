@@ -56,9 +56,106 @@ ANSWER: yes, from 2x to 7x depending on the test.
     ------------------------------------------------
     [CROPPED]
 
-*NOTE* Since xdebug significantly pejorates the results, it's better to turn it off either in `php.ini` or directly when running the command.
+*NOTE* Since `xdebug` significantly pejorates the results, it's better to turn it off either in `php.ini` or directly when running the command.
 
     php -d xdebug.mode=off benchmark.php
+
+### does opcache speed up code execution?
+
+ANSWER: It has from no impact to a significant speed increase depending on the test. No impact for `IfElse`, `Hashes` and `Files` and 20% faster for string operations, 34% for loops. If you look at the results carefully, you will notice that the minimum number of iterations drops when opcache is on, which I think is related to building the cache.
+
+    $ php -d xdebug.mode=off -d opcache.enable_cli=0 benchmark.php --save opcache_off
+    $ php -d xdebug.mode=off -d opcache.enable_cli=1 benchmark.php --save opcache_on
+
+    php compare.php --file1 benchmark_opcache_off.txt --file2 benchmark_opcache_on.txt
+
+    ----------------------------------------------------------------
+    0                   :     testIfElse    testIfElse
+    mean                :          49904         52081         +4.4%
+    median              :          44143         42948         -2.7%
+    mode                :          35174         36360         +3.4%
+    minimum             :          26190         13478        -48.5%
+    maximum             :          85345         89272         +4.6%
+    quartile 1          :          34178         36292         +6.2%
+    quartile 3          :          67093         71918         +7.2%
+    IQ range            :          32915         35626         +8.2%
+    std deviation       :          17626         18951         +7.5%
+    normality           :          11.5%         11.5%
+    ----------------------------------------------------------------
+    1                   :      testLoops     testLoops
+    mean                :           8037         10803        +34.4%
+    median              :           6729          8939        +32.9%
+    mode                :           5588          7770        +39.0%
+    minimum             :           3327          3431         +3.1%
+    maximum             :          13767         18428        +33.9%
+    quartile 1          :           5653          7664        +35.6%
+    quartile 3          :          10728         14162        +32.0%
+    IQ range            :           5075          6498        +28.0%
+    std deviation       :           2824          3813        +35.0%
+    normality           :          16.3%         16.3%
+    ----------------------------------------------------------------
+    2                   :     testArrays    testArrays
+    mean                :           4645          4737         +2.0%
+    median              :           3726          3871         +3.9%
+    mode                :           3972          3562        -10.3%
+    minimum             :           2120          1016        -52.1%
+    maximum             :           8328          8392         +0.8%
+    quartile 1          :           3331          3462         +3.9%
+    quartile 3          :           5981          6139         +2.6%
+    IQ range            :           2651          2678         +1.0%
+    std deviation       :           1674          1679         +0.3%
+    normality           :          19.8%         19.8%
+    ----------------------------------------------------------------
+    3                   :    testStrings   testStrings
+    mean                :           2528          3055        +20.9%
+    median              :           2031          2459        +21.1%
+    mode                :           1843          2223        +20.6%
+    minimum             :           1274           741        -41.8%
+    maximum             :           4481          5528        +23.4%
+    quartile 1          :           1812          2233        +23.3%
+    quartile 3          :           3303          3966        +20.1%
+    IQ range            :           1491          1733        +16.2%
+    std deviation       :            899          1084        +20.6%
+    normality           :          19.7%         19.7%
+    ----------------------------------------------------------------
+    4                   :       testMath      testMath
+    mean                :           1357          1490         +9.8%
+    median              :           1124          1210         +7.7%
+    mode                :            983          1105        +12.4%
+    minimum             :            278           225        -19.1%
+    maximum             :           2454          2790        +13.7%
+    quartile 1          :            965          1084        +12.3%
+    quartile 3          :           1769          1899         +7.3%
+    IQ range            :            804           816         +1.4%
+    std deviation       :            496           552        +11.2%
+    normality           :          17.1%         17.1%
+    ----------------------------------------------------------------
+    5                   :     testHashes    testHashes
+    mean                :             96            96          0.0%
+    median              :             83            79         -4.8%
+    mode                :             68            69         +1.5%
+    minimum             :             41            19        -53.7%
+    maximum             :            167           170         +1.8%
+    quartile 1          :             67            68         +1.5%
+    quartile 3          :            125           126         +1.2%
+    IQ range            :             58            58         +0.9%
+    std deviation       :             35            35         +1.4%
+    normality           :          13.4%         13.4%
+    ----------------------------------------------------------------
+    6                   :      testFiles     testFiles
+    mean                :              6             6         -1.4%
+    median              :              6             5        -16.7%
+    mode                :              4             4          0.0%
+    minimum             :              2             3        +50.0%
+    maximum             :             10             9        -10.0%
+    quartile 1          :              4             4          0.0%
+    quartile 3          :              8             8          0.0%
+    IQ range            :              4             4          0.0%
+    std deviation       :              2             2          0.0%
+    normality           :           0.4%          0.4%
+    ----------------------------------------------------------------
+
+*NOTE* Since `opcache` can significantly alter the results, it makes sense to set it the same as on your production server.
 
 ### is `===` faster than `==`?
 
@@ -357,9 +454,9 @@ ANSWER: it's 3x - 5x faster accross all tests except hashes where there is a 12%
     std deviation      :       109      116     6.7%
     normality          :      5.2%     5.2%
 
-### Which logger is faster? Monolog or Apix?
+### Which logger is faster? `Monolog` or `Apix`?
 
-ANSWER: It depends on how the logger is setup but in most cases Apix is significantly faster
+ANSWER: It depends on how the logger is setup but in most cases `Apix` is significantly faster
 
     $ php -d xdebug.mode=off benchmark.php --custom TestLogger
     PHP benchmark
