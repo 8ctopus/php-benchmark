@@ -45,7 +45,7 @@ class Benchmark
 
     public function run() : void
     {
-        $this->readCommandLine($this->argv);
+        $this->readArguments($this->argv);
 
         $this->showTitle();
 
@@ -151,7 +151,7 @@ class Benchmark
         echo "{$this->line}\n";
     }
 
-    private function readCommandLine(array $argv) : void
+    private function readArguments(array $argv) : void
     {
         for ($i = 1; $i < count($argv); ++$i) {
             $argument = $argv[$i];
