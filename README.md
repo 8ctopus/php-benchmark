@@ -78,35 +78,35 @@ if ($a === $b) {
 ...
 ```
 
-ANSWER: `===` is approximately 15% faster than `==`.
+ANSWER: `===` is approximately 12% faster than `==`.
 
-    $ docker run -it --volume "/$(pwd -W):/test/" php:7.4.12-cli-alpine sh
-    $ cd test
-    $ php benchmark.php --custom TestUser --filter ~equal~
+    $ php -d xdebug.mode=off benchmark.php --custom TestUser --filter ~equal~
     PHP benchmark
 
-    -------------------------------
-    platform           :  Linux x64
-    php version        :     7.4.12
-    xdebug             :        off
-    memory limit       :       128M
-    max execution      :          0
-    time per iteration :       50ms
-    iterations         :        100
-    -------------------------------
-    ---------------------------------------------------
-    0                  :    equal_1   equal_2
-    mean               :     393752    458817    +16.5%
-    median             :     399673    461316    +15.4%
-    mode               :     390417    421821     +8.0%
-    minimum            :     314032    371168    +18.2%
-    maximum            :     408390    475810    +16.5%
-    quartile 1         :     395429    458062    +15.8%
-    quartile 3         :     402433    466956    +16.0%
-    IQ range           :       7004      8894    +27.0%
-    std deviation      :      18190     15341    -15.7%
-    normality          :       1.5%      1.5%
-    ---------------------------------------------------
+    ------------------------------------
+    platform            :      WINNT x64
+    php version         :         8.3.10
+    xdebug              :            off
+    opcache             :            off
+    memory limit        :           512M
+    max execution       :              0
+    iterations          :            500
+    time per iteration  :           20ms
+    total time per test :            10s
+    ------------------------------------
+    ----------------------------------------------------------------
+    0                   :         equal1        equal2
+    mean                :          44896         50057        +11.5%
+    median              :          36732         41129        +12.0%
+    mode                :          37953         42447        +11.8%
+    minimum             :          20852         25443        +22.0%
+    maximum             :          88862         99689        +12.2%
+    quartile 1          :          31892         35587        +11.6%
+    quartile 3          :          55410         63874        +15.3%
+    IQ range            :          23518         28287        +20.3%
+    std deviation       :          17966         19912        +10.8%
+    normality           :          18.2%         18.2%
+    ----------------------------------------------------------------
 
 ### is strpos + regex faster than pure regex?
 
