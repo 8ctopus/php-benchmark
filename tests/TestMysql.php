@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Oct8pus\Tests;
 
 use Exception;
+use Oct8pus\Benchmark\Helper;
 
 class TestMysql
 {
