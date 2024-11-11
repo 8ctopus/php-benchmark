@@ -27,7 +27,7 @@ Standard tests include a bunch of different tests such as `if` / `else`, `loops`
 
 Custom tests are user fined tests in the `TestUser` class.
 
-- `php -d xdebug.mode=off benchmark.php --custom TestUser --filter ~baseline~` where filter corresponds to a regular expression matching the methods that you want to test. If there are exactly two tests, then the test results will be compared.
+- `php -d xdebug.mode=off benchmark.php --custom TestUser --filter ~baseline~` where filter corresponds to a regular expression matching the methods that you want to test. If there are two tests, then the test results will be compared.
 
 ## examples
 
