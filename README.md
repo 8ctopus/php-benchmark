@@ -60,7 +60,7 @@ ANSWER: yes, from 2x to 7x depending on the test.
 
     php -d xdebug.mode=off benchmark.php
 
-### is === faster than ==?
+### is `===` faster than `==`?
 
 ```php
 ...
