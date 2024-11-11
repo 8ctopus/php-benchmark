@@ -486,7 +486,7 @@ ANSWER: It depends on how the logger is setup but in most cases `Apix` is signif
 
 ## Which templating engine is faster `Twig` or `Latte`?
 
-Speed is the same.
+Speed is the same when no caching directory is set, however when digging into the code, I found out that `Latte` has class cache that cannot be disabled unless you tamper with the code. Once the caching fully removed, the `Latte` performance is much worse than `Twig` (-78%).
 
     $ php -d xdebug.mode=off benchmark.php --custom TestTemplates
     PHP benchmark
