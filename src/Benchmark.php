@@ -151,25 +151,25 @@ class Benchmark
         echo "{$this->line}\n";
     }
 
-    private function readArguments(array $argv) : void
+    private function readArguments(array $arguments) : void
     {
-        for ($i = 1; $i < count($argv); ++$i) {
-            $argument = $argv[$i];
+        for ($i = 1; $i < count($arguments); ++$i) {
+            $argument = $arguments[$i];
 
             switch ($argument) {
                 case '--compare':
                     $i++;
-                    $this->compare = $argv[$i];
+                    $this->compare = $arguments[$i];
                     break;
 
                 case '--custom':
                     $i++;
-                    $this->customTests = $argv[$i];
+                    $this->customTests = $arguments[$i];
                     break;
 
                 case '--filter':
                     $i++;
-                    $this->testFilter = $argv[$i];
+                    $this->testFilter = $arguments[$i];
                     break;
 
                 case '--histogram':
@@ -178,24 +178,24 @@ class Benchmark
 
                 case '--histogram-buckets':
                     $i++;
-                    $this->histogramBuckets = (int) $argv[$i];
+                    $this->histogramBuckets = (int) $arguments[$i];
                     break;
 
                 case '--histogram-width':
                     $i++;
-                    $this->histogramBarWidth = (int) $argv[$i];
+                    $this->histogramBarWidth = (int) $arguments[$i];
                     break;
 
                 case '--iterations':
                     $i++;
-                    $this->iterations = (int) $argv[$i];
+                    $this->iterations = (int) $arguments[$i];
                     break;
 
                 case '--save':
                     $this->save = true;
-                    if (!empty($argv[$i + 1]) && strpos($argv[$i + 1], '--') === false) {
+                    if (!empty($arguments[$i + 1]) && strpos($arguments[$i + 1], '--') === false) {
                         ++$i;
-                        $this->saveFile = $this->saveFilePrefix . $argv[$i] . $this->saveFileExt;
+                        $this->saveFile = $this->saveFilePrefix . $arguments[$i] . $this->saveFileExt;
                     }
 
                     break;
@@ -210,7 +210,7 @@ class Benchmark
 
                 case '--time-per-iteration':
                     $i++;
-                    $this->timePerIteration = (float) $argv[$i];
+                    $this->timePerIteration = (float) $arguments[$i];
                     break;
 
                 default:
