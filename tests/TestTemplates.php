@@ -45,6 +45,7 @@ class TestTemplates
         ]);
 
         $output = $environment->render('Index.twig', self::params());
+        //file_put_contents('twig.html', $output);
     }
 
     public static function testLatte() : void
@@ -54,5 +55,6 @@ class TestTemplates
         //$latte->setTempDirectory('/path/to/tempdir');
 
         $output = $latte->renderToString(self::viewsDir() . '/Index.latte', self::params());
+        //file_put_contents('latte.html', $output);
     }
 }
