@@ -4,6 +4,10 @@ Benchmark your php code.
 
 The project is built on top of the original work from Alessandro Torrisi [www.php-benchmark-script.com](http://www.php-benchmark-script.com)
 
+## introduction
+
+    https://www.paulstephenborile.com/2018/03/code-benchmarks-can-measure-fast-software-make-faster/
+
 ## compatibility
 
 from php 5.6.40 (use the `php5.6-compatibility` tag) to 8.3.x
