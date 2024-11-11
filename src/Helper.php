@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Oct8pus\Benchmark;
 
 use DivisionByZeroError;
+use MathPHP\Statistics\Average;
+use MathPHP\Statistics\Descriptive;
 
 class Helper
 {
@@ -22,23 +24,18 @@ class Helper
     {
         $data = $report->data();
 
-        /* REM
-        // check if the test failed at least once
-        if (in_array(false, $measurements->data(), true)) {
-            return null;
-        }
-        */
+        $quartiles = Descriptive::quartiles($data);
 
         return [
-            'mean' => Stats::mean($data),
-            'median' => Stats::median($data),
-            'mode' => Stats::mode($data),
+            'mean' => Average::mean($data),
+            'median' => Average::median($data),
+            'mode' => Average::mode($data)[0],
             'minimum' => min($data),
             'maximum' => max($data),
-            'quartile 1' => Stats::quartiles($data)[0],
-            'quartile 3' => Stats::quartiles($data)[1],
-            'IQ range' => Stats::interquartileRange($data),
-            'std deviation' => Stats::standardDeviation($data),
+            'quartile 1' => $quartiles['Q1'],
+            'quartile 3' => $quartiles['Q3'],
+            'IQ range' => Descriptive::interquartileRange($data),
+            'std deviation' => Descriptive::standardDeviation($data),
             'normality' => Stats::testNormal($data),
         ];
     }
