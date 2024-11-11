@@ -1,0 +1,11 @@
+{% extends "Base.twig" %}
+{% block body %}
+<div class="container">
+  <h1> hello {{ name }}! </h1>
+  <ul>
+{% for item in list %}
+    <li>{{ item }}</li>
+{% endfor %}
+  </ul>
+</div>
+{% endblock %}

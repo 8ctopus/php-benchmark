@@ -357,7 +357,7 @@ ANSWER: it's 3x - 5x faster accross all tests except hashes where there is a 12%
 
 ANSWER: It depends on how the logger is setup but in most cases Apix is significantly faster
 
-    $ php -d xdebug.mode=off benchmark.php --custom TestLogger --filter ~logger~
+    $ php -d xdebug.mode=off benchmark.php --custom TestLogger
     PHP benchmark
 
     -----------------------------------
@@ -382,6 +382,36 @@ ANSWER: It depends on how the logger is setup but in most cases Apix is signific
     std deviation      :             36           476      +1234.2%
     normality          :           3.2%          3.2%
     ---------------------------------------------------------------
+
+## Which templating engine is faster `Twig` or `Latte`
+
+    $ php -d xdebug.mode=off benchmark.php --custom TestTemplates
+    PHP benchmark
+
+    ------------------------------------
+    platform            :      WINNT x64
+    php version         :         8.3.10
+    xdebug              :            off
+    opcache             :            off
+    memory limit        :           512M
+    max execution       :              0
+    iterations          :            500
+    time per iteration  :           20ms
+    total time per test :            10s
+    ------------------------------------
+    ----------------------------------------------------------------
+    0                   :       testTwig     testLatte
+    mean                :             65            64         -1.5%
+    median              :             50            52         +4.0%
+    mode                :             49            52         +6.1%
+    minimum             :             14            16        +14.3%
+    maximum             :            124           123         -0.8%
+    quartile 1          :             45            45          0.0%
+    quartile 3          :             88            87         -1.1%
+    IQ range            :             43            42         -2.3%
+    std deviation       :             27            26         -4.4%
+    normality           :          22.9%         22.9%
+    ----------------------------------------------------------------
 
 ## run your own tests
 

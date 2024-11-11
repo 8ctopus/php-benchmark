@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>{$title}</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" crossorigin="anonymous" integrity="b0e7671adf208f5b56ed041adde521d3ba980ee1bcdacea0202169284be7024a">
+{if isset($favicon)}
+<link rel="shortcut icon" href="{$favicon}">
+{/if}
+<style type="text/css">
+
+:root {
+  font-family: sans-serif;
+  white-space: nowrap;
+  --pico-form-element-spacing-horizontal: .5rem;
+  --pico-form-element-spacing-vertical: .25rem;
+}
+
+</style>
+{block css}
+{/block}
+<script type="module">
+
+</script>
+{block head}
+{/block}
+</head>
+<body>
+{block body}
+{/block}
+</body>
+</html>

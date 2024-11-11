@@ -1,0 +1,11 @@
+{extends 'Base.latte'}
+{block body}
+<div class="container">
+  <h1> hello {$name}! </h1>
+  <ul>
+{foreach $list as $item}
+    <li>{$item}</li>
+{/foreach}
+  </ul>
+</div>
+{/block}
