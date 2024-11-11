@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Oct8pus\Tests;
 
+use Oct8pus\Benchmark\Helper;
 use ReflectionFunction;
 
 class TestDefault
