@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Oct8pus\Benchmark;
+namespace Oct8pus\Benchmark\Tests;
 
 use Apix\Log\Logger\File;
 use Apix\Log\Logger;
@@ -13,7 +13,7 @@ use Monolog\Logger as MLogger;
 
 define('LOG_STDOUT', true);
 
-class TestsLogger
+class TestLogger
 {
     public static function testMonolog() : void
     {

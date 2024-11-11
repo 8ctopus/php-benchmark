@@ -1,20 +1,12 @@
 <?php
 
-/**
- * Tests
- *
- * @author Alessandro Torrisi
- *
- * The original tests are available at http://www.php-benchmark-script.com
- */
-
 declare(strict_types=1);
 
-namespace Oct8pus\Benchmark;
+namespace Oct8pus\Benchmark\Tests;
 
 use ReflectionFunction;
 
-class Tests
+class TestDefault
 {
     public static function testIfElse() : void
     {

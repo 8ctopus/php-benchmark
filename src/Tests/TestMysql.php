@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Oct8pus\Benchmark;
+namespace Oct8pus\Benchmark\Tests;
 
 use Exception;
 
-class TestsMySql
+class TestMysql
 {
     public static function testMySql() : void
     {

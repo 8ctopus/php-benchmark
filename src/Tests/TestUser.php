@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Oct8pus\Benchmark;
+namespace Oct8pus\Benchmark\Tests;
 
-class TestsUser
+class TestUser
 {
     /**
      * Baseline 1 (same as Baseline 2, just to test equality)
