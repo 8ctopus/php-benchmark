@@ -10,6 +10,8 @@ use Twig\Loader\FilesystemLoader;
 
 class TestTemplates
 {
+    private static bool $useCache = false;
+
     private static function viewsDir() : string
     {
         return __DIR__ . '/../views';
@@ -39,7 +41,7 @@ class TestTemplates
 
         $environment = new Environment($loader, [
             //'auto_reload' => true,
-            //'cache' => sys_get_temp_dir() . '/twig',
+            'cache' => self::$useCache ? sys_get_temp_dir() . '/twig' : null,
             'debug' => false,
             //'strict_variables' => true,
         ]);
@@ -52,8 +54,11 @@ class TestTemplates
     {
         $latte = new Engine();
 
-        //$latte->setTempDirectory(sys_get_temp_dir() . '/latte');
+        if (self::$useCache) {
+            $latte->setTempDirectory(sys_get_temp_dir() . '/latte');
+        }
 
+        // even when the cache directory is not set, there is still class caching
         $output = $latte->renderToString(self::viewsDir() . '/Index.latte', self::params());
         //file_put_contents('latte.html', $output);
     }
