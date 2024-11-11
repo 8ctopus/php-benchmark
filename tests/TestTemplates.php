@@ -39,7 +39,7 @@ class TestTemplates
 
         $environment = new Environment($loader, [
             //'auto_reload' => true,
-            //'cache' => Helper::storageDir() . '/twig',
+            //'cache' => sys_get_temp_dir() . '/twig',
             'debug' => false,
             //'strict_variables' => true,
         ]);
@@ -52,7 +52,7 @@ class TestTemplates
     {
         $latte = new Engine();
 
-        //$latte->setTempDirectory('/path/to/tempdir');
+        //$latte->setTempDirectory(sys_get_temp_dir() . '/latte');
 
         $output = $latte->renderToString(self::viewsDir() . '/Index.latte', self::params());
         //file_put_contents('latte.html', $output);
