@@ -383,7 +383,9 @@ ANSWER: It depends on how the logger is setup but in most cases Apix is signific
     normality          :           3.2%          3.2%
     ---------------------------------------------------------------
 
-## Which templating engine is faster `Twig` or `Latte`
+## Which templating engine is faster `Twig` or `Latte`?
+
+Speed is the same.
 
     $ php -d xdebug.mode=off benchmark.php --custom TestTemplates
     PHP benchmark
