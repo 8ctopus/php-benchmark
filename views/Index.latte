@@ -8,4 +8,27 @@
 {/foreach}
   </ul>
 </div>
+<div class="container">
+
+{var $str = "<'\"&"}
+1) <p>{$str}</p>
+2) <input value="{$str}">
+3) <input value='{$str}'>
+
+{var $str = "foo onclick=alert()"}
+4) <input value={$str}>
+
+{var $str = "'\"\n\u{2028}"}
+5) <script> let foo = {$str}; </script>
+6) <p onclick="foo({$str})"></p>
+
+{var $str = "-- ---"}
+7) <!-- {$str} -->
+
+{var $str = "javascript:alert()"}
+8) <a href="{$str}">...</a>
+
+{var $str = "{{ foo }}"}
+9) <div id="app"> {$str} </div>
+</div>
 {/block}

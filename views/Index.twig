@@ -8,4 +8,27 @@
 {% endfor %}
   </ul>
 </div>
+<div class="container">
+{% set str = "<'\"&" %}
+1) <p>{{ str }}</p>
+2) <input value="{{ str }}">
+3) <input value='{{ str }}'>
+
+{% set str = "foo onclick=alert()" %}
+4) <input value={{ str }}>
+
+{% set str = "'\"\n\u{2028}" %}
+5) <script> let foo = '{{ str }}'; </script>
+6) <p onclick="foo('{{ str }}')"></p>
+
+{% set str = "-- ---" %}
+7) <!-- {{ str }} -->
+
+{% set str = "javascript:alert()" %}
+8) <a href="{{ str }}">...</a>
+
+{% set str = "{{ foo }}" %}
+9) <div id="app"> {{ str }} </div>
+
+</div>
 {% endblock %}
