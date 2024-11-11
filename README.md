@@ -357,7 +357,7 @@ ANSWER: it's 3x - 5x faster accross all tests except hashes where there is a 12%
 
 ANSWER: It depends on how the logger is setup but in most cases Apix is significantly faster
 
-    $ php -d xdebug.mode=off benchmark.php --custom TestUser --filter ~logger~
+    $ php -d xdebug.mode=off benchmark.php --custom TestLogger --filter ~logger~
     PHP benchmark
 
     -----------------------------------
