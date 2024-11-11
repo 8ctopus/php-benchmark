@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Oct8pus\Benchmark\Tests;
+namespace Oct8pus\Tests;
 
 use Latte\Engine;
 use Twig\Environment;
@@ -12,7 +12,7 @@ class TestTemplates
 {
     private static function viewsDir() : string
     {
-        return __DIR__ . '/../../views';
+        return __DIR__ . '/../views';
     }
 
     private static function params() : array

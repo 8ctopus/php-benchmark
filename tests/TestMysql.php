@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Oct8pus\Benchmark\Tests;
+namespace Oct8pus\Tests;
 
 use Exception;
 

@@ -22,7 +22,8 @@
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
-            "Oct8pus\\Benchmark\\": "src"
+            "Oct8pus\\Benchmark\\": "src",
+            "Oct8pus\\Tests\\": "tests"
         }
     },
     "repositories": [{

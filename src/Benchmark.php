@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Oct8pus\Benchmark;
 
 use Exception;
-use Oct8pus\Benchmark\Tests\TestDefault;
+use Oct8pus\Tests\TestDefault;
 
 class Benchmark
 {
@@ -50,7 +50,7 @@ class Benchmark
 
         $this->showTitle();
 
-        $class = $this->customTests === false ? TestDefault::class : "Oct8pus\\Benchmark\\Tests\\{$this->customTests}";
+        $class = $this->customTests === false ? TestDefault::class : "Oct8pus\\Tests\\{$this->customTests}";
 
         $tests = $this->getTests($class, $this->testFilter);
 
