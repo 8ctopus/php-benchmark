@@ -178,16 +178,16 @@ class Stats
     /**
      * Approximate normality test
      *
-     * @param array $cells
+     * @param array $data
      *
      * @return float probability it's normal
      *
      * @note found here https://www.paulstephenborile.com/2018/03/code-benchmarks-can-measure-fast-software-make-faster/
      */
-    public static function testNormal(array $cells) : float
+    public static function testNormal(array $data) : float
     {
-        $mean = self::mean($cells);
-        $median = self::median($cells);
+        $mean = self::mean($data);
+        $median = self::median($data);
 
         return abs($mean - $median) / max($mean, $median);
     }
