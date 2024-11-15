@@ -41,7 +41,7 @@ class TestTemplates
 
         $environment = new Environment($loader, [
             //'auto_reload' => true,
-            'cache' => self::$useCache ? sys_get_temp_dir() . '/twig' : null,
+            'cache' => self::$useCache ? sys_get_temp_dir() . '/twig' : false,
             'debug' => false,
             //'strict_variables' => true,
         ]);

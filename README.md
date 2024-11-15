@@ -486,7 +486,7 @@ ANSWER: It depends on how the logger is setup but in most cases `Apix` is signif
 
 ## Which templating engine is faster `Twig` or `Latte`?
 
-Speed is the same when no caching directory is set, however when digging into the code, I found out that `Latte` has class cache that cannot be disabled unless you tamper with the code. Once the caching fully removed, the `Latte` performance is much worse than `Twig` (-78%).
+### with templates cache
 
     $ php -d xdebug.mode=off benchmark.php --custom TestTemplates
     PHP benchmark
@@ -504,17 +504,49 @@ Speed is the same when no caching directory is set, however when digging into th
     ------------------------------------
     ----------------------------------------------------------------
     0                   :       testTwig     testLatte
-    mean                :             65            64         -1.5%
-    median              :             50            52         +4.0%
-    mode                :             49            52         +6.1%
-    minimum             :             14            16        +14.3%
-    maximum             :            124           123         -0.8%
-    quartile 1          :             45            45          0.0%
-    quartile 3          :             88            87         -1.1%
-    IQ range            :             43            42         -2.3%
-    std deviation       :             27            26         -4.4%
-    normality           :          22.9%         22.9%
+    mean                :             91            88         -3.1%
+    median              :             98            95         -3.1%
+    mode                :            110           103         -6.4%
+    minimum             :             33            24        -27.3%
+    maximum             :            119           119          0.0%
+    quartile 1          :             82            81         -1.2%
+    quartile 3          :            107           103         -3.7%
+    IQ range            :             25            22        -12.0%
+    std deviation       :             22            22         -1.4%
+    normality           :           7.4%          7.4%
     ----------------------------------------------------------------
+
+### without templates cache
+
+$ php -d xdebug.mode=off benchmark.php --custom TestTemplates
+PHP benchmark
+
+    ------------------------------------
+    platform            :      WINNT x64
+    php version         :         8.3.10
+    xdebug              :            off
+    opcache             :            off
+    memory limit        :           512M
+    max execution       :              0
+    iterations          :            500
+    time per iteration  :           20ms
+    total time per test :            10s
+    ------------------------------------
+    ----------------------------------------------------------------
+    0                   :       testTwig     testLatte
+    mean                :             89            87         -2.2%
+    median              :             97            94         -3.1%
+    mode                :            110           105         -4.5%
+    minimum             :             25            23         -8.0%
+    maximum             :            118           124         +5.1%
+    quartile 1          :             80            77         -4.4%
+    quartile 3          :            106           104         -1.9%
+    IQ range            :             26            28         +5.8%
+    std deviation       :             22            22         -0.1%
+    normality           :           7.9%          7.9%
+    ----------------------------------------------------------------
+
+ANSWER: Speed is the same, however when digging into the code, I found out that `Latte` has one more level of caching (class cache) that cannot be disabled unless fiddling with the code.
 
 ## run your own tests
 
